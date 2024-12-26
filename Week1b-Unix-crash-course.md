@@ -481,3 +481,129 @@ Notice that when we pipe a command we do not need to specify the output at each 
 - `command >> [file]` appends a command’s output to a file.
 - `[first] | [second]` is a pipeline: the output of the first command is used as the input to the second.
 - The best way to use the shell is to use pipes to combine simple single-purpose programs (filters).
+
+### Create Shell Scripts
+
+Lets create a bash file called `middle.sh`in our alkanes directory.
+
+```bash
+cd /Desktop/shell-lesson-data/exercise-data/alkanes
+```
+
+```bash
+nano middle.sh
+```
+
+Edit the file middle.sh with the following command:
+
+```
+head -n 15 octane.pdb | tail -n 5
+```
+
+Then we save the file (`Ctrl-O` in nano) and exit the text editor (`Ctrl-X` in nano). Check that the directory `alkanes` now contains a file called `middle.sh`. Once we have saved the file, we can ask the shell to execute the commands it contains. Our shell is called `bash`, so we run the following command.
+
+```bash
+bash middle.sh
+```
+
+```
+ATOM      9  H           1      -4.502   0.681   0.785  1.00  0.00
+ATOM     10  H           1      -5.254  -0.243  -0.537  1.00  0.00
+ATOM     11  H           1      -4.357   1.252  -0.895  1.00  0.00
+ATOM     12  H           1      -3.009  -0.741  -1.467  1.00  0.00
+ATOM     13  H           1      -3.172  -1.337   0.206  1.00  0.00
+```
+
+Currently, we need to edit `middle.sh` each time we want to adjust the range of lines that is returned. Let’s fix that by configuring our script to instead use three command-line arguments. After the first command-line argument (`$1`), each additional argument that we provide will be accessible via the special variables `$1`, `$2`, `$3`, which refer to the first, second, third command-line arguments, respectively.
+
+Knowing this, we can use additional arguments to define the range of lines to be passed to `head` and `tail` respectively:
+
+```bash
+head -n "$2" "$1" | tail -n "$3"
+```
+
+We can now run the script using the following command and flags.
+
+```bash
+bash middle.sh pentane.pdb 15 5
+```
+
+```
+ATOM      9  H           1       1.324   0.350  -1.332  1.00  0.00
+ATOM     10  H           1       1.271   1.378   0.122  1.00  0.00
+ATOM     11  H           1      -0.074  -0.384   1.288  1.00  0.00
+ATOM     12  H           1      -0.048  -1.362  -0.205  1.00  0.00
+ATOM     13  H           1      -1.183   0.500  -1.412  1.00  0.00
+```
+
+This works, but it may take the next person who reads `middle.sh` a moment to figure out what it does. We can improve our script by adding some **comments** at the top:
+
+```bash
+$ nano middle.sh
+```
+
+```
+# Select lines from the middle of a file.
+# Usage: bash middle.sh filename end_line num_lines
+head -n "$2" "$1" | tail -n "$3"
+```
+
+### Writing a Loop
+
+We can write a loop to run this command on multiple files
+
+```bash
+# The word "for" indicates the start of a "For-loop" command
+for thing in list_of_things 
+#The word "do" indicates the start of job execution list
+do 
+    # Indentation within the loop is not required, but aids legibility
+    operation_using/command $thing 
+# The word "done" indicates the end of a loop
+done  
+```
+
+```bash
+$ for datafile in *.pdb
+> do
+> bash middle.sh ${datafile} 15 5 
+> done
+```
+
+The shell prompt changes from `$` to `>` and back again as we were typing in our loop. The second prompt, `>`, is different to remind us that we haven’t finished typing a complete command yet. A semicolon, `;`, can be used to separate two commands written on a single line.
+
+When using variables it is also possible to put the names into curly braces to clearly delimit the variable name: `$filename` is equivalent to `${filename}`, but is different from `${file}name`. You may find this notation in other people’s programs.
+
+This will print everything to our screen but we can use a command called basename to redirect the output into a different file everytime.
+
+```bash
+$ for datafile in *.pdb
+> do
+> base=$(basename ${datafile} .pdb)
+> bash middle.sh ${datafile} 15 5 > ${base}_output.txt
+> done
+```
+
+The basename command will remove the path and any strings that you specify. In this case the `.pdb` was stripped from the filename stored in the variable `${datafile}`. Us the `ls` command to find the files that this command created.
+
+### Running scripts on the GACRC Cluster
+
+```
+#!/bin/bash
+#SBATCH --job-name=testserial         # Job name
+#SBATCH --partition=batch             # Partition (queue) name
+#SBATCH --ntasks=1                    # Run on a single CPU
+#SBATCH --mem=1gb                     # Job memory request
+#SBATCH --time=02:00:00               # Time limit hrs:min:sec
+#SBATCH --output=%x.%j.out            # Standard output log
+#SBATCH --error=%x.%j.err             # Standard error log
+
+#SBATCH --mail-type=END,FAIL          # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=yourMyID@uga.edu  # Where to send mail	
+
+cd $SLURM_SUBMIT_DIR
+
+module load R/4.3.1-foss-2022a
+
+R CMD BATCH add.R
+```
