@@ -123,64 +123,6 @@ x <- 1:5
 2^x
 ```
 
-### Creating and manipulating dataframe
-
-We can read a data to a variable using the command read.csv.
-
-```r
-dat <- read.csv(file = "data/inflammation-01.csv", header = FALSE)
-```
-
-The functions `read.csv`has a single mandatory argument - `file`. This is the path to the CSV file that you are trying to read. The header argument is optional but in this case we are telling it that the file we are reading does NOT have column headers. We can display the first few rows using the function `head`
-
-```r
-head(data)
-```
-
-We can check the type of data structure the vairable is by using the function `class`
-
-```r
-class(dat)
-```
-
-```r
-[1] "data.frame"
-```
-
-Futhermore we can see the dimenstion using the function `dim`
-
-```r
-dim(dat)
-```
-
-```r
-[1] 60 40
-```
-
-This tells us that our dataframe has 60 rows and 40 columns. If e want to get a single value from the data frame, we can provide an [index](https://swcarpentry.github.io/r-novice-inflammation/reference.html#index) in square brackets. The first number specifies the row and the second the column:
-
-```r
-dat[30, 20]
-```
-
-```r
-[1] 16
-```
-
-Or we can indicate a continous rows and columns
-
-```r
-dat[1:4, 1:10]
-```
-
-```r
- V1 V2 V3 V4 V5 V6 V7 V8 V9 V10
-1  0  0  1  3  1  2  4  7  8   3
-2  0  1  2  1  2  1  3  2  2   6
-3  0  1  1  3  3  2  6  2  5   9
-4  0  0  2  0  4  2  2  1  6   7
-```
-
 ### Creating a function
 
 We can also create function to make a group of commands into one single function. For example, lets make a function to convert C to F.
@@ -246,3 +188,139 @@ Alternatively, we can also nest two functions together.
 # freezing point of water in Fahrenheit
 celsius_to_kelvin(fahrenheit_to_celsius(32.0))
 ```
+
+### Creating and manipulating dataframe
+
+We can read a data to a variable using the command read.csv.
+
+```r
+dat <- read.csv(file = "data/inflammation-01.csv", header = FALSE)
+```
+
+The functions `read.csv`has a single mandatory argument - `file`. This is the path to the CSV file that you are trying to read. The header argument is optional but in this case we are telling it that the file we are reading does NOT have column headers. We can display the first few rows using the function `head`
+
+```r
+head(data)
+```
+
+We can check the type of data structure the vairable is by using the function `class`
+
+```r
+class(dat)
+```
+
+```r
+[1] "data.frame"
+```
+
+Futhermore we can see the dimenstion using the function `dim`
+
+```r
+dim(dat)
+```
+
+```r
+[1] 60 40
+```
+
+This tells us that our dataframe has 60 rows and 40 columns. If e want to get a single value from the data frame, we can provide an [index](https://swcarpentry.github.io/r-novice-inflammation/reference.html#index) in square brackets. The first number specifies the row and the second the column:
+
+```r
+dat[30, 20]
+```
+
+```r
+[1] 16
+```
+
+Or we can indicate a continous rows and columns
+
+```r
+dat[1:4, 1:10]
+```
+
+```r
+ V1 V2 V3 V4 V5 V6 V7 V8 V9 V10
+1  0  0  1  3  1  2  4  7  8   3
+2  0  1  2  1  2  1  3  2  2   6
+3  0  1  1  3  3  2  6  2  5   9
+4  0  0  2  0  4  2  2  1  6   7
+```
+
+With that in hand, let’s look at the help for `read.csv()`:
+
+```r
+?read.csv
+```
+
+There’s a lot of information there, but the most important part is the first couple of lines:
+
+```r
+read.csv(file, header = TRUE, sep = ",", quote = "\"",
+         dec = ".", fill = TRUE, comment.char = "", ...)
+```
+
+This tells us that `read.csv()` has one argument, `file`, that doesn’t have a default value, and six others that do. At a minimum, we need to provide the file name.
+
+### Analyzing Multiple Datasets
+
+We have created a function called `analyze` that creates graphs of the minimum, average, and maximum daily inflammation rates for a single data set:
+
+```r
+analyze <- function(filename) {
+  # Plots the average, min, and max inflammation over time.
+  # The argument or input is a character string representing the name and location of a CSV file.
+  dat <- read.csv(file = filename, header = FALSE)
+  avg_day_inflammation <- apply(dat, 2, mean)
+  plot(avg_day_inflammation)
+  max_day_inflammation <- apply(dat, 2, max)
+  plot(max_day_inflammation)
+  min_day_inflammation <- apply(dat, 2, min)
+  plot(min_day_inflammation)
+}
+
+analyze("data/inflammation-01.csv")
+```
+
+**In the funtion above, what are we plotting? What arguments are we using in each function and why?**
+
+We can use it to analyze other data sets one by one:
+
+```r
+analyze("data/inflammation-02.csv")
+```
+
+### Processing multiple files using loops and lists
+
+We can run the following command to get a list of all the .csv files in our directory.
+
+```r
+list.files(path = "data", pattern = "csv")
+```
+
+```r
+ [1] "car-speeds-cleaned.csv" "car-speeds.csv"         "inflammation-01.csv"
+ [4] "inflammation-02.csv"    "inflammation-03.csv"    "inflammation-04.csv"
+ [7] "inflammation-05.csv"    "inflammation-06.csv"    "inflammation-07.csv"
+[10] "inflammation-08.csv"    "inflammation-09.csv"    "inflammation-10.csv"
+[13] "inflammation-11.csv"    "inflammation-12.csv"    "sample.csv"
+[16] "small-01.csv"           "small-02.csv"           "small-03.csv"      
+```
+
+We can change the pattern to specify that we only want the inflammation data files.
+
+```r
+list.files(path = "data", pattern = "inflammation")
+```
+
+```r
+ [1] "inflammation-01.csv"            "inflammation-02.csv"
+ [3] "inflammation-03.csv"            "inflammation-04.csv"
+ [5] "inflammation-05.csv"            "inflammation-06.csv"
+ [7] "inflammation-07.csv"            "inflammation-08.csv"
+ [9] "inflammation-09.csv"            "inflammation-10.csv"
+[11] "inflammation-11.csv"            "inflammation-12.csv"
+[13] "r-novice-inflammation-data.zip"
+```
+
+However, there is still a file present that we do not want. We can use expressions and wildcards to be more specific.
