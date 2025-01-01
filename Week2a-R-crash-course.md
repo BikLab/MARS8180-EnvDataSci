@@ -2,20 +2,18 @@
 
 **By the end of this module you should be able to**
 
-1. Identify the three major parts of the Unix Operating System
+1. Explain the different data types and structures used in R Programming
   
-2. Demonstrate how to navigate the files and directory system using the Unix Shell
-  
-3. Write and execute shell scripts
+2. Create functions to analyze your own datasets
   
 
 **Due to limited class time I have summarized the most important materials from these sources. On your own time, I highly recommend you read through the following tutorials**
 
-- [Duke University Department of Computer Science](https://users.cs.duke.edu/~alvy/courses/unixtut/unixintro.html)
+- [Software Carpentries - R Novice](Programming with R: Summary and Setup](https://swcarpentry.github.io/r-novice-inflammation/)
   
-- [University of Georgia](https://wiki.gacrc.uga.edu/wiki/Training)
+- [Software Carpentries - R for Reproducible Scientific Analysis](R for Reproducible Scientific Analysis: Summary and Setup](https://swcarpentry.github.io/r-novice-gapminder/)
   
-- [Software Carpentries](https://swcarpentry.github.io/shell-novice/index.html)
+- [Advanced R]([4 Subsetting | Advanced R](https://adv-r.hadley.nz/subsetting.html))
   
 
 ---
