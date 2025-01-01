@@ -1,8 +1,4 @@
-Crash course: UNIX Essentials
-
----
-
-## Introduction to the UNIX Operating System
+## Introduction to the RStudios
 
 **By the end of this module you should be able to**
 
@@ -136,7 +132,7 @@ fahrenheit_to_celsius <- function(temp_F) {
 
 We define `fahrenheit_to_celsius` by assigning it to the output of `function`. The list of argument names are contained within parentheses. Next, the [body](https://swcarpentry.github.io/r-novice-inflammation/reference.html#function-body) of the function–the statements that are executed when it runs–is contained within curly braces (`{}`). The statements in the body are indented by two spaces, which makes the code easier to read but does not affect how the code operates.
 
-![loadingag13663](file:///Users/alejandrodesantiago/Downloads/function-terminology.svg?msec=1735354233040)
+![loadingag13663](file:///Users/alejandrodesantiago/Downloads/function-terminology.svg?msec=1735354233040?msec=1735699252927)
 
 Then you can run your function like this:
 
@@ -260,7 +256,12 @@ read.csv(file, header = TRUE, sep = ",", quote = "\"",
          dec = ".", fill = TRUE, comment.char = "", ...)
 ```
 
-This tells us that `read.csv()` has one argument, `file`, that doesn’t have a default value, and six others that do. At a minimum, we need to provide the file name.
+This tells us that `read.csv()` has one argument, `file`, that doesn’t have a default value, and six others that do. At a minimum, we need to provide the file name. The are several other fucntions you can use to import such as `read.table()` and `read.delim()`. In fact, `read.csv()` and `read.delim()` are both wrappers with different arguments to conveniently import files with different delimiters. We. can view these changes by looking at the help menu:
+
+```r
+read.delim(file, header = TRUE, sep = "\t", quote = "\"",
+           dec = ".", fill = TRUE, comment.char = "", ...)
+```
 
 ### Analyzing Multiple Datasets
 
@@ -282,7 +283,18 @@ analyze <- function(filename) {
 analyze("data/inflammation-01.csv")
 ```
 
-**In the funtion above, what are we plotting? What arguments are we using in each function and why?**
+Notice the structure of a function:
+
+- **Function Name**: In this case the function is saved as `analyze`. We can call this function using `analyze()`
+  
+- **Formals**: This is the list of arguments that you can control when you call the function. In this case the only argument we can change when we call the function is the `filename`
+  
+- **Body**: This is the code within the brackets `{}`
+  
+- **Environment**: The data structure that finds the values assocaited each variable or names. Unless you specify a different environment, this will be the R Global Enviornment which is a list of objects created when we start an R Session.
+  
+
+**In the funtion above, what are we plotting? What functions are being called within our analyze function?**
 
 We can use it to analyze other data sets one by one:
 
