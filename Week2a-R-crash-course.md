@@ -147,7 +147,6 @@ fahrenheit_to_celsius <- function(temp_F) {
 
 We define `fahrenheit_to_celsius` by assigning it to the output of `function`. The list of argument names are contained within parentheses. Next, the [body](https://swcarpentry.github.io/r-novice-inflammation/reference.html#function-body) of the function–the statements that are executed when it runs–is contained within curly braces (`{}`). The statements in the body are indented by two spaces, which makes the code easier to read but does not affect how the code operates.
 
-![loadingag13663](file:///Users/alejandrodesantiago/Downloads/function-terminology.svg?msec=1735354233040?msec=1735699252927)
 
 Notice the structure of a function:
 
