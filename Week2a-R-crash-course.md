@@ -48,6 +48,23 @@ Packages can also be viewed, loaded, and detached in the Packages tab of the low
 
 Packages can be installed and updated from the Package tab with the Install and Update buttons at the top of the tab.
 
+There are several R packages that are commonly used by microbial ecologists and statisticians including:
+
+- Phyloseq: Explore microbiome profiles using R: https://joey711.github.io/phyloseq/
+  
+- Vegan: https://cran.r-project.org/web/packages/vegan/vegan.pdf
+  
+- Metacoder: https://grunwaldlab.github.io/metacoder_documentation/
+  
+- GGPLOT for data visualization: https://ggplot2.tidyverse.org
+  
+- ggpubr for publication read graphics and stats: https://rpkgs.datanovia.com/ggpubr/
+  
+
+We will go through some of these packages throughout the class. However, the goal of today is get everyone up and running on RStudio.
+
+###
+
 ### Data types and Structures
 
 In R there are 6 datatypes:
