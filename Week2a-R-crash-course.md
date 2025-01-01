@@ -134,6 +134,17 @@ We define `fahrenheit_to_celsius` by assigning it to the output of `function`
 
 ![loadingag13663](file:///Users/alejandrodesantiago/Downloads/function-terminology.svg?msec=1735354233040?msec=1735699252927)
 
+Notice the structure of a function:
+
+- **Function Name**: In this case the function is saved as `fahrenheit_to_celsius`. We can call this function using `fahrenheit_to_celsius()`
+  
+- **Formals**: This is the list of arguments that you can control when you call the function. In this case the only argument we can change when we call the function is the `temp_F`. This variable can be any numerical value.
+  
+- **Body**: This is the code within the brackets `{}`
+  
+- **Environment**: The data structure that finds the values assocaited each variable or names. Unless you specify a different environment, this will be the R Global Enviornment which is a list of objects created when we start an R Session.
+  
+
 Then you can run your function like this:
 
 ```r
@@ -259,6 +270,10 @@ read.csv(file, header = TRUE, sep = ",", quote = "\"",
 This tells us that `read.csv()` has one argument, `file`, that doesn’t have a default value, and six others that do. At a minimum, we need to provide the file name. The are several other fucntions you can use to import such as `read.table()` and `read.delim()`. In fact, `read.csv()` and `read.delim()` are both wrappers with different arguments to conveniently import files with different delimiters. We. can view these changes by looking at the help menu:
 
 ```r
+?read.delim
+```
+
+```r
 read.delim(file, header = TRUE, sep = "\t", quote = "\"",
            dec = ".", fill = TRUE, comment.char = "", ...)
 ```
@@ -287,14 +302,14 @@ Notice the structure of a function:
 
 - **Function Name**: In this case the function is saved as `analyze`. We can call this function using `analyze()`
   
-- **Formals**: This is the list of arguments that you can control when you call the function. In this case the only argument we can change when we call the function is the `filename`
+- **Formals**: This is the list of arguments that you can control when you call the function. In this case the only argument we can change when we call the function is the `filename`. The value of filename can be a path to a file that you want to analyze
   
 - **Body**: This is the code within the brackets `{}`
   
 - **Environment**: The data structure that finds the values assocaited each variable or names. Unless you specify a different environment, this will be the R Global Enviornment which is a list of objects created when we start an R Session.
   
 
-**In the funtion above, what are we plotting? What functions are being called within our analyze function?**
+**In the funtion above, what are we plotting? What functions are being called within our analyze function?What does the `2` in the nested function `apply` do?**
 
 We can use it to analyze other data sets one by one:
 
@@ -319,7 +334,7 @@ list.files(path = "data", pattern = "csv")
 [16] "small-01.csv"           "small-02.csv"           "small-03.csv"      
 ```
 
-We can change the pattern to specify that we only want the inflammation data files.
+However, we only want the inflammation data files and none of the other text files. We can change the pattern to specify that we only want the inflammation data files.
 
 ```r
 list.files(path = "data", pattern = "inflammation")
@@ -335,4 +350,45 @@ list.files(path = "data", pattern = "inflammation")
 [13] "r-novice-inflammation-data.zip"
 ```
 
-However, there is still a file present that we do not want. We can use expressions and wildcards to be more specific.
+However, there is still a file present that we do not want `r-novice-inflammation-data.zip`. We can use expressions and wildcards to be more specific. Additionally, we can use the argument `full.names` to get the full relative path of our files.
+
+```r
+list.files(path = "data",  
+          pattern = "inflammation-[0-9]{2}.csv",
+          full.names = TRUE)
+```
+
+```r
+ [1] "data/inflammation-01.csv"            "data/inflammation-02.csv"
+ [3] "data/inflammation-03.csv"            "data/inflammation-04.csv"
+ [5] "data/inflammation-05.csv"            "data/inflammation-06.csv"
+ [7] "data/inflammation-07.csv"            "data/inflammation-08.csv"
+ [9] "data/inflammation-09.csv"            "data/inflammation-10.csv"
+[11] "data/inflammation-11.csv"            "data/inflammation-12.csv"
+```
+
+The pattern is composed of three parts:
+
+- **Static**: This is the part of the filename that is always constant: `inflammation`
+  
+- **Variable**: This is the part of the filename that is different `[0-9]{2}` We are telling the function that our files have two digits and are numbered and range from 01 - 12.
+  
+- **Extension**: The `.csv` that tells us the specfic file types.
+  
+
+We can save this into a list called `filenames` and use that list to write a loop that will run our analyze function on each item listed.
+
+```r
+filenames <- list.files(path = "data",  
+                        # Now follows a regular expression that matches:
+                        pattern = "inflammation-[0-9]{2}.csv",
+                        #          |            |        the standard file extension of comma-separated values
+                        #          |            the variable parts (two digits, each between 0 and 9)
+                        #          the static part of the filenames
+                        full.names = TRUE)
+filenames <- filenames[1:3]
+for (f in filenames) {
+  print(f)
+  analyze(f)
+}
+```
