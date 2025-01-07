@@ -1,6 +1,6 @@
 ## Week 1a: Course Introduction
 
-### 11:10am - 11:30: Zoom troubleshooting (if needed) and Icebreaker activities
+### 11:10am - 11:30am: Zoom troubleshooting (if needed) and Icebreaker activities
 
 In pairs, introduce yourselves by:
   1) Explaining your graduate research in 3 words, and
@@ -8,11 +8,11 @@ In pairs, introduce yourselves by:
 
 After the icebreaker you will *introduce your partner to the rest of the group*
 
-### 11:30 - 11:45pm: Review Syllabus 
+### 11:30am - 11:45am: Review Syllabus 
 
 Final version here: https://www.dropbox.com/scl/fi/ty2m7xg97kvn285q97dxx/MARS-8180-EnvironmentalGenomics-syllabus-FINAL.pdf?rlkey=4mofi3z9awwkfk6yhbhoek1qs&dl=0
 
-### 11:45 - 12:15pm: Student introductions, computer environment, research/course needs
+### 11:45am - 12:15pm: Student introductions, computer environment, research/course needs
 
 Go around the room and every student will verbally answer the following questions:
 
@@ -24,7 +24,7 @@ Go around the room and every student will verbally answer the following question
 
 Take notes on student intros using this Google Doc: https://docs.google.com/document/d/1BXMG0OFYDTDuFr67lW8jxuFSf9EirwLXeCW-6HChJ60/edit?tab=t.0
 
-## IF WE HAVE EXTRA TIME - Introduce GACRC teaching cluster
+## 12:15-12:25pm - IF WE HAVE TIME - Introduce GACRC teaching cluster
 
 Teaching cluster overview slides here: https://wiki.gacrc.uga.edu/images/f/fc/GACRC_Teaching_cluster_new_user_training_workshop_ver2.pdf
 
