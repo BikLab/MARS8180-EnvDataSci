@@ -6,7 +6,7 @@ In pairs, introduce yourselves by:
   1) Explaining your graduate research in 3 words, and
   2) Talking about one of the *best classes* you've ever taken - what was it about that course that made it so great? 
 
-After the icebreaker you will *introduce your partner to the rest of the group**
+After the icebreaker you will *introduce your partner to the rest of the group*
 
 ### 11:30 - 11:45pm: Review Syllabus 
 
