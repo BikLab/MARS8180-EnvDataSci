@@ -35,17 +35,23 @@ You need to download some files to follow this lesson.
 
 The UNIX Operating System was first developed in the 1960's and has been under constant development since then. There are many different versions of UNIX; however, the most popular varieties of UNIX are Linux and MacOS. Regardless of which version of UNIX you are using the operating system has the same three major components: the 1) Kernel, 2) Shell, 2) Programs.
 
-## The Kernel
+## 1) The Kernel
 
 The kernel of UNIX is the hub of the operating system: it is the system that allocates time and memory to programs and handles the filestore and communications in response to system calls. 
 
-## The Shell
+## 2) The Shell
 
 The shell acts as an interface between the user and the kernel. When a user logs in, the login program checks the username and password, and then starts another program called the shell. The shell is a command line interpreter (CLI). It interprets the commands the user types in and arranges for them to be carried out. The commands are themselves programs: when they terminate, the shell gives the user another prompt (username@machinename> on our systems, but in this tutorial you will see % as the prompt in many examples...Do Not be Alarmed by this difference).
 
+## 3) Programs
+
+These are the actual commands or softare that the use might be using (Microsoft Word, Chrome, etc.). These include commands that we will use on the CommandLine.
+
+## The command and software packages you use to
+
 ## Directory Structure
 
-All files on your computer are organized heirarchly in a directory structure. At the top of the hierarchy is the "root" usually written as `/`. Personal directories are written in the `Users` folder. Many programs are written in `Bin` . The written locations are referred to as paths. The **absolute path** includes the entire path starting from the root directory while the **relative path** starts from a specific location. The paths can be thought of GPS directions with the. The aboslute path is the directions starting from your permanent residence, such as your house. But if need directions while you are bowling with your friend, you might require the relative path.
+All files on your computer are organized heirarchly in a directory structure. At the top of the hierarchy is the "root" usually written as `/`. Personal directories are written in the `Users` folder. Many programs are written in `Bin` . The written locations are referred to as paths. The **absolute path** includes the entire path starting from the root directory while the **relative path** starts from a specific location. The paths can be thought of GPS directions. The aboslute path is the direction starting from your permanent residence, such as your house. But if need directions while you are bowling with your friend, you might require the relative path.
 
 In the example below the aboslute path to the user *jsmith* directory is `/Users/jsmith/` Notice how the "root" is not written in the path - instead the front slash is used to indicate the root directory.
 
@@ -77,7 +83,7 @@ $ pwd
 /Users/jsmith
 ```
 
-You can **l**i**s**t the files and folders in your current working directory using the following command.
+You can list the files and folders in your current working directory using the list command.
 
 ```bash
 $ ls
@@ -135,7 +141,7 @@ or use a relative path:
 $ cd ../
 ```
 
-the `../` indicate the directory above the current directory.
+The `../` indicate the directory above the current directory.
 
 ## Accessing help menus or manuals
 
@@ -147,9 +153,11 @@ $ man ls
 
 ## Syntax of a Shell Command
 
-![](file:///Users/alejandrodesantiago/Downloads/shell_command_syntax.svg?msec=1735008803612)
+![](file:///Users/alejandrodesantiago/Downloads/shell_command_syntax.svg?msec=1735008803612?msec=1736372944130)
 
 In the example above, `ls` is the **command**, with an **option** (aka flag) `-F` and an **argument** `/`. There are two ways to implement an option: using a short option with a single dash (`-`) or a long option (`--`). The argument tells the command what you want it to operate on whether it is a file or a directory. Together the options and arguments are referred to as **parameters**. A command can be called with more than one option and more than one argument, but a command doesn’t always require an argument or an option.
+
+**You can quit the manual/help menu by pressing the `q` key.**
 
 ## Creating directories
 
@@ -227,6 +235,16 @@ data/  results/
 ../project/results:
 ```
 
+## Shortcuts
+
+control+A: move to the beginning of the line
+
+control+E: move to the end of the line
+
+up and down arrows: view command history
+
+tab: complete the command name or filename/path
+
 ## Good names for files and directories
 
 Complicated names of files and directories can make your life painful when working on the command line. Here we provide a few useful tips for the names of your files and directories.
@@ -264,7 +282,7 @@ Now, try the following command:
 $ touch my_file.txt
 ```
 
-![](file:///Users/alejandrodesantiago/Downloads/nano-screenshot.png?msec=1735010894750?msec=1735012534016)
+![](file:///Users/alejandrodesantiago/Downloads/nano-screenshot.png?msec=1735010894750?msec=1735012534016?msec=1736372944105)
 
 Once we’re happy with our text, we can press Ctrl+O (press the Ctrl or Control key and, while holding it down, press the O key) to write our data to disk. We will be asked to provide a name for the file that will contain our text. Press Return to accept the suggested default of `draft.txt`.
 
@@ -324,6 +342,7 @@ $ ls thesis thesis_backup
 ```output
 thesis:
 quotations.txt
+
 thesis_backup:
 quotations.txt
 ```
@@ -395,7 +414,7 @@ $ wc *.pdb
  107  819  6081  total
 ```
 
-The `*` is a special character that represents and empty string - in this case all the files that end in .pdb. The `*` in `*.pdb` matches zero or more characters, so the shell turns`*.pdb` into a list of all `.pdb` files in the current directory. We can also use the flag `-l` to only count the number of lines in the file.
+The `*` is a special character that represents an empty string - in this case all the files that end in .pdb. The `*` in `*.pdb` matches zero or more characters, so the shell turns`*.pdb` into a list of all `.pdb` files in the current directory. We can also use the flag `-l` to only count the number of lines in the file.
 
 ```bash
 $ wc -l *.pdb
@@ -411,7 +430,7 @@ $ wc -l *.pdb
  107  total
 ```
 
-We can redirect the output to a file instead of printing it to the screen using the `>` or `>>` commands. Using the singular`>`with create overwrite any file with the same name. The double `>>` will create a file. If it already exist it will append it to the end of the file.
+We can redirect the output to a file instead of printing it to the screen using the `>` or `>>` commands. Using the singular`>`will create or overwrite any file with the same name. The double `>>` will create a file. If it already exist it will append the output to the end of the file.
 
 ```bash
 $ wc -l *.pdb > lengths.txt
@@ -570,7 +589,7 @@ $ for datafile in *.pdb
 > done
 ```
 
-The shell prompt changes from `$` to `>` and back again as we were typing in our loop. The second prompt, `>`, is different to remind us that we haven’t finished typing a complete command yet. A semicolon, `;`, can be used to separate two commands written on a single line.
+The shell prompt changes from `$` to `>` and back again as we were typing in our loop. The second prompt, `>`, is different to remind us that we haven’t finished typing a complete command yet. Additonally, a semicolon, `;`, can be used to separate two commands written on a single line.
 
 When using variables it is also possible to put the names into curly braces to clearly delimit the variable name: `$filename` is equivalent to `${filename}`, but is different from `${file}name`. You may find this notation in other people’s programs.
 
@@ -597,9 +616,8 @@ The basename command will remove the path and any strings that you specify. In t
 #SBATCH --time=02:00:00               # Time limit hrs:min:sec
 #SBATCH --output=%x.%j.out            # Standard output log
 #SBATCH --error=%x.%j.err             # Standard error log
-
 #SBATCH --mail-type=END,FAIL          # Mail events (NONE, BEGIN, END, FAIL, ALL)
-#SBATCH --mail-user=yourMyID@uga.edu  # Where to send mail	
+#SBATCH --mail-user=yourMyID@uga.edu  # Where to send mail    
 
 cd $SLURM_SUBMIT_DIR
 
