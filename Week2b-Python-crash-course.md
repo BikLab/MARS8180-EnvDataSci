@@ -9,7 +9,9 @@
 
 **Due to limited class time I have summarized the most important materials from these sources. On your own time, I highly recommend you read through the following tutorials**
 
-- [Software Carpentries - R Novice](Programming with R: Summary and Setup]([Programming with R: Summary and Setup](https://swcarpentry.github.io/r-novice-inflammation/))
+- [Software Carpentries - Python]([Programming with Python: Summary and Setup](https://swcarpentry.github.io/python-novice-inflammation/)
+  
+- [GACRC - Using CONDA](https://wiki.gacrc.uga.edu/images/b/b0/Using_conda_on_the_GACRC_Sapelo2_Cluster.pdf)
   
 
 ---
@@ -105,3 +107,173 @@ Use the following command to initialize a jupyter notebook. This will open a bro
 ```bash
 jupyter notebook
 ```
+
+### Introduction to Python data types
+
+There are several kinds of data types but the most common are:
+
+1. Integers
+  
+2. Floating point numbers
+  
+3. Strings
+  
+
+We can assign a value to a variable using the `=` sign. For example, lets track the weight of a patient by assigning the weight in kg, as a floating point, to a variable called `weight_kg`
+
+```python
+weight_kg = 60.3
+```
+
+We are also going to create a personal identifier for each patient
+
+```python
+patient_id = '001'
+```
+
+No that we have our data saved as a variable, we can manipulate them and use them in calculations. Let's convert the weight to pounds and add a prefix to our patient identifier.
+
+```python
+weight_lb = 2.2 * weight_kg
+patient_id = 'inflam_' + patient_id
+```
+
+We can use the function `print` to display things on our screen. We are going to use the `print` function to print the patient ID and their weight to our console:
+
+```python
+print(patient_id, 'weight in kilograms:', weight_kg
+```
+
+```python
+inflam_001 weight in kilograms: 60.3
+```
+
+### Loading Data into Python
+
+In order to process data in python we need to use a python package called **numpy**. Numpy stands for numerical python and allows us to manipulate matrices and arrays. We can import packages into python using the `import` function:
+
+```python
+import numpy
+```
+
+now we can import our datafile and using a numpy function and saving it into a variable called `data`
+
+```python
+data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+```
+
+```python
+print(data)
+```
+
+```
+[[ 0.  0.  1. ...,  3.  0.  0.]
+ [ 0.  1.  2. ...,  1.  0.  1.]
+ [ 0.  1.  1. ...,  2.  1.  1.]
+ ...,
+ [ 0.  1.  1. ...,  1.  1.  1.]
+ [ 0.  0.  0. ...,  0.  2.  0.]
+ [ 0.  0.  1. ...,  1.  1.  0.]]
+```
+
+You can access a single number from the array using an index in square brackets, but be careful. Programming languages like Fortran, MATLAB and R start counting at 1 because that’s what human beings have done for thousands of years. Languages in the C family (including C++, Java, Perl, and Python) count from 0 because it represents an offset from the first value in the array (the second value is offset by one index from the first value). This is closer to the way that computers represent arrays (if you are interested in the historical reasons behind counting indices from zero, you can read [Mike Hoye’s blog post](https://exple.tive.org/blarg/2013/10/22/citation-needed/)). As a result, if we have an M×N array in Python, its indices go from 0 to M-1 on the first axis and 0 to N-1 on the second. It takes a bit of getting used to, but one way to remember the rule is that the index is how many steps we have to take from the start to get the item we want.
+
+Therefore, to access the first numer in the array we need to use the index [0,0]:
+
+```python
+print('first value in data:', data[0, 0])
+```
+
+```python
+first value in data: 0.0
+```
+
+### Analyzing data
+
+The `numpy` package has several useful functions to summarize our datasets. We are going to find the max, min, and standard deviation of our datasets and save them in individual variables using a single line
+
+```python
+maxval, minval, stdval = numpy.amax(data), numpy.amin(data), numpy.std(data)
+
+print('maximum inflammation:', maxval)
+print('minimum inflammation:', minval)
+print('standard deviation:', stdval)
+```
+
+```python
+maximum inflammation: 20.0
+minimum inflammation: 0.0
+standard deviation: 4.61383319712
+```
+
+### Summarizing data from single patient
+
+We can summarize data pertaining to a single patient by slicing our dataset and saving it as a new temporary array:
+
+```python
+patient_0 = data[0, :] # 0 on the first axis (rows), everything on the second (columns)
+print('maximum inflammation for patient 0:', numpy.amax(patient_0))
+```
+
+```python
+maximum inflammation for patient 0: 18.0
+```
+
+### Visualizing data
+
+We are going to import the python library `matplotlib.pyplot` to plot our data.
+
+```python
+import matplotlib.pyplot
+```
+
+Now we will plot the average inflammation over time:
+
+```python
+ave_inflammation = numpy.mean(data, axis=0)
+ave_plot = matplotlib.pyplot.plot(ave_inflammation)
+matplotlib.pyplot.show()
+```
+
+We can also plot the min and max inflammation using the following commands:
+
+```python
+max_plot = matplotlib.pyplot.plot(numpy.amax(data, axis=0))
+matplotlib.pyplot.show()
+
+min_plot = matplotlib.pyplot.plot(numpy.amin(data, axis=0))
+matplotlib.pyplot.show()
+```
+
+When we are publishing our manuscript, we might need to make a figure with multiple subplots. In this case we can create multiple plots to have a publishable multi-panel figure
+
+ The function `matplotlib.pyplot.figure()` creates a space into which we will place all of our plots. The parameter `figsize` tells Python how big to make this space. Each subplot is placed into the figure using its `add_subplot` [method](https://swcarpentry.github.io/python-novice-inflammation/reference.html#method). The `add_subplot` method takes 3 parameters. The first denotes how many total rows of subplots there are, the second parameter refers to the total number of subplot columns, and the final parameter denotes which subplot your variable is referencing (left-to-right, top-to-bottom). Each subplot is stored in a different variable (`axes1`, `axes2`, `axes3`). Once a subplot is created, the axes can be titled using the `set_xlabel()` command (or `set_ylabel()`).
+
+```python
+import numpy
+import matplotlib.pyplot
+
+data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+
+fig = matplotlib.pyplot.figure(figsize=(10.0, 3.0))
+
+axes1 = fig.add_subplot(1, 3, 1)
+axes2 = fig.add_subplot(1, 3, 2)
+axes3 = fig.add_subplot(1, 3, 3)
+
+axes1.set_ylabel('average')
+axes1.plot(numpy.mean(data, axis=0))
+
+axes2.set_ylabel('max')
+axes2.plot(numpy.amax(data, axis=0))
+
+axes3.set_ylabel('min')
+axes3.plot(numpy.amin(data, axis=0))
+
+fig.tight_layout()
+
+matplotlib.pyplot.savefig('inflammation.png')
+matplotlib.pyplot.show()
+```
+
+### Repeating functions using Loops
