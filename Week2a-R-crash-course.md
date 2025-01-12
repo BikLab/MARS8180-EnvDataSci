@@ -34,37 +34,6 @@ There are two main ways one can work within RStudio:
 2. Start writing in a .R file and use RStudio’s short cut keys for the Run command to push the current line, selected lines or modified lines to the interactive R console.
   
 
-## R Packages
-
-It is possible to add functions to R by writing a package, or by obtaining a package written by someone else. As of this writing, there are over 10,000 packages available on CRAN (the comprehensive R archive network). R and RStudio have functionality for managing packages:
-
-- You can see what packages are installed by typing `installed.packages()`
-- You can install packages by typing `install.packages("packagename")`, where `packagename` is the package name, in quotes.
-- You can update installed packages by typing `update.packages()`
-- You can remove a package with `remove.packages("packagename")`
-- You can make a package available for use with `library(packagename)`
-
-Packages can also be viewed, loaded, and detached in the Packages tab of the lower right panel in RStudio. Clicking on this tab will display all of the installed packages with a checkbox next to them. If the box next to a package name is checked, the package is loaded and if it is empty, the package is not loaded. Click an empty box to load that package and click a checked box to detach that package.
-
-Packages can be installed and updated from the Package tab with the Install and Update buttons at the top of the tab.
-
-There are several R packages that are commonly used by microbial ecologists and statisticians including:
-
-- Phyloseq: Explore microbiome profiles using R: https://joey711.github.io/phyloseq/
-  
-- Vegan: https://cran.r-project.org/web/packages/vegan/vegan.pdf
-  
-- Metacoder: https://grunwaldlab.github.io/metacoder_documentation/
-  
-- GGPLOT for data visualization: https://ggplot2.tidyverse.org
-  
-- ggpubr for publication read graphics and stats: https://rpkgs.datanovia.com/ggpubr/
-  
-
-We will go through some of these packages throughout the class. However, the goal of today is get everyone up and running on RStudio.
-
-###
-
 ### Data types and Structures
 
 In R there are 6 datatypes:
@@ -146,7 +115,6 @@ fahrenheit_to_celsius <- function(temp_F) {
 ```
 
 We define `fahrenheit_to_celsius` by assigning it to the output of `function`. The list of argument names are contained within parentheses. Next, the [body](https://swcarpentry.github.io/r-novice-inflammation/reference.html#function-body) of the function–the statements that are executed when it runs–is contained within curly braces (`{}`). The statements in the body are indented by two spaces, which makes the code easier to read but does not affect how the code operates.
-
 
 Notice the structure of a function:
 
@@ -406,3 +374,32 @@ for (f in filenames) {
   analyze(f)
 }
 ```
+
+### R Packages
+
+It is possible to add functions to R by writing a package, or by obtaining a package written by someone else. As of this writing, there are over 10,000 packages available on CRAN (the comprehensive R archive network). R and RStudio have functionality for managing packages:
+
+- You can see what packages are installed by typing `installed.packages()`
+- You can install packages by typing `install.packages("packagename")`, where `packagename` is the package name, in quotes.
+- You can update installed packages by typing `update.packages()`
+- You can remove a package with `remove.packages("packagename")`
+- You can make a package available for use with `library(packagename)`
+
+Packages can also be viewed, loaded, and detached in the Packages tab of the lower right panel in RStudio. Clicking on this tab will display all of the installed packages with a checkbox next to them. If the box next to a package name is checked, the package is loaded and if it is empty, the package is not loaded. Click an empty box to load that package and click a checked box to detach that package.
+
+Packages can be installed and updated from the Package tab with the Install and Update buttons at the top of the tab.
+
+There are several R packages that are commonly used by microbial ecologists and statisticians including:
+
+- Phyloseq: Explore microbiome profiles using R: [phyloseq: Explore microbiome profiles using R](https://joey711.github.io/phyloseq/)
+  
+- Vegan: https://cran.r-project.org/web/packages/vegan/vegan.pdf
+  
+- Metacoder: [Metacoder documentation](https://grunwaldlab.github.io/metacoder_documentation/)
+  
+- GGPLOT for data visualization: [https://ggplot2.tidyverse.org](https://ggplot2.tidyverse.org)
+  
+- ggpubr for publication read graphics and stats: [ggplot2 Based Publication Ready Plots • ggpubr](https://rpkgs.datanovia.com/ggpubr/)
+  
+
+We will go through some of these packages throughout the class. However, the goal of today is get everyone up and running on RStudio.
