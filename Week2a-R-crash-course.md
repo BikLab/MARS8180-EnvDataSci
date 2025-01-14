@@ -24,7 +24,7 @@ Install R and Rstudio on your computer:
 - [Download and install RStudio](https://www.rstudio.com/products/rstudio/download/#download).
 
 Download the test Dataset: 
-- [Inflammation Dataset])(https://swcarpentry.github.io/r-novice-inflammation/data/r-novice-inflammation-data.zip)
+- [Inflammation Dataset](https://swcarpentry.github.io/r-novice-inflammation/data/r-novice-inflammation-data.zip)
 
 ---
 
