@@ -105,7 +105,7 @@ x <- 1:5
 
 ### Creating a function
 
-We can also create function to make a group of commands into one single function. For example, lets make a function to convert C to F.
+We can also create function to make a group of commands into one single function. For example, lets make a function to convert F to C.
 
 ```r
 fahrenheit_to_celsius <- function(temp_F) {
@@ -124,7 +124,7 @@ Notice the structure of a function:
   
 - **Body**: This is the code within the brackets `{}`
   
-- **Environment**: The data structure that finds the values assocaited each variable or names. Unless you specify a different environment, this will be the R Global Enviornment which is a list of objects created when we start an R Session.
+- **Environment**: The data structure that finds the values associated with each variable or names. Unless you specify a different environment, this will be the R Global Enviornment which is a list of objects created when we start an R Session.
   
 
 Then you can run your function like this:
@@ -138,7 +138,7 @@ fahrenheit_to_celsius(32)
 [1] 0
 ```
 
-We can create a new functio nto convert Celsius to Kelvin
+We can create a new function to convert Celsius to Kelvin
 
 ```r
 celsius_to_kelvin <- function(temp_C) {
@@ -154,7 +154,7 @@ celsius_to_kelvin(0)
 [1] 273.15
 ```
 
-Now if we wanted to convert Fehrenheit to Kelvin, we can compose multiple functions together
+Now if we wanted to convert Fahrenheit to Kelvin, we can compose multiple functions together
 
 ```r
 fahrenheit_to_kelvin <- function(temp_F) {
@@ -186,7 +186,8 @@ We can read a data to a variable using the command read.csv.
 dat <- read.csv(file = "data/inflammation-01.csv", header = FALSE)
 ```
 
-The functions `read.csv`has a single mandatory argument - `file`. This is the path to the CSV file that you are trying to read. The header argument is optional but in this case we are telling it that the file we are reading does NOT have column headers. We can display the first few rows using the function `head`
+The function `read.csv` has a single mandatory argument - `file`. This is the path to the CSV file that you are trying to read. The header argument is optional but in this case we are telling it that the file we are reading does NOT have column headers. We can display the first few rows using the function `head`
+
 
 ```r
 head(data)
@@ -249,7 +250,9 @@ read.csv(file, header = TRUE, sep = ",", quote = "\"",
          dec = ".", fill = TRUE, comment.char = "", ...)
 ```
 
-This tells us that `read.csv()` has one argument, `file`, that doesn’t have a default value, and six others that do. At a minimum, we need to provide the file name. The are several other fucntions you can use to import such as `read.table()` and `read.delim()`. In fact, `read.csv()` and `read.delim()` are both wrappers with different arguments to conveniently import files with different delimiters. We. can view these changes by looking at the help menu:
+This tells us that `read.csv()` has one argument, `file`, that doesn’t have a default value, and six others that do. At a minimum, we need to provide the file name. The are several other fucntions you can use to import such as `read.table()` and `read.delim()`. In fact, `read.csv()` and `read.delim()` are both wrappers with different arguments to conveniently import files with different delimiters. 
+
+We can view these changes by looking at the help menu:
 
 ```r
 ?read.delim
@@ -259,6 +262,7 @@ This tells us that `read.csv()` has one argument, `file`, that doesn’t have
 read.delim(file, header = TRUE, sep = "\t", quote = "\"",
            dec = ".", fill = TRUE, comment.char = "", ...)
 ```
+You can also read excel files into R by using the `read_excel` function from the package `readxl`.
 
 ### Analyzing Multiple Datasets
 
@@ -391,15 +395,16 @@ Packages can be installed and updated from the Package tab with the Install and 
 
 There are several R packages that are commonly used by microbial ecologists and statisticians including:
 
-- Phyloseq: Explore microbiome profiles using R: [phyloseq: Explore microbiome profiles using R](https://joey711.github.io/phyloseq/)
+- `Phyloseq`: Explore microbiome profiles using R: [phyloseq: Explore microbiome profiles using R](https://joey711.github.io/phyloseq/)
   
-- Vegan: https://cran.r-project.org/web/packages/vegan/vegan.pdf
+- `Vegan`: https://cran.r-project.org/web/packages/vegan/vegan.pdf
   
-- Metacoder: [Metacoder documentation](https://grunwaldlab.github.io/metacoder_documentation/)
+- `Metacoder`: [Metacoder documentation](https://grunwaldlab.github.io/metacoder_documentation/)
   
-- GGPLOT for data visualization: [https://ggplot2.tidyverse.org](https://ggplot2.tidyverse.org)
+- `ggplot` for data visualization: [https://ggplot2.tidyverse.org](https://ggplot2.tidyverse.org)
   
-- ggpubr for publication read graphics and stats: [ggplot2 Based Publication Ready Plots • ggpubr](https://rpkgs.datanovia.com/ggpubr/)
+- `ggpubr` for publication read graphics and stats: [ggplot2 Based Publication Ready Plots • ggpubr](https://rpkgs.datanovia.com/ggpubr/)
   
+- `microbiome` has a set of tools for microbiome data analysis https://microbiome.github.io/tutorials/
 
 We will go through some of these packages throughout the class. However, the goal of today is get everyone up and running on RStudio.
