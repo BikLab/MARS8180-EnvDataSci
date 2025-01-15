@@ -67,7 +67,7 @@ You can create data structures by combining data types:
 - Factors
   
 
-Vectors and List require the data structure to have the same datatypes. While lists and dataframes can head multiple data types. A **vector** is a collection of elements. A **matrix** is a vector with dimensions (i.e., columns and rows). A **dataframe** is similar to a matrix (dimensional) but with difference data types. A **list** is the most flexible - it can be describes as a bin with different data types or structures. **Factors** are specifically categorical variables.
+Vectors and matrix require the data structure to have the same datatypes. While lists and dataframes can head multiple data types. A **vector** is a collection of elements. A **matrix** is a vector with dimensions (i.e., columns and rows). A **dataframe** is similar to a matrix (dimensional) but with difference data types. A **list** is the most flexible - it can be describes as a bin with different data types or structures. **Factors** are specifically categorical variables.
 
 We will go through the different datatypes and structures in this module.
 
