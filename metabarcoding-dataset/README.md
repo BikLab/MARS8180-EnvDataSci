@@ -1,6 +1,6 @@
 Sediment Environmental Variables
 
-DDT (ng/g): Dichlorodiphenyltrichloroethane, pesticide
+	DDT (ng/g): Dichlorodiphenyltrichloroethane, pesticide
 DDE (ng/g): Dichlorodiphenyldichloroethylene, breakdown product of DDT
 DDD (ng/g): Dichlorodiphenyldichloroethane, breakdown product of DDT
 DDMU (ng/g): Dichlorodiphenylchloroethylene, breakdown product of DDT
