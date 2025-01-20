@@ -7,3 +7,7 @@ http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12574/full
 
 Keck F, Couton M, Altermatt F. (2023) Navigating the seven challenges of taxonomic reference databases in metabarcoding analyses. Molecular Ecology Resources, 23(4):742-55.
 https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13746
+
+-------------
+
+<img width="796" alt="Screenshot 2025-01-20 at 6 04 28 PM" src="https://github.com/user-attachments/assets/bef11400-a085-4386-a6a1-2e684da1e02d" />
