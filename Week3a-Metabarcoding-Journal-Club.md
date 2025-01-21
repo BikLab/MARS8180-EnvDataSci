@@ -30,16 +30,16 @@ Follow GDoc questions (and take notes here) for this excercise: https://docs.goo
 #### 11:35-11:45am - Groups report out from exercise + class discussion
 
 #### 11:45 - 12:00pm - Typical -Omics Workflow, from sampling to data viz
-
+---
 <img width="1043" alt="Screenshot 2025-01-20 at 6 31 09 PM" src="https://github.com/user-attachments/assets/4429d03c-c91a-4c34-96b8-0269abd58bba" />
-
+---
 <img width="822" alt="Screenshot 2025-01-21 at 9 45 19 AM" src="https://github.com/user-attachments/assets/2c0dfec9-e216-432b-9d86-d52388d49e2b" />
-
+---
 <img width="888" alt="Screenshot 2025-01-21 at 9 45 49 AM" src="https://github.com/user-attachments/assets/2e1583cd-5ff8-4778-b533-ef50f191b706" />
 
 #### 12:00-12:10pm - In pairs, discuss the different biases that your field collections and wet lab protocols may introduce in your class dataset.
 
-* What is the most important source of bias that your fieldwork or sample collection strategies introduce into your dataset? (the biological community or DNA/RNA pool you are aiming to analyze)
+* What is the most important source of bias that your <u>fieldwork or sample collection strategies</u> introduce into your dataset? (the biological community or DNA/RNA pool you are aiming to analyze)
 * What is the most important source of bias that your wet lab protocols and sequencing strategy introduce into your dataset? (e.g. DNA extractions, PCR, library prep, the actual sequencing platform itself)
 * What steps might you take to help you assess (and/or mitigate) the sources of bias you identified in your fieldwork/sampling? Wet lab and sequencing protocols?
 
