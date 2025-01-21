@@ -12,7 +12,7 @@ https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13746
 #### 11:10am - 11:15am: 
 
 * Fill out Minute cards: https://forms.gle/fK2FGG1uUSoaZTSo6
-* Review course grading structure (in syllabus): https://www.dropbox.com/scl/fi/ty2m7xg97kvn285q97dxx/MARS-8180-EnvironmentalGenomics-syllabus-FINAL.pdf?rlkey=4mofi3z9awwkfk6yhbhoek1qs&dl=0 
+* Review course grading structure + MIDTERM DATE: https://www.dropbox.com/scl/fi/ty2m7xg97kvn285q97dxx/MARS-8180-EnvironmentalGenomics-syllabus-FINAL.pdf?rlkey=4mofi3z9awwkfk6yhbhoek1qs&dl=0 
 
 #### 11:15am - 11:25am: What is Enviromental DNA?
 
