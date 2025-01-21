@@ -9,9 +9,9 @@ Keck F, Couton M, Altermatt F. (2023) Navigating the seven challenges of taxonom
 https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13746
 
 -------------
-## 11:10am - 11:15am: Review course grading structure (in syllabus)
+### 11:10am - 11:15am: Review course grading structure (in syllabus)
 
-## 11:15am - 11:25am: What is Enviromental DNA?
+### 11:15am - 11:25am: What is Enviromental DNA?
 
 <img width="796" alt="Screenshot 2025-01-20 at 6 04 28 PM" src="https://github.com/user-attachments/assets/bef11400-a085-4386-a6a1-2e684da1e02d" />
 
