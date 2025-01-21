@@ -30,4 +30,5 @@ Follow GDoc questions (and take notes here) for this excercise: https://docs.goo
 
 <img width="1043" alt="Screenshot 2025-01-20 at 6 31 09 PM" src="https://github.com/user-attachments/assets/4429d03c-c91a-4c34-96b8-0269abd58bba" />
 
+![Figure1_workflow_schematic](https://github.com/user-attachments/assets/e8332b93-572d-4304-9e26-050ccc8906a4)
 
