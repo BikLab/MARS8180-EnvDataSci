@@ -21,27 +21,30 @@ https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13746
 <img width="689" alt="Screenshot 2025-01-20 at 6 07 51 PM" src="https://github.com/user-attachments/assets/d85f7140-95f4-40f3-9a44-a5b834c48e54" />
 
 #### 11:25-11:35am - In pairs, discuss the different sources of environmental DNA that may be present in your class dataset (e.g. the data you'll be working on, or another example marine dataset you're familiar with such as TARA Oceans, the Earth Microbiome Project,etc.)
-* What is the main target source of eDNA/eRNA for your study? (the biological community or DNA/RNA pool you are aiming to analyze)
-* What is the most important source of non-target eDNA/eRNA in your study? How will you quantify, characterize, and assess non-target eDNA/eRNA contributions during analysis?
-* Are there any other sources of eDNA/eRNA that are important and pertinent to your study?
+* What is the main **target** source of eDNA/eRNA for your study? (the biological community or DNA/RNA pool you are aiming to analyze)
+* What is the most important source of **non-target** eDNA/eRNA in your study? How will you quantify, characterize, and assess non-target eDNA/eRNA contributions during analysis?
+* Are there **any other sources** of eDNA/eRNA that are important and pertinent to your study?
 
 Follow GDoc questions (and take notes here) for this excercise: https://docs.google.com/document/d/19GQTbSbeNgVEeN9_9UlSsBTcVd33fpdGNF0fC6R_u6w/edit?usp=sharing
 
 #### 11:35-11:45am - Groups report out from exercise + class discussion
 
 #### 11:45 - 12:00pm - Typical -Omics Workflow, from sampling to data viz
----
+
 <img width="1043" alt="Screenshot 2025-01-20 at 6 31 09 PM" src="https://github.com/user-attachments/assets/4429d03c-c91a-4c34-96b8-0269abd58bba" />
----
+
+
 <img width="822" alt="Screenshot 2025-01-21 at 9 45 19 AM" src="https://github.com/user-attachments/assets/2c0dfec9-e216-432b-9d86-d52388d49e2b" />
----
+
+
 <img width="888" alt="Screenshot 2025-01-21 at 9 45 49 AM" src="https://github.com/user-attachments/assets/2e1583cd-5ff8-4778-b533-ef50f191b706" />
+
 
 #### 12:00-12:10pm - In pairs, discuss the different biases that your field collections and wet lab protocols may introduce in your class dataset.
 
-* What is the most important source of bias that your <u>fieldwork or sample collection strategies</u> introduce into your dataset? (the biological community or DNA/RNA pool you are aiming to analyze)
-* What is the most important source of bias that your wet lab protocols and sequencing strategy introduce into your dataset? (e.g. DNA extractions, PCR, library prep, the actual sequencing platform itself)
-* What steps might you take to help you assess (and/or mitigate) the sources of bias you identified in your fieldwork/sampling? Wet lab and sequencing protocols?
+* What is the most important source of bias that your **fieldwork or sample collection strategies** introduce into your dataset? (the biological community or DNA/RNA pool you are aiming to analyze)
+* What is the most important source of bias that your **wet lab protocols and sequencing strategy** introduce into your dataset? (e.g. DNA extractions, PCR, library prep, the actual sequencing platform itself)
+* What steps might you take to help you **assess (and/or mitigate) the sources of bias** you identified in your fieldwork/sampling? Wet lab and sequencing protocols?
 
 Follow GDoc questions (and take notes here) for this excercise: https://docs.google.com/document/d/19GQTbSbeNgVEeN9_9UlSsBTcVd33fpdGNF0fC6R_u6w/edit?usp=sharing
 
