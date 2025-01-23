@@ -36,7 +36,7 @@ Graphics taken from Ben Callahan's lectures at the STAMPS 2024 course at MBL: ht
 
 <img width="1138" alt="Screenshot 2025-01-22 at 7 26 54 PM" src="https://github.com/user-attachments/assets/08934931-64bd-4cc7-ade6-d670525d4b40" />
 
-#### Decision points in typical -Omics workflows:
+#### 11:30-11:40 Decision points in typical -Omics workflows:
 
 * **Initial data QA/QC** - interpretation of phred scores, choosing quality cutoff, merging criteria (for Paired-End Illumina reads)
 * **Clustering or assembly of raw reads** - what algorithm/pipeline to use? Using custom or default software parameters? 
@@ -46,14 +46,29 @@ Graphics taken from Ben Callahan's lectures at the STAMPS 2024 course at MBL: ht
 * **How to visualize patterns in your data** - SO MANY DECISIONS, this is very hard. Use existing software packages with standard visualizations? More freeform exploration of data using Base R or your own scripts?
 * **How to create a scientific narrative through your choices + figures** - this is the culmination of all the above decisions. Are you looking for a specific story (and taking a narrow path of analysis), or do you not know in advance what you should be looking for in your data (and analyzing/visualizing patterns as broadly as possible)? Probably a combination of both, in reality - looking for one story, but keeping your eye out for other patterns.
 
-#### 11:30-11:45am Group Brainstorming
+#### 11:45-11:50am Group Brainstorming
 
 Take 5 minutes and silently brainstorm your most pressing questions on "Bioinformatics Decisions Points" - what things are you struggling with in your own analyses, or what is one area where you need to learn more about to succeed in your own research? 
 
 GDoc Link: INSERT HERE
 
-##
+#### 11:50 - 12:00pm Compiling your study metadata!
 
+Get into pairs, and take 10 minutes to brainstorm a giant list of study metadata that will be relevant to your analysis - this should include things you already have in hand, and things you may need to get from other people (or are results you are waiting on from a lab analysis). This can be anything related to the environment, sample site, time / date / location of sample collection, contextual information, etc.
 
+GDoc Link: INSERT HERE
 
+#### 12:00 - 12:10pm Group reports & discussion
+
+#### 12:10 - 12:25pm Introducing our class metadata file 
+
+Take a peek into "metabarcoding-dataset" mapping and contextual info on GitHub
+
+NOAA Omics data management guide: https://noaa-omics-dmg.readthedocs.io/en/latest/metadata-guidelines.html
+
+Keemei: cloud-based validation of tabular bioinformatics file formats in Google Sheets. Rideout JR, Chase JH, Bolyen E, Ackermann G, González A, Knight R, Caporaso JG. GigaScience. 2016;5:27. http://dx.doi.org/10.1186/s13742-016-0133-6
+
+Keemi Website: https://keemei.qiime2.org/
+
+Keemi Demo metadata file: https://docs.google.com/spreadsheets/d/1_gE_jQcoYGld9aW_dTyE86zdmg1CkNIPHvVJ6CkYvKY/edit?gid=1402180572#gid=1402180572
 
