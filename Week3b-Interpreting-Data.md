@@ -50,13 +50,13 @@ Graphics taken from Ben Callahan's lectures at the STAMPS 2024 course at MBL: ht
 
 Take 5 minutes and silently brainstorm your most pressing questions on "Bioinformatics Decisions Points" - what things are you struggling with in your own analyses, or what is one area where you need to learn more about to succeed in your own research? 
 
-GDoc Link: INSERT HERE
+GDoc Link: https://docs.google.com/document/d/1Y1qFFzBRD6J7SEyZBxLT9_X9HR1bsxNmzCEiHLzBxLU/edit?usp=sharing
 
 #### 11:50 - 12:00pm Compiling your study metadata!
 
 Get into pairs, and take 10 minutes to brainstorm a giant list of study metadata that will be relevant to your analysis - this should include things you already have in hand, and things you may need to get from other people (or are results you are waiting on from a lab analysis). This can be anything related to the environment, sample site, time / date / location of sample collection, contextual information, etc.
 
-GDoc Link: INSERT HERE
+GDoc Link: https://docs.google.com/document/d/1Y1qFFzBRD6J7SEyZBxLT9_X9HR1bsxNmzCEiHLzBxLU/edit?usp=sharing
 
 #### 12:00 - 12:10pm Group reports & discussion
 
