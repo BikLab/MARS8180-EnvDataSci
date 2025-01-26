@@ -1,0 +1,55 @@
+############### DDT metadata ###############
+
+1- Variables associated with samples/fastq files
+Sample_ID: represents the paired fastq file of a specific sample (biological sample). It contains additional information related to potential technical replicates (e.g., technical PCR replicates)
+Sample: represent TRUE the biological sample of the study
+PCR_Replicate: technical replicate at the PCR level
+Sample_Control: column in the metadata to differentiate real samples (including positive controls) from blank samples and negative control samples (i.e., no DNA)
+Sample_Type: it differentiates sample types (e.g., DNA, blanks, positive control, negative control)
+
+2- Variables representing factors
+Core_Fraction: sediment depth/fraction of biological samples (cm). Vertical community stratification
+Barrel_Zone: distance from the DDT barrels (m)
+Barrel_ID: barrel identification
+Gear: sampling device to collect sediment samples (push cores with Remote Operational Vehicle (ROV) or multicore)
+Site: specific sampling site related to DDT barrels or background sites
+Site_Area: it differentiates between samples collected in the DDT area and outside
+Bacterial_Halo: if sediment samples were/weren't collected in the bacterial mat
+
+3- Station variables, water column variables, and nematode abundance
+Depth: ocean depth (m)
+Temperature: water temperature (C)
+Salinity: ocean salinity (ppt)
+Oxygen: oxygen concentration in the water (umolL-1)
+Latitude: latitude in decimal degrees
+Longitude: longitude in decimal degrees
+Date: Sampling date
+Nema_Count: nematode abundance per m2 (square meter)
+
+4- Sediment Environmental Variables
+DDT (ng/g): Dichlorodiphenyltrichloroethane, pesticide
+DDE (ng/g): Dichlorodiphenyldichloroethylene, the breakdown product of DDT
+DDD (ng/g): Dichlorodiphenyldichloroethane, a breakdown product of DDT
+DDMU (ng/g): Dichlorodiphenylchloroethylene, the breakdown product of DDT
+DDX (ng/g): Sum of DDT and its derivatives DDE, DDD, DDMU
+PAHs (ng/g): Polycyclic Aromatic Hydrocarbons
+PCBs (ng/g): Polychlorinated Biphenyls 
+TOM (%): Total Organic Matter
+H2O (%): Water Content
+Porosity (%): Sediment Porosity
+Sand (%): Percent of Sand
+Silt-Clay (%): Percent of Fine sediment
+Chla: Sediment Chlorophyll a
+Phaeo: Sediment Phaeopigments
+CPE: Chloroplast Pigment Equivalents (Chla + Phaeo)
+TOC %: Total Organic Carbon
+TN %: Total Nitrogen
+δ13CVPDB (‰): Stable Isotope of Carbon 13
+δ15NAir (‰): Stable Isotope of Nitrogen 15
+Chla_Phae: Chlorophyll a to Phaeopigments ratio (fresh OM)
+
+
+5- Additional variables
+Cruise: oceanographic cruise when samples were collected
+Jensen_sampleID: specific laboratory sample ID (not useful for the data analysis)
+Dive: ROV dive number
