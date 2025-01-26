@@ -1,7 +1,3 @@
-# Contributing to MacDown
-
-Before we start analzying our data, we need to check the quality of our sequences 
-
 ## Setting up a projects directory
 
 As discussed earlier in the course, we should first create a directory for our projects. We should have the following subdirectories:
