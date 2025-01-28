@@ -47,10 +47,85 @@ When you write a bash script you require the following header:
 ```
 
 ## Demultiplex Data using QIIME2 
+The sequencing facility will give you your data as a 1) multiplexed or 2) demultiplexed sequencs. If your sequenccing data is multiplexed file, all of your sample sequencing will be located in a single file. Demultiplexing is a process of seperating your samples using your unique sequencing barcodes. 
+
+If you have multiplexed paired-end samples with barcodes in separate fastq file, you will typically recieve 4 files: 
+
+1. Forward sequences (`project_L001_R1.fastq.gz`)
+2. Reverse sequences (`project_L001_R2.fastq.gz`)
+3. Forward barcodes (`barcodes_L001_I1.fastq.gz`)
+4. Reverse barcodes (`barcodes_L001_I2.fastq.gz`)
+
+Additionally, you can have multiplexed paired-end samples with barcodes within your sequences. In this case, you will have two sequencing files: 
+
+1. Forward sequences (`project_L001_R1.fastq.gz`)
+2. Reverse sequences (`project_L001_R2.fastq.gz`)
+
+If you are working with single-end data you will receive the following files: 
+
+1. A single sequences (`project_L001.fastq.gz`)
+2. A single barcodes file (`barcodes.fastq.gz`) 
+
+Regardless of the format, you will need to use the barcodes in the metadata file to indicate which barcodes are associated with which samples. **Note: Nowadays, the sequencing facility typically demultiplexes your sample free of cost. However, you must share your metadata and barcodes with the facility**
+
+A typically metadata file with barcode(s) for paired-end sequence looks like this: 
+
+ 
+|SampleID|BarcodeSequence|LinkerPrimerSequence|ReverseBarcode|
+|--------|---------------|--------------------|--------------|
+|sampleA |GCTAGCCTTCGTCGC|TATGGTAATTGTGTGYCAGCMGCCGCGGTAA|GATCGGGACACCCGA|
+|sampleB |GCTAGCCTTCGTCGC|TATGGTAATTGTGTGYCAGCMGCCGCGGTAA|GATCTGTCTATACTA|
+|sampleC |GCTCCTAACGGTCCA|TATGGTAATTGTGTGYCAGCMGCCGCGGTAA|GATAATAACTAGGGT|
+|sampleD |GCTCGCGCCTTAAAC|TATGGTAATTGTGTGYCAGCMGCCGCGGTAA|GATTACGGATTATGG|
+|sampleE |GCTACTACTGAGGAT|TATGGTAATTGTGTGYCAGCMGCCGCGGTAA|GATGTGGAGTCTCAT|
+
+
+## What is a FASTQ file
+A fastq file is a text file that stores information about the sequence and its quality score of each base. 
+
+A typical fastq file looks like the following: 
+
+```
+@SRR2584863.1 HWI-ST957:244:H73TDADXX:1:1101:4712:2181/1
+TTCACATCCTGACCATTCAGTTGAGCAAAATAGTTCTTCAGTGCCTGTTTAACCGAGTCACGCAGGGGTTTTTGGGTTACCTGATCCTGAGAGTTAACGGTAGAAACGGTCAGTACGTCAGAATTTACGCGTTGTTCGAACATAGTTCTG
++
+CCCFFFFFGHHHHJIJJJJIJJJIIJJJJIIIJJGFIIIJEDDFEGGJIFHHJIJJDECCGGEGIIJFHFFFACD:BBBDDACCCCAA@@CA@C>C3>@5(8&>C:9?8+89<4(:83825C(:A#########################
+```
+
+1. The first line always starts with `@` and then information about the read - the instrument name, the coordinates of the flow cells, and the members of a pair. Typically, `/1` refers to a forward read and `/2` are the reverse reads. 
+2. The second line is the raw sequences.
+3. The third line is `+` character that seperates the sequences and sequence quality score.
+4. The last line, is the sequence quality encoded by characters that represent a specific PHRED score.
+
+From lowest (100% probability of an error) to highest quality score (00.0001% probability of an error): 
+```!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHI```
+
+Lets use the following command to get the first 16 lines of one of our ddt-samples. 
+
+```
+zcat file.fastq.gz | head -n 16
+```
+
+```
+output
+```
+
 
 ## Assessing Data Quality using QIIME2 
 
-First, we need to convert our data into a QIIME2 artifact file (ends with a .qza extension). We can do this using several methods. Either we can use a manifest file that a list of files and their respective paths. Today, we will use the Casava file import. 
+First, we need to convert our data into a QIIME2 artifact file (ends with a .qza extension). We can do this using several methods. Either we can use a manifest file that a list of files and their respective paths. 
+
+A manifest will contain a sample identifier, along with the file paths of those samples. The manifest file can contain environmental variables (e.g., $HOME or $PWD). The following example illustrates a simple fastq manifest file for paired-end read data for three samples.
+
+
+|sample-id|forward-absolute-filepath|reverse-absolute-filepath|
+|---------|-------------------------|-------------------------|
+|sampleA|$PWD/some/filepath/sampleA_R1.fastq.gz|$PWD/some/filepath/sampleA_R2.fastq.gz|
+|sampleB|$PWD/some/filepath/sampleB_R1.fastq.gz|$PWD/some/filepath/sampleB_R2.fastq.gz|
+|sampleC|$PWD/some/filepath/sampleB_R1.fastq.gz|$PWD/some/filepath/sampleC_R2.fastq.gz|
+
+
+However, today, we will use the Casava file import. 
 
 **FROM QIIME2**: In Casava 1.8 demultiplexed (paired-end) format, there are two fastq.gz files for each sample in the study, each containing the forward or reverse reads for that sample. The file name includes the sample identifier. The forward and reverse read file names for a single sample might look like `L2S357_15_L001_R1_001.fastq.gz` and `L2S357_15_L001_R2_001.fastq.gz`, respectively. The underscore-separated fields in this file name are:
 
@@ -134,5 +209,4 @@ OUTPUT=/path/to/results/directory/02-multiqc
 multiqc --outdir ${OUTPUT} ${INPUT}
 ```
 
-Copy the file to your personal computer and open the `muiltiqc_report.html` file
- 
+Copy the file to your personal computer and open the `muiltiqc_report.html` file. Are these high-quality or low-quality samples? Do we have any adapter contamination? What else will you look for?
