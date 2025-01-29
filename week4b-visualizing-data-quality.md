@@ -1,3 +1,42 @@
+## Setting up a CONDA environment
+first lets request an interactive node with 12 GB of memory as recommended by CONDA.
+
+```
+srun --pty  --cpus-per-task=1 --job-name=interact \
+--ntasks=1 --nodes=1 --partition=batch --time=02:00:00 --mem=12GB /bin/bash -l
+```
+
+Now we can load the Miniconda module and create a conda repository in your home directory.
+
+```
+module load Miniconda3
+mkdir conda-env
+```
+
+Then, lets create a repository for our qiime2 conda environment. The name should contain the version of the environment we are trying to build. 
+
+```
+mkdir conda-env/qiime2-amplicon-2024.5
+conda create -p conda-env/qiime2-amplicon-2024.5
+```
+
+We should download the conda yaml file using the curl command. We are going to use a new parameter we have not seen before `-L`. Thie allows any redirects from the URL. 
+
+```
+curl -LO "https://data.qiime2.org/distro/amplicon/qiime2-amplicon-2024.10-py310-linux-conda.yml"
+```
+
+Now we can load the environment and install qiime2 
+
+```
+source activate /home/ad14556/conda-env/qiime2-amplicon-2024.5
+conda env update --file qiime2-amplicon-2024.10-py310-linux-conda.yml
+```
+
+While your environment is being set up, let's navigate to the anaconda website [https://anaconda.org](https://anaconda.org). We can search for packages are disctributed using the conda package management system. Search for the QIIME2 software. 
+
+How many variations of QIIME2 are there? Why would we want to create a conda environment for specifically for the QIIME2 amplicon package? 
+
 ## Setting up a projects directory
 
 As discussed earlier in the course, we should first create a directory for our projects. We should have the following subdirectories:
@@ -209,4 +248,5 @@ OUTPUT=/path/to/results/directory/02-multiqc
 multiqc --outdir ${OUTPUT} ${INPUT}
 ```
 
-Copy the file to your personal computer and open the `muiltiqc_report.html` file. Are these high-quality or low-quality samples? Do we have any adapter contamination? What else will you look for?
+Copy the file to your personal computer and open the `muiltiqc_report.html` file
+ 
