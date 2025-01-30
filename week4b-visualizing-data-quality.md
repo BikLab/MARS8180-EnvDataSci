@@ -1,5 +1,5 @@
 ## Setting up a CONDA environment
-first lets request an interactive node with 12 GB of memory as recommended by CONDA.
+First, lets request an interactive node with 12 GB of memory as recommended by CONDA.
 
 ```
 srun --pty  --cpus-per-task=1 --job-name=interact \
@@ -20,7 +20,7 @@ mkdir conda-env/qiime2-amplicon-2024.10
 conda create -p conda-env/qiime2-amplicon-2024.10
 ```
 
-We should download the conda yaml file using the curl command. We are going to use a new parameter we have not seen before `-L`. Thie allows any redirects from the URL. 
+We should download the conda yaml file using the curl command. We are going to use a new parameter we have not seen before `-L`. This allows any redirects from the URL. 
 
 ```
 curl -LO "https://data.qiime2.org/distro/amplicon/qiime2-amplicon-2024.10-py310-linux-conda.yml"
@@ -33,7 +33,7 @@ source activate /home/ad14556/conda-env/qiime2-amplicon-2024.10
 conda env update --file qiime2-amplicon-2024.10-py310-linux-conda.yml
 ```
 
-While your environment is being set up, let's navigate to the anaconda website [https://anaconda.org](https://anaconda.org). We can search for packages are disctributed using the conda package management system. Search for the QIIME2 software. 
+While your environment is being set up, let's navigate to the anaconda website [https://anaconda.org](https://anaconda.org). We can search for packages that are distributed using the conda package management system. Search for the QIIME2 software. 
 
 How many variations of QIIME2 are there? Why would we want to create a conda environment for specifically for the QIIME2 amplicon package? 
 
@@ -67,8 +67,8 @@ tar -xvzf ddt-raw-fastq.tar.gz
 Throughout this module, I will show you what commands to use to analyze your dataset. However, you should never run them on a head node. This will slow down the computing node for everyone (and you might receive and email from the GACRC reminding you about good data practices). You should either request an interactive node or submit bash scripts. I recommend the latter for two reasons: 
 
 1. **COMPUTATIONAL RESOURCES**: With bash scripts you can specify the number of memories and CPUs that would help your job run faster
-2. **REPRODUCIBILITY**: The scripts in your folder can act as an electronic notebook. Similar to your lab notebook, these functions as notes reminding you what bioinformatics steps you took. 
-3. **PUBLISHING**: Is is now common practice to make your code accessible when publishing your manuscript. If you stay organized you can simply copy your scripts folder into a depository (GitHub) and link it in your manuscript's code/data availability subsection.
+2. **REPRODUCIBILITY**: The scripts in your folder can act as an electronic notebook. Similar to your lab notebook, these scripts are notes reminding you what bioinformatics steps you took. 
+3. **PUBLISHING**: It is now common practice to make your code accessible when publishing your manuscript. If you stay organized you can simply copy your scripts folder into a depository (GitHub) and link it in your manuscript's code/data availability subsection.
 
 When you write a bash script you require the following header: 
 
@@ -88,7 +88,9 @@ When you write a bash script you require the following header:
 ```
 
 ## Demultiplex Data using QIIME2 
-The sequencing facility will give you your data as a 1) multiplexed or 2) demultiplexed sequencs. If your sequenccing data is multiplexed file, all of your sample sequencing will be located in a single file. Demultiplexing is a process of seperating your samples using your unique sequencing barcodes. 
+The sequencing facility will give you your data as 1) multiplexed or 2) demultiplexed sequences. If your sequencing data is a multiplexed file, all of your sample sequencing data will be located in a single file. Demultiplexing is a process of seperating your samples using your unique sequencing barcodes. 
+
+**If the sequencing facility demultiplexes your sequencing data, they will also send you the multiplexed raw sequencing data**
 
 If you have multiplexed paired-end samples with barcodes in separate fastq file, you will typically recieve 4 files: 
 
@@ -138,10 +140,10 @@ CCCFFFFFGHHHHJIJJJJIJJJIIJJJJIIIJJGFIIIJEDDFEGGJIFHHJIJJDECCGGEGIIJFHFFFACD:BBBD
 3. The third line is `+` character that seperates the sequences and sequence quality score.
 4. The last line, is the sequence quality encoded by characters that represent a specific PHRED score.
 
-From lowest (100% probability of an error) to highest quality score (00.0001% probability of an error): 
+From lowest (99.999999% probability of an error) to highest quality score (0.0001% probability of an error): 
 ```!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHI```
 
-Lets use the following command to get the first 16 lines of one of our ddt-samples. 
+Lets use the following command to get the first 8 lines of one of our ddt-samples. 
 
 ```
 zcat ddt-raw-fastq/DDT.10.1_S1258_L001_R1_001.fastq.gz | head -n 8
@@ -161,9 +163,9 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
 ## Assessing Data Quality using QIIME2 
 
-First, we need to convert our data into a QIIME2 artifact file (ends with a .qza extension). We can do this using several methods. Either we can use a manifest file that a list of files and their respective paths. 
+First, we need to convert our data into a QIIME2 artifact file (ends with a .qza extension). We can do this using several methods. For example, we can use a manifest file that a list of files and their respective paths. 
 
-A manifest will contain a sample identifier, along with the file paths of those samples. The manifest file can contain environmental variables (e.g., $HOME or $PWD). The following example illustrates a simple fastq manifest file for paired-end read data for three samples.
+A manifest will contain a sample identifier, along with the file paths of those samples. The manifest file can contain variables (e.g., $HOME or $PWD). The following example illustrates a simple fastq manifest file for paired-end read data for three samples.
 
 
 |sample-id|forward-absolute-filepath|reverse-absolute-filepath|
@@ -212,7 +214,7 @@ scp userid@txfer.gacrc.uga.edu:"/work/mars8180/instructor_data/metabarcoding-dat
 ```
 Additionally, we have two more summary files from other sequencing projects that we can use to compare different sequencing quality patterns that you might run into.
 
-**Woodsfall Project:**
+**Woodfall Project:**
 
 ```
 scp userid@txfer.gacrc.uga.edu:"/work/mars8180/instructor_data/metabarcoding-datasets/woodsfall-project/results/02-qiime-summarize.qzv" /file/path/02-qiime-summarize-woodfall.qzv
@@ -225,13 +227,13 @@ scp userid@txfer.gacrc.uga.edu:"/work/mars8180/instructor_data/metabarcoding-dat
 
 ```
 
-Now we can use the QIIME2 View Tool [https://view.qiime2.org](https://view.qiime2.org) to visualize our data quality. But first, we need to download this to our personal computer. 
+Now we can use the QIIME2 View Tool [https://view.qiime2.org](https://view.qiime2.org) to inspect and visualize our sequencing data quality. But first, we need to download our `.qzv` data files to our personal computer. 
 
 **Closely analyze your plots and decide where you would want to trim and truncate your reads and why.**
 
 
 ## Other Tools  
-There are multitudes of tools that you can use to visualize and quality control your data. Two of them are fastQC and multiQC. Kevin let us borrow his data (illumina sequnecing of vibrio isolates) to analze in class. 
+There are multitudes of tools that you can use to visualize and quality control your data. Two of them are fastQC and multiQC. Kevin let us borrow his data (Illumina sequencing of vibrio isolates) to analyze them in class. 
 
 To run fastqc you can use the following command.
 
@@ -244,7 +246,7 @@ OUTPUT=/path/to/results/directory/01-fastqc
 mkdir -p ${OUTPUT}
 fastqc ${INPUT}/* -o ${OUTPUT} -t 8
 ```
-The flag `-t` specifies the number of threads. However, make sure their is a minimum of 250Mb allocated for each thread. 
+The flag `-t` specifies the number of threads. However, we need to make sure we allocate a minimum of 250Mb to each thread. 
 
 Then we can run multiqc which aggregates all of our fastqc files into one readable HTML file. 
 
