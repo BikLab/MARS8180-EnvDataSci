@@ -54,10 +54,12 @@ mkdir ddt-project
 cd ddt-project
 mkdir data databases metadata results scripts
 ```
-Afterwards we are going to copy our data files from the `instructor_data` directory. Login to the transfer node and use the copy command to copy our data files. **DO NOT USE THE MOVE COMMAND**
+Afterwards we are going to copy our data files from the `instructor_data` directory. Login to the transfer node and use the copy command to copy our data files and use the `tar` command to unzip and decompress our file. **DO NOT USE THE MOVE COMMAND**
 
 ```
-cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/data/* /path/to/your/data/folder
+cd data
+cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/data/ddt-raw-fastq.tar.gz .
+tar -xvzf ddt-raw-fastq.tar.gz
 ```
 
 ## Submitting bash jobs 
@@ -142,11 +144,18 @@ From lowest (100% probability of an error) to highest quality score (00.0001% pr
 Lets use the following command to get the first 16 lines of one of our ddt-samples. 
 
 ```
-zcat file.fastq.gz | head -n 16
+zcat ddt-raw-fastq/DDT.10.1_S1258_L001_R1_001.fastq.gz | head -n 8
 ```
 
 ```
-output
+@VH00301:398:AAFT7FLM5:1:1101:23893:1095 1:N:0:CTTCAAGATTTC+ATGATACGTAAT
+ATGCACGTCCCAGTATTGGTTTCAACATTGTGAAACTGTGAATTGCTCAATAAAACAGCTATTGCATATATGACTGCATATTTACATGGCTAGCCGTGGCAATTCTAGAGCTAATACATGTACGGAGCCTAACTTTGTGGGGAGGGTATTGTTTATTAGTTGTGGAACCAGTCCAGGTTATCCTTGGTTTCTTCTGATTGGTTGTAACTAAATGAATCGCATGGCATCAGTTGGTGGTGCATCATTCAAGCATCTGACCTATCAGCTTCCGACGGTAAGGTATTGGCCTACCTTGGCAATG
++
+C5CCCCCCCCCCC*CCCCCCCCCCCCCCCCCCCCCCCC*CCCCCCCCCCCCCCCCCCCC5CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC5CCCCCCCCCCCC*CCCCCCCCCCCCCCCCCCCCCCCCCCCCC5CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC5CCCCCCCCCCCCCCCCCCCCCCCCCCCC5CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC5CCCCCCCCCCCCC5CCCCCCCCCCCCCC
+@VH00301:398:AAFT7FLM5:1:1101:39761:1170 1:N:0:CTTCAAGATTTC+ATGATACGTAAT
+GTGCATGTCTCAGTATAAGTGTTTCACTGCGAAACTGCGAATGGCTCATTAAAACAGTTATAGTTTCCATGTCAGTTGTTTATTACCTGGATATCCACGGTAATTCTAGAGCTAATACATGCGTCCAAACCCGACTTTTGCGGAAGGGTTGTGCTTATTAGACACTGAACCATCCCGGGCTTGCCCGGTTTCGAGGTGATTGATGGTAATCGAACGAATCGCATGCTTCGGCGGCGATGATTCATTCAAGTTTCTGACCTATCAGCTTCCGACGGTAGGGTATTGGCCTACCGTGGCTTTG
++
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC5CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC*CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC*
 ```
 
 
@@ -196,23 +205,23 @@ qiime demux summarize \
   --i-data ${INPUT} \
   --o-visualization ${OUTPUT}
 ```
-This command might take a few minutes to run, luckily the instructors thought about this and have the output files saved in the `instructor_data` folder. Copy the output file to your own directory. 
+This command might take a few minutes to run, luckily the instructors thought about this and have the output files saved in the `instructor_data` folder. Copy the output file to your own computer. 
 
 ```
-cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/results/02-qiime-summarize.qzv /path/to/your/file.qza
+scp userid@txfer.gacrc.uga.edu:"/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/results/02-qiime-summarize.qzv" /file/path/02-qiime-summarize-ddt.qzv
 ```
 Additionally, we have two more summary files from other sequencing projects that we can use to compare different sequencing quality patterns that you might run into.
 
 **Woodsfall Project:**
 
 ```
-cp /work/mars8180/instructor_data/metabarcoding-datasets/woodsfall-project/results/02-qiime-summarize.qzv /path/to/your/file.qza
+scp userid@txfer.gacrc.uga.edu:"/work/mars8180/instructor_data/metabarcoding-datasets/woodsfall-project/results/02-qiime-summarize.qzv" /file/path/02-qiime-summarize-woodfall.qzv
 ```
 
 **Doliolid Project:**
 
 ```
-cp /work/mars8180/instructor_data/metabarcoding-datasets/doliolid-project/results/02-qiime-summarize.qzv /path/to/your/file.qza
+scp userid@txfer.gacrc.uga.edu:"/work/mars8180/instructor_data/metabarcoding-datasets/doliolid-project/results/02-qiime-summarize.qzv" /file/path/02-qiime-summarize-doliolid.qzv
 
 ```
 
@@ -235,7 +244,7 @@ OUTPUT=/path/to/results/directory/01-fastqc
 mkdir -p ${OUTPUT}
 fastqc ${INPUT}/* -o ${OUTPUT} -t 8
 ```
-The flag `-t` specifies the number of threads. However, make sure their is a minimum of 150Mb allocated for each thread. 
+The flag `-t` specifies the number of threads. However, make sure their is a minimum of 250Mb allocated for each thread. 
 
 Then we can run multiqc which aggregates all of our fastqc files into one readable HTML file. 
 
