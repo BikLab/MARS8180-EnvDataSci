@@ -16,8 +16,8 @@ mkdir conda-env
 Then, lets create a repository for our qiime2 conda environment. The name should contain the version of the environment we are trying to build. 
 
 ```
-mkdir conda-env/qiime2-amplicon-2024.5
-conda create -p conda-env/qiime2-amplicon-2024.5
+mkdir conda-env/qiime2-amplicon-2024.10
+conda create -p conda-env/qiime2-amplicon-2024.10
 ```
 
 We should download the conda yaml file using the curl command. We are going to use a new parameter we have not seen before `-L`. Thie allows any redirects from the URL. 
@@ -29,7 +29,7 @@ curl -LO "https://data.qiime2.org/distro/amplicon/qiime2-amplicon-2024.10-py310-
 Now we can load the environment and install qiime2 
 
 ```
-source activate /home/ad14556/conda-env/qiime2-amplicon-2024.5
+source activate /home/ad14556/conda-env/qiime2-amplicon-2024.10
 conda env update --file qiime2-amplicon-2024.10-py310-linux-conda.yml
 ```
 
