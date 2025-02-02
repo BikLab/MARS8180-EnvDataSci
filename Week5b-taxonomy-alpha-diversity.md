@@ -4,7 +4,7 @@
 
 #### Alpha Diversity
 
-Some key points Amy Willis's lectures at the STAMPS 2024 course at MBL: https://github.com/mblstamps/stamps2024/wiki#17
+Some key points from Amy Willis's lectures at the STAMPS 2024 course at MBL: https://github.com/mblstamps/stamps2024/wiki#17
 
 ---
 
