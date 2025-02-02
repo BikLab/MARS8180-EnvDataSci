@@ -16,7 +16,7 @@ ALEJANDRO INSERT CONTENT + CODE HERE
 
 Graphics taken from Ben Callahan's lectures at the STAMPS 2024 course at MBL: https://github.com/mblstamps/stamps2024/wiki#17
 
-Different names for eDNA "clusters", which are all essentially a molecular proxy for a biological species:
+Different names for eDNA "clusters", which are all essentially a molecular proxy for a biological species (see also slide further down)
 * OTU = Operational Taxonomic Unit
 * ASV = Amplicon Sequence Variant
 * ESV = Exact Sequence Variant
