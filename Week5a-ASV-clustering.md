@@ -10,7 +10,11 @@ Fill out Minute cards: https://forms.gle/fK2FGG1uUSoaZTSo6
 
 #### 11:10-11:25: Adaptor Trimming
 
-First let's copy the scripts for adapter trimming and denoising using DADA2
+First let's log into the teaching cluster and then copy the scripts for adapter trimming and denoising using DADA2
+
+```
+ssh ugaid@teach.gacrc.uga.edu
+```
 
 ```
 cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts/03-cutadapt.sh /home/ad14556/ddt-project/scripts/
@@ -22,19 +26,24 @@ cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts/03-
 We will use a tool called cutadapt to remove our primers and adapters. After we will summarize the sequences that were successfully trimmed. We will request 12 CPUs to multithread cutadapt. 
 
 ```
+INPUT=/home/ugaid/ddt-project/results/01-qiime-import.qza
+OUTPUT=/home/ugaid/ddt-project/results/03-cutadapt-sans-primers.qza
+SUMM=/home/ugaid/ddt-project/results/03-cutadapt-summ.qzv
+
 qiime cutadapt trim-paired \
-  --i-demultiplexed-sequences /path/to/01-qiime-import.qza \
+  --i-demultiplexed-sequences ${INPUT} \
   --p-adapter-f GTGYCAGCMGCCGCGGTAA \
   --p-adapter-r GGACTACNVGGGTWTCTAAT \
   --p-error-rate 0.1 \
-  --o-trimmed-sequences /path/to/03- \
+  --o-trimmed-sequences ${OUTPUT} \
   --p-cores 12 \
   --verbose
   
 qiime demux summarize \
-  --i-data /path/to/cutadapt/outputFile.qza \
-  --o-visualization trimmed-seqs.qzv
+  --i-data ${OUTPUT} \
+  --o-visualization ${SUMM}
 ```
+
 #### 11:25-11:45 Clustering eDNA reads into Amplicon Sequence Variants
 
 Graphics taken from Ben Callahan's lectures at the STAMPS 2024 course at MBL: https://github.com/mblstamps/stamps2024/wiki#17
@@ -103,5 +112,18 @@ What issues or biological uncertainties arise when using eDNA reads and ASVs ins
 
 #### 11:50 - 12:25 Clustering eDNA data using DADA2
 
-ALEJANDRO INSERT CONTENT + CODE HERE
+We will denoise our dataset using the DADA2 software using 12 threads.
 
+```
+INPUT=/home/ad14556/ddt-project/results/03-cutadapt-sans-primers.qza
+OUTPUT=/home/ad14556/ddt-project/results
+
+qiime dada2 denoise-paired \
+  --i-demultiplexed-seqs ${INPUT} \
+  --p-trunc-len-f 0 \
+  --p-trunc-len-r 0 \
+  --o-representative-sequences ${OUTPUT}/03-dada2-rep-seq.qza \
+  --o-table ${OUTPUT}/03-dada2-feature-table.qza \
+  --o-denoising-stats ${OUTPUT}/03-dada2-stats.qza \
+  --p-n-threads 12
+```
