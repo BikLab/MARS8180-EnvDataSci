@@ -17,9 +17,9 @@ ssh ugaid@teach.gacrc.uga.edu
 ```
 
 ```
-cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts/03-cutadapt.sh /home/ad14556/ddt-project/scripts/
+cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts/03-cutadapt.sh /home/userid/ddt-project/scripts/
 
-cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts/05-denoise-dada2.sh /home/ad14556/ddt-project/scripts/
+cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts/05-denoise-dada2.sh /home/userid/ddt-project/scripts/
 
 ```
 
@@ -112,12 +112,12 @@ What issues or biological uncertainties arise when using eDNA reads and ASVs ins
 
 #### 11:50 - 12:25 Clustering eDNA data using DADA2
 
-We will denoise our dataset using the DADA2 software using 12 threads. And visualize our results (how many reads were kept, trimmed, etc.)
+We will denoise our dataset using the DADA2 software using 12 threads. And visualize our results (how many reads were kept, trimmed, etc.). Also check that you are supplying the script with the correct paths.
 
 ```
-INPUT=/home/ad14556/ddt-project/results/03-cutadapt-sans-primers.qza
-OUTPUT=/home/ad14556/ddt-project/results/
-SUMM=/home/ad14556/ddt-project/results/05-dada2-stats-summ.qzv
+INPUT=/home/userid/ddt-project/results/03-cutadapt-sans-primers.qza
+OUTPUT=/home/userid/ddt-project/results/
+SUMM=/home/userid/ddt-project/results/05-dada2-stats-summ.qzv
 
 qiime dada2 denoise-paired \
   --i-demultiplexed-seqs ${INPUT} \
