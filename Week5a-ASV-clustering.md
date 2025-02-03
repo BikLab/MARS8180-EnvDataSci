@@ -8,10 +8,33 @@ In today's class we'll cover the next two steps in the bioinformatics pipeline
 
 Fill out Minute cards: https://forms.gle/fK2FGG1uUSoaZTSo6
 
-#### 11:10-11:25: Adaptor Trimming & Read Merging
+#### 11:10-11:25: Adaptor Trimming
 
-ALEJANDRO INSERT CONTENT + CODE HERE
+First let's copy the scripts for adapter trimming and denoising using DADA2
 
+```
+cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts/03-cutadapt.sh /home/ad14556/ddt-project/scripts/
+
+cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts/03-denoise-dada2.sh /home/ad14556/ddt-project/scripts/
+
+```
+
+We will use a tool called cutadapt to remove our primers and adapters. After we will summarize the sequences that were successfully trimmed. We will request 12 CPUs to multithread cutadapt. 
+
+```
+qiime cutadapt trim-paired \
+  --i-demultiplexed-sequences /path/to/01-qiime-import.qza \
+  --p-adapter-f GTGYCAGCMGCCGCGGTAA \
+  --p-adapter-r GGACTACNVGGGTWTCTAAT \
+  --p-error-rate 0.1 \
+  --o-trimmed-sequences /path/to/03- \
+  --p-cores 12 \
+  --verbose
+  
+qiime demux summarize \
+  --i-data /path/to/cutadapt/outputFile.qza \
+  --o-visualization trimmed-seqs.qzv
+```
 #### 11:25-11:45 Clustering eDNA reads into Amplicon Sequence Variants
 
 Graphics taken from Ben Callahan's lectures at the STAMPS 2024 course at MBL: https://github.com/mblstamps/stamps2024/wiki#17
