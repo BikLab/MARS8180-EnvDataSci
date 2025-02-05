@@ -22,6 +22,70 @@ ALEJANDRO TO INSERT CODE/EXERCISES HERE
 
 HOLLY TO INSERT THEORY / FIGURES / PAPER
 
+### Assigning taxonomy to our sequences
+Before we start, here are a list of important paths:
+
+**Location of databases**: `/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/database`
+
+**Location of our scripts**: `/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts`
+
+**Location of our results that I have run before class**: `/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/results
+`
+
+First, we need to copy over the script and database we are using to our personal home directory: 
+
+```
+cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/database/*.qza \
+  /home/userid/ddt-project/databases/
+```
+
+```
+cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts/06-assign-taxonomy-blast.sh \
+  /home/userid/ddt-project/scripts/
+```
+
+Let's cd into our scripts directory and nano into our `06-assign-taxonomy-blast.sh`
+
+```
+cd /home/userid/ddt-project/scripts/
+nano 06-assign-taxonomy-blast.sh
+```
+
+```
+#!/bin/sh
+#SBATCH --job-name="assign-taxonomy"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=12
+#SBATCH --mem-per-cpu=4G
+#SBATCH --time=3-00:00:00
+#SBATCH --mail-user=userid@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e 06-assign-taxonomy.err-%N
+#SBATCH -o 06-assign-taxonomy.out-%N
+
+module load QIIME2/2024.10-amplicon
+
+INPUT=/home/userid/ddt-project/results/05-dada2-rep-seq.qza
+REFSEQ=/home/userid/ddt-project/databases/SILVA138-nr99_fixed_strings_custom_seq_sequences-May-16-2024.qza
+REFTAX=/home/userid/ddt-project/databases/SILVA138-nr99_fixed_strings_custom_seq_taxonomy-May-16-2024.qza
+CLASS=/home/userid/ddt-project/results/06-taxonomy-blast-90-1.qza
+SEARCH=/home/userid/ddt-project/results/06-taxonomy-seach-results.qza
+
+qiime feature-classifier classify-consensus-blast \
+  --i-query ${INPUT} \
+  --i-reference-taxonomy ${REFTAX} \
+  --i-reference-reads ${REFSEQ} \
+  --p-maxaccepts 1 \
+  --p-perc-identity 0.90 \
+  --o-classification ${CLASS} \
+  --o-search-results ${SEARCH} \
+  --p-num-threads 12
+```
+
+In this scripts, we are using the BLAST+ algorithm with the SILVA database with additional nematode sequences to assign taxonomic ID's to our ASVs. We will the top hit sequence with >90% sequence similarity. We will output the results in the file `06-taxonomy-blast-90-1.qza`.
+
 
 
 First, we need to install and load required libraries to import and analyze.
