@@ -23,7 +23,7 @@ HOLLY TO INSERT THEORY / FIGURES / PAPER
 ## Assigning taxonomy to our sequences
 Before we start, here are a list of important paths:
 
-**Location of metadata**: `2/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/metadata`
+**Location of metadata**: `/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/metadata`
 
 **Location of databases**: `/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/database`
 
