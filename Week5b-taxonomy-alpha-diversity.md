@@ -16,6 +16,7 @@ Curation of taxonomy strings can be one of the most overlooked ways to improve r
 
 ALEJANDRO TO INSERT CODE/EXERCISES HERE
 
+---
 
 #### Removing Contaminants
 
