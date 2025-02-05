@@ -14,8 +14,6 @@ From our lab (De Santiago et al, in revision at Environmental DNA):
 Curation of taxonomy strings can be one of the most overlooked ways to improve reference databases:
 <img width="1104" alt="Screenshot 2025-02-02 at 2 44 09 PM" src="https://github.com/user-attachments/assets/a94d6072-c136-4e7c-a7fc-c560806d4c11" />
 
-ALEJANDRO TO INSERT CODE/EXERCISES HERE
-
 ---
 
 #### Removing Contaminants
@@ -25,7 +23,7 @@ HOLLY TO INSERT THEORY / FIGURES / PAPER
 ## Assigning taxonomy to our sequences
 Before we start, here are a list of important paths:
 
-**Location of metadata**:
+**Location of metadata**: `2/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/metadata`
 
 **Location of databases**: `/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/database`
 
@@ -103,6 +101,11 @@ mkdir results data scripts metadata
 
 Now, we can download our data using the scp command.
 
+**Download the metadata (`2025-01-03-ddt-metadata.csv`)** 
+
+```
+scp userid@txfer.gacrc.uga.edu:/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/metadata/2025-01-03-ddt-metadata.csv metadata/
+```
 
 **Download the ASV Table (`05-dada2-feature-table.qza`)** 
 
@@ -126,7 +129,7 @@ scp userid@txfer.gacrc.uga.edu:/work/mars8180/instructor_data/metabarcoding-data
 
 No we can start an R project in our directory.
 
-Let's import our packages
+Let's install and import the R packages we are going to use for our downstream analysis.
 
 
 ## Importing our data into phyloseq object
