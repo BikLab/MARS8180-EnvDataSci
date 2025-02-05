@@ -22,25 +22,21 @@ ALEJANDRO TO INSERT CODE/EXERCISES HERE
 
 HOLLY TO INSERT THEORY / FIGURES / PAPER
 
-### Load required libraries
 
 
-### Read artifact files (.qza) using qiime2R
+First, we need to install and load required libraries to import and analyze.
+
+
+
+We are going to read artifact files (.qza) using qiime2R
+
 
 ``` r
 otus <- read_qza("/path/to/metadata/")
-```
-
-    ## Warning in asMethod(object): sparse->dense coercion: allocating vector of size
-    ## 6.0 GiB
-
-``` r
 taxonomy <- read_qza("/path/to/taxonomy/")
 tree <- read_qza("/path/to/tree/")
 metadata <- read.delim2("/path/to/metdata/", sep = "\t", row.names = 1)
 ```
-
-### View QZA files
 
 QZA files are zipped folders with many different pieces of information
 including data provenance, format, version, and the data. We need to
@@ -52,10 +48,8 @@ taxonomy_df <- taxonomy$data # save taxonomy info as a dataframe
 phylo_tree <- tree$data # tree data is stored as a phyloseq object
 ```
 
-### View taxonomy file
-
 The taxonomy file is not formatted correctly. All the taxonomy is in one
-column. Each taxonomic level has to be in its own column
+column. Ideally, each taxonomic level should have its own column.
 
 ``` r
 head(taxonomy_df) 
@@ -83,7 +77,7 @@ head(taxonomy_df)
     ## 5         1
     ## 6         1
 
-### Split taxonomy into different columns and replace NA’s with Unassigned
+We are going to split the taxonomy into different columns and replace NA’s with with a placeholder: 'Unassigned'
 
 ``` r
 taxonomy_fixed_df <- taxonomy_df %>% separate_wider_delim(Taxon, delim = ";", names_sep = "", too_few = "align_start")
@@ -105,9 +99,7 @@ head(taxonomy_fixed_df)
     ## #   Taxon18 <chr>, Taxon19 <chr>, Taxon20 <chr>, Taxon21 <chr>, Taxon22 <chr>,
     ## #   Taxon23 <chr>, Consensus <dbl>
 
-### Merge files into a phyloseq object
-
-convert your otu table, taxonomy files, and tree into phylseq object
+Now we can merge our otu table, taxonomy file, and tree into phylseq object
 
 ``` r
 # fix taxonomy format 
@@ -124,7 +116,7 @@ phylo_object <- phyloseq(physeq_otu, physeq_tax, physeq_meta) # merge into phylo
 phylo_object_tree <- merge_phyloseq(phylo_object, phylo_tree) # add tree into phyloseq object
 ```
 
-### See phyloseq summary
+If we type in the phyloseq obect in our console, we can get a summary of our data. 
 
 ``` r
 phylo_object_tree
@@ -136,3 +128,53 @@ phylo_object_tree
     ## tax_table()   Taxonomy Table:    [ 190829 taxa by 24 taxonomic ranks ]
     ## phy_tree()    Phylogenetic Tree: [ 190829 tips and 190350 internal nodes ]
 
+
+
+### Filter out contaminatns using Decontam’s prevelance method. For more information see <https://github.com/benjjneb/decontam>
+
+As we've stressing throughout this course, we need to make sure we have a high-quality dataset. First, we can use our blanks to identify potential contaminations using a package called decontam. Let's set the prevalence theshold to to stricter value (0.5). For more information on paramters see the decontam manual
+
+``` r
+sample_data(phylo_object_tree)$is.neg <- sample_data(phylo_object_tree)$sample_control == "control" # create a sample-variable for contaminants
+phylo_object_contaminants <- isContaminant(phylo_object_tree, method = "prevalence", neg="is.neg", threshold=0.5, detailed = TRUE, normalize = TRUE) # detect contaminants based on control samples and their ASV prevalance
+table(phylo_object_contaminants$contaminant) # check number of ASVs that are contaminents
+```
+
+    ## 
+    ##  FALSE   TRUE 
+    ## 190197    632
+
+Now, we are going to make a presence-absence table of the contaminants in controls and samples. 
+
+``` r
+# Make phyloseq object of presence-absence in negative controls and true samples
+phylo_object_contaminants.pa <- transform_sample_counts(phylo_object_tree, function(abund) 1 * (abund > 0)) # convert phyloseq table to presence-absence
+ps.pa.neg <- prune_samples(sample_data(phylo_object_contaminants.pa)$sample_control == "control", phylo_object_contaminants.pa) # identify controls
+ps.pa.pos <- prune_samples(sample_data(phylo_object_contaminants.pa)$sample_control == "true_sample", phylo_object_contaminants.pa) # identify samples
+df.pa <- data.frame(pa.pos=taxa_sums(ps.pa.pos), pa.neg=taxa_sums(ps.pa.neg), contaminant=phylo_object_contaminants$contaminant) # convert into a dataframe
+```
+
+Let's plot our prevalance of ASVs in our blanks and compare then to our real samples. We see a clear split between prevalence in true samples vs controls.
+
+``` r
+# Make phyloseq object of presence-absence in negative controls and true samples
+ggplot(data=df.pa, aes(x=pa.neg, y=pa.pos, color=contaminant)) + geom_point() + xlab("Prevalence (Negative Controls)") + ylab("Prevalence (True Samples)")
+```
+
+![](01-filter-contamination-low-reads_files/figure-gfm/plot-contam-1.png)<!-- -->
+
+Now, we can filter out these contaminants from our dataset.
+
+
+``` r
+phylo_obj_tree_sans_contam <- prune_taxa(!phylo_object_contaminants$contaminant, phylo_object_tree) # remove ASVs identified as decontaminants from the dataset
+phylo_obj_tree_sans_contam_low <- filter_taxa(phylo_obj_tree_sans_contam, function(x) sum(x > 5) > 1, TRUE) # remove ASVs that are rare in each sample 
+phylo_obj_tree_sans_contam_low_controls <- subset_samples(phylo_obj_tree_sans_contam_low, region != "kitblank" & region!= "negativecontrol" & region != "positivecontrol") ## Remove blanks and positive controls
+phylo_obj_tree_sans_contam_low_controls
+```
+
+    ## phyloseq-class experiment-level object
+    ## otu_table()   OTU Table:         [ 42455 taxa and 4095 samples ]
+    ## sample_data() Sample Data:       [ 4095 samples by 54 sample variables ]
+    ## tax_table()   Taxonomy Table:    [ 42455 taxa by 24 taxonomic ranks ]
+    ## phy_tree()    Phylogenetic Tree: [ 42455 tips and 42385 internal nodes ]
