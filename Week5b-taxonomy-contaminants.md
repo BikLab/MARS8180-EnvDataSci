@@ -22,8 +22,10 @@ ALEJANDRO TO INSERT CODE/EXERCISES HERE
 
 HOLLY TO INSERT THEORY / FIGURES / PAPER
 
-### Assigning taxonomy to our sequences
+## Assigning taxonomy to our sequences
 Before we start, here are a list of important paths:
+
+**Location of metadata**:
 
 **Location of databases**: `/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/database`
 
@@ -83,15 +85,51 @@ qiime feature-classifier classify-consensus-blast \
   --o-search-results ${SEARCH} \
   --p-num-threads 12
 ```
-
 In this scripts, we are using the BLAST+ algorithm with the SILVA database with additional nematode sequences to assign taxonomic ID's to our ASVs. We will the top hit sequence with >90% sequence similarity. We will output the results in the file `06-taxonomy-blast-90-1.qza`.
 
 
+## Downloading our data to our personal computer
 
-First, we need to install and load required libraries to import and analyze.
+Before we download our ASV table, taxonomy table, and tree onto our personal computer, we are going to create a projects directory on our personal laptop. On your desktop, create a folder called `ddt-project` where we will store our QIIME2 files and our downstream data analysis. 
+
+The file path will vary for each user and computing system, so make sure you are using the file path on your computer. 
+
+```
+cd /Users/userid/Desktop
+mkdir ddt-project
+cd ddt-project
+mkdir results data scripts metadata
+```
+
+Now, we can download our data using the scp command.
 
 
+**Download the ASV Table (`05-dada2-feature-table.qza`)** 
 
+```
+scp userid@txfer.gacrc.uga.edu:/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/results/05-dada2-feature-table.qza results/
+```
+
+**Download the Taxonomy Table (`06-taxonomy-blast-90-1.qza`)** 
+
+```
+scp userid@txfer.gacrc.uga.edu:/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/results/06-taxonomy-blast-90-1.qza results/
+```
+
+**Download the Phylogenetic Tree (`07-fasttree-midrooted-tree.qza`)** 
+
+```
+scp userid@txfer.gacrc.uga.edu:/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/results/07-fasttree-midrooted-tree.qza results/
+```
+
+## Starting an R project
+
+No we can start an R project in our directory.
+
+Let's import our packages
+
+
+## Importing our data into phyloseq object
 We are going to read artifact files (.qza) using qiime2R
 
 
@@ -224,8 +262,6 @@ Let's plot our prevalance of ASVs in our blanks and compare then to our real sam
 # Make phyloseq object of presence-absence in negative controls and true samples
 ggplot(data=df.pa, aes(x=pa.neg, y=pa.pos, color=contaminant)) + geom_point() + xlab("Prevalence (Negative Controls)") + ylab("Prevalence (True Samples)")
 ```
-
-![](01-filter-contamination-low-reads_files/figure-gfm/plot-contam-1.png)<!-- -->
 
 Now, we can filter out these contaminants from our dataset.
 
