@@ -30,11 +30,6 @@ Four main taxonomy assignment methods:
 
 <img width="1137" alt="Screenshot 2025-02-06 at 9 06 16 AM" src="https://github.com/user-attachments/assets/52636e4f-4629-4941-9382-ed6add417797" />
 
-
-#### Removing Contaminants
-
-HOLLY TO INSERT THEORY / FIGURES / PAPER
-
 ## Assigning taxonomy to our sequences
 Before we start, here are a list of important paths:
 
