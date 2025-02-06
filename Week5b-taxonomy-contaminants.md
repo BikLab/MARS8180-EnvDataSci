@@ -29,7 +29,7 @@ Before we start, here are a list of important paths:
 
 **Location of our scripts**: `/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts`
 
-**Location of our results that I have run before class**: `/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/results
+**Location of our results**: `/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/results
 `
 
 First, we need to copy over the script and database we are using to our personal home directory: 
