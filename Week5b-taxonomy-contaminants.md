@@ -127,20 +127,34 @@ scp userid@txfer.gacrc.uga.edu:/work/mars8180/instructor_data/metabarcoding-data
 
 ## Starting an R project
 
-No we can start an R project in our directory.
+Now, we can start an R project in the directory we just created.
 
-Let's install and import the R packages we are going to use for our downstream analysis.
+Let's install and import the R packages we are going to use for our downstream analysis. **QIIME2R** allows us to easily import the artifact files into a "phyloseq" object. **Phyloseq** let's us manipulate our metabarcoding dataset. **Decontam** is a package that allows us to use our blank to remove potential contaminants. **Tidyr** and **ggplot** allow us to easily manipulate dataframes and create publication ready plots, respectively.
 
+```
+if (!requireNamespace("devtools", quietly = TRUE)){install.packages("devtools")}
+
+devtools::install_github("jbisanz/qiime2R") # install qiime2R 
+BiocManager::install("decontam") # install decontam
+BiocManager::install("phyloseq") # install phyloseq
+BiocManager::install("ggplot2") # install ggplot2
+
+library(phyloseq)
+library(decontam)
+library(qiime2R)
+library(tidyr)
+library(ggplot2)
+```
 
 ## Importing our data into phyloseq object
-We are going to read artifact files (.qza) using qiime2R
+We are going to read artifact files (.qza) using qiime2R and import our metadata file using the `read.delim2` command.
 
 
 ``` r
-otus <- read_qza("/path/to/metadata/")
-taxonomy <- read_qza("/path/to/taxonomy/")
-tree <- read_qza("/path/to/tree/")
-metadata <- read.delim2("/path/to/metdata/", sep = "\t", row.names = 1)
+otus <- read_qza("results/05-dada2-feature-table.qza")
+taxonomy <- read_qza("results/06-taxonomy-blast-90-1.qza")
+tree <- read_qza("results/07-fasttree-midrooted-tree.qza")
+metadata <- read.delim2("metadata/2025-01-03-ddt-metadata.csv", sep = ",", row.names = 1)
 ```
 
 QZA files are zipped folders with many different pieces of information
@@ -160,27 +174,29 @@ column. Ideally, each taxonomic level should have its own column.
 head(taxonomy_df) 
 ```
 
-    ##                         Feature.ID
-    ## 1 00000ee244fdf5afdf2ffd124c23a320
-    ## 2 0000a9d6f7dd5ee6cb6f2bed94784a39
-    ## 3 00018b38663c5d40aa3c8e045f4d24aa
-    ## 4 0002afd8dee5d314be3adc4cda9e46d2
-    ## 5 0003175263e1b9530f1252de4f03e5ee
-    ## 6 00033af273b8e729cf00555541979ad9
-    ##                                                                                                                                                                        Taxon
-    ## 1 D_0__Eukaryota;D_1__SAR;D_2__Alveolata;D_3__Ciliophora;D_4__Intramacronucleata;D_5__Conthreep;D_6__Plagiopylea;D_7__Odontostomatida;D_8__Epalxella;D_9__uncultured ciliate
-    ## 2                                                D_0__Eukaryota;D_1__SAR;D_2__Rhizaria;D_3__Cercozoa;D_4__Vampyrellidae;D_5__uncultured;D_6__uncultured freshwater eukaryote
-    ## 3  D_0__Eukaryota;D_1__SAR;D_2__Alveolata;D_3__Ciliophora;D_4__Intramacronucleata;D_5__Spirotrichea;D_6__Oligotrichia;D_7__Sinistrostrombidium;D_8__Strombidium paracalkinsi
-    ## 4                                                                                                                                                                 Unassigned
-    ## 5                                                            D_0__Eukaryota;D_1__SAR;D_2__Rhizaria;D_3__Cercozoa;D_4__Thecofilosea;D_5__uncultured;D_6__uncultured eukaryote
-    ## 6                    D_0__Eukaryota;D_1__SAR;D_2__Stramenopiles;D_3__Ochrophyta;D_4__Diatomea;D_5__Bacillariophytina;D_6__Bacillariophyceae;D_7__uncultured marine eukaryote
-    ##   Consensus
-    ## 1         1
-    ## 2         1
-    ## 3         1
-    ## 4         1
-    ## 5         1
-    ## 6         1
+```
+                        Feature.ID
+1 0005b35778658ed77217967b57fdd319
+2 0006630fb18ffea20c1bd1c0227f22f3
+3 000fb3ff10896c00c9c11d750da7a164
+4 0013dd4bef6114837fdf8c29ee55ea50
+5 0017c06698f0b928e93ffd3fd8498011
+6 001b7c34dad08db30819fdf95a704b3e
+                                                                                                                                                                                                                    Taxon
+1                                                                                                      D_0__Eukaryota;D_1__Amorphea;D_2__Amoebozoa;D_3__Incertae Sedis;D_4__Apusomonadidae;D_5__uncultured Apusomonadidae
+2                                                                                                                D_0__Eukaryota;D_1__SAR;D_2__Rhizaria;D_3__Cercozoa;D_4__Novel Clade 12;D_5__uncultured marine eukaryote
+3                                                                                                 D_0__Eukaryota;D_1__SAR;D_2__Rhizaria;D_3__Retaria;D_4__Polycystinea;D_5__Collodaria;D_6__AT8-54;D_7__marine metagenome
+4 D_0__Eukaryota;D_1__Amorphea;D_2__Obazoa;D_3__Opisthokonta;D_4__Nucletmycea;D_5__Fungi;D_6__Dikarya;D_7__Basidiomycota;D_8__Agaricomycotina;D_9__Agaricomycetes;D_10__Agaricales;D_11__Chamaeota;D_12__Chamaeota sinica
+5                                                                                           D_0__Eukaryota;D_1__SAR;D_2__Alveolata;D_3__Protalveolata;D_4__Syndiniales;D_5__Syndiniales Group I;D_6__uncultured eukaryote
+6                                                                                                                                                                                                              Unassigned
+  Consensus
+1         1
+2         1
+3         1
+4         1
+5         1
+6         1
+```
 
 We are going to split the taxonomy into different columns and replace NA’s with with a placeholder: 'Unassigned'
 
@@ -190,29 +206,32 @@ taxonomy_fixed_df[is.na(taxonomy_fixed_df)] <- "Unassigned" # rename NAs into un
 head(taxonomy_fixed_df)
 ```
 
-    ## # A tibble: 6 × 25
-    ##   Feature.ID      Taxon1 Taxon2 Taxon3 Taxon4 Taxon5 Taxon6 Taxon7 Taxon8 Taxon9
-    ##   <chr>           <chr>  <chr>  <chr>  <chr>  <chr>  <chr>  <chr>  <chr>  <chr> 
-    ## 1 00000ee244fdf5… D_0__… D_1__… D_2__… D_3__… D_4__… D_5__… D_6__… D_7__… D_8__…
-    ## 2 0000a9d6f7dd5e… D_0__… D_1__… D_2__… D_3__… D_4__… D_5__… D_6__… Unass… Unass…
-    ## 3 00018b38663c5d… D_0__… D_1__… D_2__… D_3__… D_4__… D_5__… D_6__… D_7__… D_8__…
-    ## 4 0002afd8dee5d3… Unass… Unass… Unass… Unass… Unass… Unass… Unass… Unass… Unass…
-    ## 5 0003175263e1b9… D_0__… D_1__… D_2__… D_3__… D_4__… D_5__… D_6__… Unass… Unass…
-    ## 6 00033af273b8e7… D_0__… D_1__… D_2__… D_3__… D_4__… D_5__… D_6__… D_7__… Unass…
-    ## # ℹ 15 more variables: Taxon10 <chr>, Taxon11 <chr>, Taxon12 <chr>,
-    ## #   Taxon13 <chr>, Taxon14 <chr>, Taxon15 <chr>, Taxon16 <chr>, Taxon17 <chr>,
-    ## #   Taxon18 <chr>, Taxon19 <chr>, Taxon20 <chr>, Taxon21 <chr>, Taxon22 <chr>,
-    ## #   Taxon23 <chr>, Consensus <dbl>
+```
+# A tibble: 6 × 25
+  Feature.ID       Taxon1 Taxon2 Taxon3 Taxon4 Taxon5 Taxon6 Taxon7 Taxon8 Taxon9 Taxon10 Taxon11
+  <chr>            <chr>  <chr>  <chr>  <chr>  <chr>  <chr>  <chr>  <chr>  <chr>  <chr>   <chr>  
+1 0005b35778658ed… D_0__… D_1__… D_2__… D_3__… D_4__… D_5__… Unass… Unass… Unass… Unassi… Unassi…
+2 0006630fb18ffea… D_0__… D_1__… D_2__… D_3__… D_4__… D_5__… Unass… Unass… Unass… Unassi… Unassi…
+3 000fb3ff10896c0… D_0__… D_1__… D_2__… D_3__… D_4__… D_5__… D_6__… D_7__… Unass… Unassi… Unassi…
+4 0013dd4bef61148… D_0__… D_1__… D_2__… D_3__… D_4__… D_5__… D_6__… D_7__… D_8__… D_9__A… D_10__…
+5 0017c06698f0b92… D_0__… D_1__… D_2__… D_3__… D_4__… D_5__… D_6__… Unass… Unass… Unassi… Unassi…
+6 001b7c34dad08db… Unass… Unass… Unass… Unass… Unass… Unass… Unass… Unass… Unass… Unassi… Unassi…
+# ℹ 13 more variables: Taxon12 <chr>, Taxon13 <chr>, Taxon14 <chr>, Taxon15 <chr>,
+#   Taxon16 <chr>, Taxon17 <chr>, Taxon18 <chr>, Taxon19 <chr>, Taxon20 <chr>, Taxon21 <chr>,
+#   Taxon22 <chr>, Taxon23 <chr>, Consensus <dbl>
+```
 
-Now we can merge our otu table, taxonomy file, and tree into phylseq object
+Let's force our taxonomy table back into a matrix datatype. 
 
 ``` r
-# fix taxonomy format 
 taxonomy_fixed_df <- as.data.frame(taxonomy_fixed_df) # force into a dataframe
 row.names(taxonomy_fixed_df) <- taxonomy_fixed_df$Feature.ID # make first column into row names
 taxonomy_fixed_df$Feature.ID <- NULL # remove the first column
 taxonomy_matrix <- as.matrix(taxonomy_fixed_df) # convert to a matrix 
+```
 
+Now we can merge our otu table, taxonomy file, and tree into a phyloseq object
+```
 physeq_otu <- otu_table(otu_df, taxa_are_rows = T) # convert into phyloseq object
 physeq_tax <- tax_table(taxonomy_matrix) # convert into phyloseq object
 physeq_meta <- sample_data(metadata) # convert into phyloseq object
@@ -227,35 +246,35 @@ If we type in the phyloseq obect in our console, we can get a summary of our dat
 phylo_object_tree
 ```
 
-    ## phyloseq-class experiment-level object
-    ## otu_table()   OTU Table:         [ 190829 taxa and 4212 samples ]
-    ## sample_data() Sample Data:       [ 4212 samples by 53 sample variables ]
-    ## tax_table()   Taxonomy Table:    [ 190829 taxa by 24 taxonomic ranks ]
-    ## phy_tree()    Phylogenetic Tree: [ 190829 tips and 190350 internal nodes ]
-
-
-
-### Filter out contaminatns using Decontam’s prevelance method. For more information see <https://github.com/benjjneb/decontam>
-
-As we've stressing throughout this course, we need to make sure we have a high-quality dataset. First, we can use our blanks to identify potential contaminations using a package called decontam. Let's set the prevalence theshold to to stricter value (0.5). For more information on paramters see the decontam manual
-
-``` r
-sample_data(phylo_object_tree)$is.neg <- sample_data(phylo_object_tree)$sample_control == "control" # create a sample-variable for contaminants
-phylo_object_contaminants <- isContaminant(phylo_object_tree, method = "prevalence", neg="is.neg", threshold=0.5, detailed = TRUE, normalize = TRUE) # detect contaminants based on control samples and their ASV prevalance
-table(phylo_object_contaminants$contaminant) # check number of ASVs that are contaminents
+```
+phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 24188 taxa and 208 samples ]
+sample_data() Sample Data:       [ 208 samples by 43 sample variables ]
+tax_table()   Taxonomy Table:    [ 24188 taxa by 24 taxonomic ranks ]
+phy_tree()    Phylogenetic Tree: [ 24188 tips and 24167 internal nodes ]
 ```
 
-    ## 
-    ##  FALSE   TRUE 
-    ## 190197    632
 
+## Filter out contaminatns using Decontam’s prevelance method. For more information see <https://github.com/benjjneb/decontam>
+
+As we've stressing throughout this course, we need to make sure we have a high-quality dataset. First, we can use our blanks to identify potential contaminations using a package called decontam. Let's set the prevalence theshold to to stricter value (0.5). For more information on parameters see the decontam manual
+
+``` r
+sample_data(phylo_object_tree)$is.neg <- sample_data(phylo_object_tree)$Sample_Control == "Control" # create a sample-variable for contaminants
+phylo_object_contaminants <- isContaminant(phylo_object_tree, method = "prevalence", neg="is.neg", threshold=0.6, detailed = TRUE, normalize = TRUE) # detect contaminants based on control samples and their ASV prevalance
+table(phylo_object_contaminants$contaminant) # check number of ASVs that are contaminents
+```
+``` 
+##  FALSE   TRUE 
+## 190197    632
+```
 Now, we are going to make a presence-absence table of the contaminants in controls and samples. 
 
 ``` r
 # Make phyloseq object of presence-absence in negative controls and true samples
 phylo_object_contaminants.pa <- transform_sample_counts(phylo_object_tree, function(abund) 1 * (abund > 0)) # convert phyloseq table to presence-absence
-ps.pa.neg <- prune_samples(sample_data(phylo_object_contaminants.pa)$sample_control == "control", phylo_object_contaminants.pa) # identify controls
-ps.pa.pos <- prune_samples(sample_data(phylo_object_contaminants.pa)$sample_control == "true_sample", phylo_object_contaminants.pa) # identify samples
+ps.pa.neg <- subset_samples(phylo_object_contaminants.pa, Sample_Control=="Control")
+ps.pa.pos <- subset_samples(phylo_object_contaminants.pa, Sample_Control=="Sample")
 df.pa <- data.frame(pa.pos=taxa_sums(ps.pa.pos), pa.neg=taxa_sums(ps.pa.neg), contaminant=phylo_object_contaminants$contaminant) # convert into a dataframe
 ```
 
@@ -271,13 +290,14 @@ Now, we can filter out these contaminants from our dataset.
 
 ``` r
 phylo_obj_tree_sans_contam <- prune_taxa(!phylo_object_contaminants$contaminant, phylo_object_tree) # remove ASVs identified as decontaminants from the dataset
-phylo_obj_tree_sans_contam_low <- filter_taxa(phylo_obj_tree_sans_contam, function(x) sum(x > 5) > 1, TRUE) # remove ASVs that are rare in each sample 
-phylo_obj_tree_sans_contam_low_controls <- subset_samples(phylo_obj_tree_sans_contam_low, region != "kitblank" & region!= "negativecontrol" & region != "positivecontrol") ## Remove blanks and positive controls
-phylo_obj_tree_sans_contam_low_controls
+phylo_obj_tree_sans_contam_sans_controls <- subset_samples(phylo_obj_tree_sans_contam, Sample_Control != "Control") ## Remove blanks and positive controls
+phylo_obj_tree_sans_contam_sans_controls
 ```
 
-    ## phyloseq-class experiment-level object
-    ## otu_table()   OTU Table:         [ 42455 taxa and 4095 samples ]
-    ## sample_data() Sample Data:       [ 4095 samples by 54 sample variables ]
-    ## tax_table()   Taxonomy Table:    [ 42455 taxa by 24 taxonomic ranks ]
-    ## phy_tree()    Phylogenetic Tree: [ 42455 tips and 42385 internal nodes ]
+```
+phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 16568 taxa and 202 samples ]
+sample_data() Sample Data:       [ 202 samples by 43 sample variables ]
+tax_table()   Taxonomy Table:    [ 16568 taxa by 24 taxonomic ranks ]
+phy_tree()    Phylogenetic Tree: [ 16568 tips and 16563 internal nodes ]
+```
