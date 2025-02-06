@@ -269,8 +269,6 @@ phy_tree()    Phylogenetic Tree: [ 24188 tips and 24167 internal nodes ]
 ---
 How contaminant removal works - below figure is from Davis et al. (2018) Simple statistical identification and removal of contaminant sequences in marker-gene and metagenomics data, Microbiome - https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0605-2
 
----
-
 <img width="762" alt="Screenshot 2025-02-06 at 9 09 16 AM" src="https://github.com/user-attachments/assets/71a216ca-2e93-4a71-aa68-a555bcf2e50a" />
 
 ---
