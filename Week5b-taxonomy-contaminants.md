@@ -161,7 +161,7 @@ We are going to read artifact files (.qza) using qiime2R and import our metadata
 
 
 ``` r
-otus <- read_qza("results/05-dada2-feature-table.qza")
+asvs <- read_qza("results/05-dada2-feature-table.qza")
 taxonomy <- read_qza("results/06-taxonomy-blast-90-1.qza")
 tree <- read_qza("results/07-fasttree-midrooted-tree.qza")
 metadata <- read.delim2("metadata/2025-01-03-ddt-metadata.csv", sep = ",", row.names = 1)
@@ -172,7 +172,7 @@ including data provenance, format, version, and the data. We need to
 extract out data from this file type
 
 ``` r
-otu_df <- otus$data # we can view and save the actual data by specifying '$'
+asv_df <- asvs$data # we can view and save the actual data by specifying '$'
 taxonomy_df <- taxonomy$data # save taxonomy info as a dataframe
 phylo_tree <- tree$data # tree data is stored as a phyloseq object
 ```
@@ -242,11 +242,11 @@ taxonomy_matrix <- as.matrix(taxonomy_fixed_df) # convert to a matrix
 
 Now we can merge our otu table, taxonomy file, and tree into a phyloseq object
 ```
-physeq_otu <- otu_table(otu_df, taxa_are_rows = T) # convert into phyloseq object
+physeq_asv <- otu_table(asv_df, taxa_are_rows = T) # convert into phyloseq object
 physeq_tax <- tax_table(taxonomy_matrix) # convert into phyloseq object
 physeq_meta <- sample_data(metadata) # convert into phyloseq object
 
-phylo_object <- phyloseq(physeq_otu, physeq_tax, physeq_meta) # merge into phyloseq object
+phylo_object <- phyloseq(physeq_asv, physeq_tax, physeq_meta) # merge into phyloseq object
 phylo_object_tree <- merge_phyloseq(phylo_object, phylo_tree) # add tree into phyloseq object
 ```
 
