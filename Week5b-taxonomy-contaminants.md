@@ -16,6 +16,21 @@ Curation of taxonomy strings can be one of the most overlooked ways to improve r
 
 ---
 
+Hleap et al. (2021) Assessment of current taxonomic assignment strategies for metabarcoding eukaryotes, Molecular Ecology Resources - https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.13407
+
+Cortina et al (2023) Improving species-level taxonomic assignments from 16S rRNA sequencing technologies - https://currentprotocols.onlinelibrary.wiley.com/doi/10.1002/cpz1.930 
+
+---
+
+Four main taxonomy assignment methods:
+* Sequence similarity (SS)
+* Sequence composition (SC)
+* Phylogenetic methods (Ph)
+* Probabalistic methods (Pr)
+
+<img width="1137" alt="Screenshot 2025-02-06 at 9 06 16 AM" src="https://github.com/user-attachments/assets/52636e4f-4629-4941-9382-ed6add417797" />
+
+
 #### Removing Contaminants
 
 HOLLY TO INSERT THEORY / FIGURES / PAPER
@@ -253,7 +268,12 @@ sample_data() Sample Data:       [ 208 samples by 43 sample variables ]
 tax_table()   Taxonomy Table:    [ 24188 taxa by 24 taxonomic ranks ]
 phy_tree()    Phylogenetic Tree: [ 24188 tips and 24167 internal nodes ]
 ```
+---
+#### Removing Contaminant Sequences
 
+<img width="762" alt="Screenshot 2025-02-06 at 9 09 16 AM" src="https://github.com/user-attachments/assets/71a216ca-2e93-4a71-aa68-a555bcf2e50a" />
+
+Image from Davis et al. (2018) Simple statistical identification and removal of contaminant sequences in marker-gene and metagenomics data, Microbiome - https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0605-2
 
 ## Filter out contaminatns using Decontam’s prevelance method. For more information see <https://github.com/benjjneb/decontam>
 
