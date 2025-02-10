@@ -62,3 +62,21 @@ alpha_div_observed_plot <- ggplot(alpha_div_observed_metadata, aes(x=Site_Area, 
   theme_minimal() + # and lets make sure its "pretty"
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8)) # change x-axis labels
 ```
+
+## Calculating Several Alpha Diversity Metrics
+Lets do the same by calculating alpha diversity using commonly used metrics, such as number of reads, shannon diversity, simposon, and eveness.
+
+```
+alpha_div_observed_metadata <- data.frame(
+  phyloseq::sample_data(phylo_obj_tree_sans_contam_sans_controls), # get metadata
+  "Reads" = phyloseq::sample_sums(phylo_obj_tree_sans_contam_sans_controls), # number of reads
+  "Observed" = phyloseq::estimate_richness(phylo_obj_tree_sans_contam_sans_controls, measures = "Observed"), # count observed ASVs
+  "Shannon" = phyloseq::estimate_richness(phylo_obj_tree_sans_contam_sans_controls, measures = "Shannon"), # Calculate Shannon Diversity
+  "InvSimpson" = phyloseq::estimate_richness(phylo_obj_tree_sans_contam_sans_controls, measures = "InvSimpson")) # calculate InvSimpson
+```
+
+Now lets calculate Eveness by dividing Shannon by the Log of the Observed ASVs
+
+```
+alpha_div_observed_metadata$Evenness <- alpha_div_observed_metadata$Shannon/log(alpha_div_observed_metadata$Observed)
+head(alpha_div_observed_metadata)
