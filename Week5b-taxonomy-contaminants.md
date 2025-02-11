@@ -139,6 +139,12 @@ scp userid@txfer.gacrc.uga.edu:/work/mars8180/instructor_data/metabarcoding-data
 
 Now, we can start an R project in the directory we just created.
 
+Generally, for metabarcoding datasets we will need to work with **four** different files:
+1. **ASV table** - Our table containing Amplicon Sequence Variants, generated in DADA2 (where each row is an ASV, and columns are our sample names showing the presence/absence (and read counts if present) of each ASV across each sample).
+2. **Taxonomy assignments** - a list of database matches (e.g. from BLAST), or classifier results (e.g. from the QIIME2 classifier) for each row (ASV) in your ASV table
+3. **Metadata mapping file** - your tab-delimited (or excel) table with your sample names and all the corresponding sample site data, environmental metadata, etc. (e.g. depth, geographic coordinates, sampling date, experimental condition, etc.)
+4. **Phylogenetic tree** - for 16S or 18S rRNA metabarcoding datasets, you will build a phylogenetic tree showing evolutionary relationships using a multiple sequence alignment of your ASV nucleotide sequences. Many downstream diversity stats will use "phylogenetic distance" (total branch length between two ASVs on a tree) as a metric within the mathematical equation. A tree is not needed for all analyses, and cannot be generated for some metabarcoding loci (e.g. COI, mitochondrial loci evolve too fast and trees are generally meaningless except perhaps for population-level analysis within one species)
+
 Let's install and import the R packages we are going to use for our downstream analysis. **QIIME2R** allows us to easily import the artifact files into a "phyloseq" object. **Phyloseq** let's us manipulate our metabarcoding dataset. **Decontam** is a package that allows us to use our blank to remove potential contaminants. **Tidyr** and **ggplot** allow us to easily manipulate dataframes and create publication ready plots, respectively.
 
 ```
@@ -266,8 +272,14 @@ phy_tree()    Phylogenetic Tree: [ 24188 tips and 24167 internal nodes ]
 ---
 #### Removing Contaminant Sequences
 
+Early paper raising awareness of the "kit microbiome" and potential contamination in -Omics sequencing:
+
+Salter et al. (2014) Reagent and laboratory contamination can critically impact sequence-based microbiome analyses, *BMC Biology*, 12:87 - https://bmcbiol.biomedcentral.com/articles/10.1186/s12915-014-0087-z
+
+<img width="892" alt="Screenshot 2025-02-11 at 9 51 19 AM" src="https://github.com/user-attachments/assets/74b2184c-fee3-4f4c-9413-ffb2265af029" />
+
 ---
-How contaminant removal works - below figure is from Davis et al. (2018) Simple statistical identification and removal of contaminant sequences in marker-gene and metagenomics data, Microbiome - https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0605-2
+How contaminant removal works - below figure is from Davis et al. (2018) Simple statistical identification and removal of contaminant sequences in marker-gene and metagenomics data, *Microbiome* - https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0605-2 (this is the software paper you should use to cite decontam)
 
 <img width="762" alt="Screenshot 2025-02-06 at 9 09 16 AM" src="https://github.com/user-attachments/assets/71a216ca-2e93-4a71-aa68-a555bcf2e50a" />
 
