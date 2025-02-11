@@ -19,7 +19,9 @@ Mbareche et al. 2020 - https://www.mdpi.com/2075-1729/10/9/185
 
 <img width="963" alt="Screenshot 2025-02-11 at 10 09 57 AM" src="https://github.com/user-attachments/assets/b2a0994f-cab7-44a6-8797-f9ec98d62991" />
 
-Gloor et al. (2017) Microbiome datasets are compositional: And this is not optional, *Frontiers in Microbiology*, 8:2224 - https://doi.org/10.3389/fmicb.2017.02224
+---
+
+Gloor et al. (2017) Microbiome datasets are compositional: And this is not optional, *Frontiers in Microbiology*, 8:2224 - https://doi.org/10.3389/fmicb.2017.02224 - **you must read this paper (especially before the midterm)**
 
 <img width="542" alt="Screenshot 2025-02-11 at 10 18 06 AM" src="https://github.com/user-attachments/assets/836743f1-627f-4b27-86ea-9ecb5671a849" />
 
