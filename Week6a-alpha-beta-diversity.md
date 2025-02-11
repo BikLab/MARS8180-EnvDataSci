@@ -1,6 +1,6 @@
 ### Week 6a Alpha and Beta Diversity Analyses
 
-#### Alpha Diversity
+#### Statistical analyses of metabarcoding data
 
 Some key points from Amy Willis's lectures at the STAMPS 2024 course at MBL: https://github.com/mblstamps/stamps2024/wiki#17
 
@@ -12,6 +12,12 @@ Some key points from Amy Willis's lectures at the STAMPS 2024 course at MBL: htt
 ---
 
 <img width="822" alt="Screenshot 2025-02-02 at 2 07 58 PM" src="https://github.com/user-attachments/assets/e7ee22c3-5c0c-405f-9de6-25b3421c7231" />
+
+---
+
+<img width="985" alt="Screenshot 2025-02-11 at 9 55 14 AM" src="https://github.com/user-attachments/assets/e8d079b3-8b69-47b1-b963-e241c14a082d" />
+
+---
 
 ## Calculating Alpha Diversity
 Now that we have created our phyloseq object, we are going to calculate Observed ASVS - a simple measure of alpha diversity. We can do this by using the `phyloseq::estimate_richness` function. We usually do not need to to specify the package, but this might be useful if you are using packages that have functions with the same name. 
