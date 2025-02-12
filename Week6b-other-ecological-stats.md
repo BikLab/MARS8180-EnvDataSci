@@ -42,14 +42,7 @@ aldex2_sample_site <- ALDEx2::aldex(data.frame(phyloseq::otu_table(nematoda_phy_
                                      test="kw")
 ```
 
-We will have to convert our `otu_table` into a dataframe and make the rownames into a column named **OTU**.
-
-```
-gen_otu_table_location <- data.frame(phyloseq::otu_table(nematoda_phy_taxon22)) # create dataframe
-gen_otu_table_location <- rownames_to_column(gen_otu_table_location, var = "OTU") # convert rownames to column
-```
-
-Let's do the same thing for our Aldex output
+Let's convert our Aldex output into a dataframe and make the rownames into a column 
 
 ```
 aldex2_sample_site$OTU <- row.names(aldex2_sample_site)
@@ -74,3 +67,5 @@ aldex2_sample_site_sig <- aldex2_sample_site %>%
   
 sig_aldex2_gen_result_location <- left_join(aldex2_sample_site_sig, aldex_taxa_info) # append taxonomy info
 ```
+
+How many nematode genera are differentially abundant in our dataset?
