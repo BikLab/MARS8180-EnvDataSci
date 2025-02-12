@@ -99,10 +99,17 @@ head(alpha_div_observed_metadata)
 ## Calculating Beta Diversity Metrics
 We will calculate the beta-diversity using the bray-curtis metric. 
 
+First, let's normalize our dataset by relative abundance. 
+
 ```
-bray_dist <- phyloseq::distance(phylo_obj_tree_sans_contam_sans_controls, method="bray") # calculate bray-curtis metric
-ordination <- ordinate(phylo_obj_tree_sans_contam_sans_controls, method="PCoA", distance=bray_dist) # Perform ordination using bray-curtis metric
-plot_ordination(phylo_obj_tree_sans_contam_sans_controls, ordination, color="Site") + theme(aspect.ratio=1) # plot the ordination using ggplot2
+phylo_obj_tree_sans_contam_sans_controls_relab <- transform_sample_counts(phylo_obj_tree_sans_contam_sans_controls, function(x) x / sum(x) )
+```
+
+
+```
+bray_dist <- phyloseq::distance(phylo_obj_tree_sans_contam_sans_controls_relab, method="bray") # calculate bray-curtis metric
+ordination <- ordinate(phylo_obj_tree_sans_contam_sans_controls_relab, method="PCoA", distance=bray_dist) # Perform ordination using bray-curtis metric
+plot_ordination(phylo_obj_tree_sans_contam_sans_controls_relab, ordination, color="Site") + theme(aspect.ratio=1) # plot the ordination using ggplot2
 ```
 
 We can get a list of the ordination methods available in phyloseq by requesting the help menu `??distanceMethodList`. Furthermore, we can test whether the sites differ significantly from each other using the permutational ANOVA (PERMANOVA) analysis:
@@ -110,5 +117,3 @@ We can get a list of the ordination methods available in phyloseq by requesting 
 ```
 adonis2(bray_dist ~ sample_data(phylo_obj_tree_sans_contam_sans_controls)$Site)
 ```
-
-
