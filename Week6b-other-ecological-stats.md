@@ -69,3 +69,66 @@ sig_aldex2_gen_result_location <- left_join(aldex2_sample_site_sig, aldex_taxa_i
 ```
 
 How many nematode genera are differentially abundant in our dataset?
+
+## Visualizing taxonomy with Metacoder
+
+Metacoder is a package that allows us to visualize taxonomic data using heat trees, instead of the typical barplots. First, we need to install this package using the following command. 
+
+```
+BiocManager::install("metacoder")
+library(metacoder)
+```
+
+Now, we need to transform our counts to relative abundance. 
+
+```
+phylo_obj_tree_sans_contam_ra <- transform_sample_counts(phylo_obj_tree_sans_contam, function(x) x / sum(x))
+```
+
+Now, we want to focus on comparing two samples 1) the 2cm core fraction at the North Barrel Site and 2) the 2cm core fraction at the San Diego Trough. We can do this by subsetting our dataset and then removing ASVs that are not present in this subsetted dataset. Let's start with the 2cm core fraction at the North Barrel Site. 
+
+
+```
+barrel_one_0_2 <- subset_samples(phylo_obj_tree_sans_contam, Site=="DDT_Barrel_Site_1_North" & Core_Fraction=="0_2") # subset our data 
+barrel_one_0_2 <- prune_taxa(taxa_sums(barrel_one_0_2) > 0, barrel_one_0_2) # remove ASVs not present
+```
+
+Let's subset the dataframe so we are only comparing the ASVs assigned to **Nematoda**
+
+```
+barrel_one_nematoda <- subset_taxa(barrel_one_0_2, Taxon14=="D_13__Nematoda") # subset nematoda
+tax_table(barrel_one_nematoda) <- tax_table(barrel_one_nematoda)[,c(14, 15:17,21,22)] # only keep major taxonomic heirarchies starting at the phylum level. 
+```
+
+Let's convert the phyloseq object into a specific format called a `taxmap`
+
+```
+b1_obj <- parse_phyloseq(barrel_one_nematoda)
+```
+
+Finally, we can plot our results
+
+```
+b1_obj_metacoder <- heat_tree(b1_obj,
+          node_label = taxon_names,
+          node_size = n_obs,
+          node_color = n_obs)
+```
+
+#### Lets do the same thing for the second sample set (2cm core fraction at the San Diego Trough)
+
+```
+sd_trough <- subset_samples(phylo_obj_tree_sans_contam, Site=="San_Diego_Trough" & Core_Fraction=="0_2") # subset samples 
+sd_trough <- prune_taxa(taxa_sums(sd_trough) > 0, sd_trough) # remove ASVs not present
+
+sd_trough_nematoda <- subset_taxa(sd_trough, Taxon14=="D_13__Nematoda") # only keep Nematoda ASVs
+tax_table(sd_trough_nematoda) <- tax_table(sd_trough_nematoda)[,c(14, 15:17,21,22)] # only keep major taxonomic heirarchies
+
+sd_obj <- parse_phyloseq(sd_trough_nematoda) # convert the phyloseq object to taxmap
+
+sd_obj_metacoder <- heat_tree(sd_obj,
+                              node_label = taxon_names,
+                              node_size = n_obs,
+                              node_color = n_obs) # visualize the results
+
+```
