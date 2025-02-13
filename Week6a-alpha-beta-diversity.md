@@ -44,6 +44,56 @@ Something to think about (annotated image from Willis et al. 2019):
 
 ---
 
+## Generating taxonomy barplots
+
+Taxonomy barplots are a common way to visualize our community composition. We can do this in phyloseq, which wraps ggplot2, to create these visualizations. That means we can use the ggplot2 language to further enchange our graphs. 
+
+We will focus on visualizing the community structure of the marine nematodes since we have well-curated strings. So first, we need to subset our dataframe to only include nematodes and then transform/normalize our counts to relative abundance. 
+
+```
+phylo_obj_tree_sans_contam_nematoda <- subset_taxa(phylo_obj_tree_sans_contam, Taxon14=="D_13__Nematoda") # subset for marine nematodes
+phylo_obj_tree_sans_contam_nematoda_ra <- transform_sample_counts(phylo_obj_tree_sans_contam_nematoda, function(x) x / sum(x)) # convert to relative abundance
+```
+
+Now, we can plot using the `plot_bar` command. I will include other ggplot functions to make sure our figure looks good. This includes `facet_grid` which will separate our samples by Site and the flag `free-scales` will not plot samples in the facet if they do not belong to the Site.  If you want to see how the command reacts without these parameters, remove them :). 
+
+```
+plot_bar(phylo_obj_tree_sans_contam_nematoda_ra, "Sample", fill="Taxon17") + # Sample is x-axis
+  geom_bar(aes(color=Taxon17), stat="identity") + # specifies the type of graph and color
+  facet_grid(~Site, scales = "free", space = "free_x") # lets separate our samples by Site
+```
+
+Our titles are too long and unreadable, so lets edit them to make this publishable. First, lets create a dictionary and create "long" form labels.
+
+```
+long_form_labels <- c(
+  DDT_Barrel_Site_1_North = "DDT Barrels North",
+  DDT_Barrel_Site_2_South = "DDT Barrels South",
+  Patton_Ridge_South = "Patton Ridge",
+  `40Mile_Bank` = "40Mile Bank",
+  Lasuen_Knoll = "Lasuen Knoll",
+  San_Diego_Trough = "San Diego Trough",
+  no.data = "controls")
+```
+
+Now, we need to match them to each samples and save them to a new column
+
+```
+idx <- match(sample_data(phylo_obj_tree_sans_contam_nematoda_ra)$Site, names(long_form_labels)) # match to each Sample
+sample_data(phylo_obj_tree_sans_contam_nematoda_ra)$Site_long <- long_form_labels[idx] # create a new column in our phyloseq metadata
+```
+
+Finally, we can plot our data so its readable. The `labeller` flag in the facet command will create line breaks. The `theme()` command allows us to change the font sizes and position. 
+
+```
+plot_bar(phylo_obj_tree_sans_contam_nematoda_ra, "Sample", fill="Taxon17") +
+  geom_bar(aes(color=Taxon17), stat="identity") +
+  facet_grid(~Site_long, scales = "free", space = "free_x", labeller = labeller(Site_long = label_wrap_gen(1))) + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 4),
+        strip.text.x = element_text(size = 8, angle = 90))
+```
+
 ## Calculating Alpha Diversity
 
 Key Alpha Diversity metrics and visualizations:
