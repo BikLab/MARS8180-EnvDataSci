@@ -38,11 +38,15 @@ Alpha diversity metrics summarize the structure of an ecological community with 
 
 **Normalization** - Using proportional abundances of ASVs, instead of the count of sequence reads for that ASV. To normalize a metabarcoding dataset, you typically divide the raw sequence counts for each ASV in a sample by the total number of sequences in that sample. For example, at our sample site Beach A, ASV_347 has an absolute abundance of 50,000 sequence reads. If Beach A has 1 million sequence reads overall, then the normailized abundance of ASV_347 would be 50,000/1,000,000 --> 0.05 or 5% 
 
+Something to think about (annotated image from Willis et al. 2019): 
+
+<img width="1085" alt="Screenshot 2025-02-13 at 10 15 42 AM" src="https://github.com/user-attachments/assets/4230fd18-b62d-4305-9732-0b0bd758b90f" />
+
 ---
 
 ## Calculating Alpha Diversity
 
-Key Alpha Diversity visualizations:
+Key Alpha Diversity metrics and visualizations:
 * Taxonomy bar charts
 * Species Richness
 * Evenness
@@ -117,6 +121,13 @@ head(alpha_div_observed_metadata)
 ```
 
 ## Calculating Beta Diversity Metrics
+
+Key Beta Diversity metrics and visualizations:
+* Bray-Curtis
+* NMDS plots
+* Other indexes - Jaccard, Canberra
+* Unifrac (weighted/unweighted) - take phylogenetic distance into account, can be based on presence/absence of ASVs only (unweighted - recommended), or also additionally incorporate normalized abundances (weighted - less commonly used)
+
 We will calculate the beta-diversity using the bray-curtis metric. 
 
 First, let's normalize our dataset by relative abundance. 
