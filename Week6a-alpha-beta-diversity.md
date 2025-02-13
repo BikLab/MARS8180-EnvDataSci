@@ -123,10 +123,16 @@ head(alpha_div_observed_metadata)
 ## Calculating Beta Diversity Metrics
 
 Key Beta Diversity metrics and visualizations:
-* Bray-Curtis
-* NMDS plots
-* Other indexes - Jaccard, Canberra
+* Bray-Curtis - considers ASV presence/absence AND abundance, gives more consideration to abundant ASVs
+* Jaccard - only consideres ASV presence/absence
+* Canberra - simliar to Bray-Curtis, but gives more consideration to rare taxa (low abundance ASVs) by treating all ASVs equally
 * Unifrac (weighted/unweighted) - take phylogenetic distance into account, can be based on presence/absence of ASVs only (unweighted - recommended), or also additionally incorporate normalized abundances (weighted - less commonly used)
+* nMDS plots
+
+If you want to get into the weeks with some of these metrics, here's a good paper:
+* Roberts DW (2017) Distance, dissimiliarity, and mean-variance ratios in ordination, Methods in Ecology and Evolution, 8:1398-1407 - https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.12739
+* QIIME2 online documentation also has some pretty good explanations of different metrics (alpha/beta diversity) - https://docs.qiime2.org/
+* See also some of the phyloseq tutorials (with links to key literature) - https://joey711.github.io/phyloseq/
 
 We will calculate the beta-diversity using the bray-curtis metric. 
 
