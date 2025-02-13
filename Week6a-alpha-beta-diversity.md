@@ -129,7 +129,7 @@ Key Beta Diversity metrics and visualizations:
 * Unifrac (weighted/unweighted) - take phylogenetic distance into account, can be based on presence/absence of ASVs only (unweighted - recommended), or also additionally incorporate normalized abundances (weighted - less commonly used)
 * nMDS plots
 
-If you want to get into the weeks with some of these metrics, here's a good paper:
+If you really want to get into the weeds with some of these metrics, here are some recommended resources:
 * Roberts DW (2017) Distance, dissimiliarity, and mean-variance ratios in ordination, Methods in Ecology and Evolution, 8:1398-1407 - https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.12739
 * QIIME2 online documentation also has some pretty good explanations of different metrics (alpha/beta diversity) - https://docs.qiime2.org/
 * See also some of the phyloseq tutorials (with links to key literature) - https://joey711.github.io/phyloseq/
