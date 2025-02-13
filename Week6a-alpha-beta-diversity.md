@@ -46,7 +46,7 @@ Key Alpha Diversity visualizations:
 * Taxonomy bar charts
 * Species Richness
 * Evenness
-* Shannon / Simpson Diversity Indexes
+* Chao1, Shannon, Simpson Diversity Indexes
 
 Now that we have created our phyloseq object, we are going to calculate Observed ASVS - a simple measure of alpha diversity. We can do this by using the `phyloseq::estimate_richness` function. We usually do not need to to specify the package, but this might be useful if you are using packages that have functions with the same name. 
 
