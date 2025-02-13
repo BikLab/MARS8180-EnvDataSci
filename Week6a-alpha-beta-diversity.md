@@ -26,23 +26,6 @@ Gloor et al. (2017) Microbiome datasets are compositional: And this is not optio
 <img width="542" alt="Screenshot 2025-02-11 at 10 18 06 AM" src="https://github.com/user-attachments/assets/836743f1-627f-4b27-86ea-9ecb5671a849" />
 
 ---
-## Alpha Diversity, Rarefaction, and Normalization
-
-Key Papers:
-* Willis AD (2019) Rarefaction, Alpha Diversity, and Statistics, *Frontiers in Microbiology* -https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2019.02407/full
-* McMurdie, P. J., and Holmes, S. (2014). Waste not, want not: why rarefying microbiome data is inadmissible. PLoS Comput. Biol. 10:e1003531 - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003531
-
-Alpha diversity metrics summarize the structure of an ecological community with respect to its richness (number of taxonomic groups), evenness (distribution of abundances of the groups), or both. Because many perturbations to a community affect the alpha diversity of a community, summarizing and comparing community structure via alpha diversity is a ubiquitous approach to analyzing community surveys. In microbial ecology, analyzing the alpha diversity of amplicon sequencing data is a common first approach to assessing differences between environments. (Willis 2019 - see paper link above)
-
-**Rarefaction** - Subsampling your overall dataset, by selecting X number of observations (e.g. ASVs) from each sample, regardless of the overall sequencing effort. For example, if you have two sample sites, Beach A (1000 ASVs and 1 million sequence reads), and Beach B (250 ASVs and 200,000 sequencing reads), you could rarify this dataset by randomly subsampling 100 ASVs from each sample site. Rarefaction is a common paremeter you will see in the scripts/code we run in this class. **Note: Rarefaction can be contentious in eDNA studies, but many people still use it - see above literature refs**
-
-**Normalization** - Using proportional abundances of ASVs, instead of the count of sequence reads for that ASV. To normalize a metabarcoding dataset, you typically divide the raw sequence counts for each ASV in a sample by the total number of sequences in that sample. For example, at our sample site Beach A, ASV_347 has an absolute abundance of 50,000 sequence reads. If Beach A has 1 million sequence reads overall, then the normailized abundance of ASV_347 would be 50,000/1,000,000 --> 0.05 or 5% 
-
-Something to think about (annotated image from Willis et al. 2019): 
-
-<img width="1085" alt="Screenshot 2025-02-13 at 10 15 42 AM" src="https://github.com/user-attachments/assets/4230fd18-b62d-4305-9732-0b0bd758b90f" />
-
----
 
 ## Generating taxonomy barplots
 
@@ -94,6 +77,24 @@ plot_bar(phylo_obj_tree_sans_contam_nematoda_ra, "Sample", fill="Taxon17") +
         strip.text.x = element_text(size = 8, angle = 90))
 ```
 
+## Alpha Diversity, Rarefaction, and Normalization
+
+Key Papers:
+* Willis AD (2019) Rarefaction, Alpha Diversity, and Statistics, *Frontiers in Microbiology* -https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2019.02407/full
+* McMurdie, P. J., and Holmes, S. (2014). Waste not, want not: why rarefying microbiome data is inadmissible. PLoS Comput. Biol. 10:e1003531 - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003531
+
+Alpha diversity metrics summarize the structure of an ecological community with respect to its richness (number of taxonomic groups), evenness (distribution of abundances of the groups), or both. Because many perturbations to a community affect the alpha diversity of a community, summarizing and comparing community structure via alpha diversity is a ubiquitous approach to analyzing community surveys. In microbial ecology, analyzing the alpha diversity of amplicon sequencing data is a common first approach to assessing differences between environments. (Willis 2019 - see paper link above)
+
+**Rarefaction** - Subsampling your overall dataset, by selecting X number of observations (e.g. ASVs) from each sample, regardless of the overall sequencing effort. For example, if you have two sample sites, Beach A (1000 ASVs and 1 million sequence reads), and Beach B (250 ASVs and 200,000 sequencing reads), you could rarify this dataset by randomly subsampling 100 ASVs from each sample site. Rarefaction is a common paremeter you will see in the scripts/code we run in this class. **Note: Rarefaction can be contentious in eDNA studies, but many people still use it - see above literature refs**
+
+**Normalization** - Using proportional abundances of ASVs, instead of the count of sequence reads for that ASV. To normalize a metabarcoding dataset, you typically divide the raw sequence counts for each ASV in a sample by the total number of sequences in that sample. For example, at our sample site Beach A, ASV_347 has an absolute abundance of 50,000 sequence reads. If Beach A has 1 million sequence reads overall, then the normailized abundance of ASV_347 would be 50,000/1,000,000 --> 0.05 or 5% 
+
+Something to think about (annotated image from Willis et al. 2019): 
+
+<img width="1085" alt="Screenshot 2025-02-13 at 10 15 42 AM" src="https://github.com/user-attachments/assets/4230fd18-b62d-4305-9732-0b0bd758b90f" />
+
+---
+
 ## Calculating Alpha Diversity
 
 Key Alpha Diversity metrics and visualizations:
@@ -105,7 +106,7 @@ Key Alpha Diversity metrics and visualizations:
 Now that we have created our phyloseq object, we are going to calculate Observed ASVS - a simple measure of alpha diversity. We can do this by using the `phyloseq::estimate_richness` function. We usually do not need to to specify the package, but this might be useful if you are using packages that have functions with the same name. 
 
 ```
-alpha_div_observed <- phyloseq::estimate_richness(phylo_obj_tree_sans_contam_sans_controls, measures = "Observed") # calculate alpha diversity
+alpha_div_observed <- phyloseq::estimate_richness(phylo_obj_tree_sans_contam, measures = "Observed") # calculate alpha diversity
 head(alpha_div_observed) # view the first few lines of our R object
 ```
 
@@ -122,7 +123,7 @@ DDT.11.2      480
 We were able to calculate diverstiy, but we lost our metadata associated with our samples. However, we can access this metadata using the `sample_data` function.
 
 ```
-metadata_df <- phyloseq::sample_data(phylo_obj_tree_sans_contam_sans_controls) # access metadata from the phyloseq object
+metadata_df <- phyloseq::sample_data(phylo_obj_tree_sans_contam) # access metadata from the phyloseq object
 head(metadata_df) 
 ```
 
@@ -130,8 +131,8 @@ We can put this together to calculate the observed diversity (number of ASVs) an
 
 ```
 alpha_div_observed_metadata <- data.frame( # save as a dataframe
-  phyloseq::sample_data(phylo_obj_tree_sans_contam_sans_controls), # access metadata 
-  "Observed" = phyloseq::estimate_richness(phylo_obj_tree_sans_contam_sans_controls, measures = "Observed")) # calculate Observed diversity and save it to a column names "Observed"
+  phyloseq::sample_data(phylo_obj_tree_sans_contam), # access metadata 
+  "Observed" = phyloseq::estimate_richness(phylo_obj_tree_sans_contam, measures = "Observed")) # calculate Observed diversity and save it to a column names "Observed"
 ```  
 
 Now we can use ggplot to plot our results
@@ -156,11 +157,11 @@ Lets do the same by calculating alpha diversity using commonly used metrics, suc
 
 ```
 alpha_div_observed_metadata <- data.frame(
-  phyloseq::sample_data(phylo_obj_tree_sans_contam_sans_controls), # get metadata
-  "Reads" = phyloseq::sample_sums(phylo_obj_tree_sans_contam_sans_controls), # number of reads
-  "Observed" = phyloseq::estimate_richness(phylo_obj_tree_sans_contam_sans_controls, measures = "Observed"), # count observed ASVs
-  "Shannon" = phyloseq::estimate_richness(phylo_obj_tree_sans_contam_sans_controls, measures = "Shannon"), # Calculate Shannon Diversity
-  "InvSimpson" = phyloseq::estimate_richness(phylo_obj_tree_sans_contam_sans_controls, measures = "InvSimpson")) # calculate InvSimpson
+  phyloseq::sample_data(phylo_obj_tree_sans_contam), # get metadata
+  "Reads" = phyloseq::sample_sums(phylo_obj_tree_sans_contam), # number of reads
+  "Observed" = phyloseq::estimate_richness(phylo_obj_tree_sans_contam, measures = "Observed"), # count observed ASVs
+  "Shannon" = phyloseq::estimate_richness(phylo_obj_tree_sans_contam, measures = "Shannon"), # Calculate Shannon Diversity
+  "InvSimpson" = phyloseq::estimate_richness(phylo_obj_tree_sans_contam, measures = "InvSimpson")) # calculate InvSimpson
 ```
 
 Now lets calculate Eveness by dividing Shannon by the Log of the Observed ASVs
