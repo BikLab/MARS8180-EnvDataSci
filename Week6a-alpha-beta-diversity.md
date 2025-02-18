@@ -193,6 +193,8 @@ Ordination is a _**"graphical representation of the similiarity of sampling unit
 
 All ordination methods are aimed at **identifying hidden patterns** in a dataset and **reducing the complexity of high-dimensional data**. This is often done by carrying out complex mathematical calculations and comparison of samples, and then "squishing" this data down into a 2D plot, by maximizing the usefulness of the visualization (e.g. choosing the aspect of the data which differentiates sample groupings the most, such as a PCoA axis).  
 
+If you want to work through some ordination examples with R code, here is a great workshop (code + stats explanations): https://r.qcbs.ca/workshop09/book-en/index.html 
+
 There are many types of ordination methods, including (but not limited to):
 * **Principal Component Analysis (PCA)** - "a statistical technique used to reduce the dimensionality of a dataset while retaining most of its variability. It is a linear transformation method that converts the original set of variables into a new set of linearly uncorrelated variables, called principal components (PCs), which are sorted in decreasing order of variance." It primarily uses Euclidian distance - https://r.qcbs.ca/workshop09/book-en/principal-component-analysis.html (**NOTE:** in QIIME2 you choose the distance matrix used to build your PCoAs, such as Bray-Curtis similarity or the Unifrac metric which measures phylogenetic distance betwen samples/species). 
 * **Correspondence Analysis (CA)** - "preserves Chi2 distances" and may be a better option for data with "long ecological gradients", good for when underlying assumptions of PCA are violated by the dataset characteristics - https://r.qcbs.ca/workshop09/book-en/correspondence-analysis.html
