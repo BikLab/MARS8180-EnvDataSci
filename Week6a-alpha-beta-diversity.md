@@ -171,7 +171,7 @@ alpha_div_observed_metadata$Evenness <- alpha_div_observed_metadata$Shannon/log(
 head(alpha_div_observed_metadata)
 ```
 
-## Calculating Beta Diversity Metrics
+## Beta Diversity - Background and Resources
 
 Key Beta Diversity metrics and visualizations:
 * Bray-Curtis - considers ASV presence/absence AND abundance, gives more consideration to abundant ASVs
@@ -184,6 +184,31 @@ If you really want to get into the weeds with some of these metrics, here are so
 * Roberts DW (2017) Distance, dissimiliarity, and mean-variance ratios in ordination, Methods in Ecology and Evolution, 8:1398-1407 - https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.12739
 * QIIME2 online documentation also has some pretty good explanations of different metrics (alpha/beta diversity) - https://docs.qiime2.org/
 * See also some of the phyloseq tutorials (with links to key literature) - https://joey711.github.io/phyloseq/
+
+## Ordination Crash Course (class request)
+
+A really good overview of ordination types - https://uw.pressbooks.pub/appliedmultivariatestatistics/chapter/types-of-ordination-methods/ (**NOTE:** This whole book is freely available online, and highly recommended as a deep dive - Baker (2024) Applied Multivariate Statistics in R - https://uw.pressbooks.pub/appliedmultivariatestatistics/)
+
+Ordination is a _**"graphical representation of the similiarity of sampling units and/or attribues in resemblance space"**_ (Wild 2010, pg. 35), quote from Baker textbook
+
+All ordination methods are aimed at **identifying hidden patterns** in a dataset and **reducing the complexity of high-dimensional data**. This is often done by carrying out complex mathematical calculations and comparison of samples, and then "squishing" this data down into a 2-D plot, by maximizing the usefulness of the visualization (e.g. choosing the aspect of the data which differentiates sample groupings the most, such as a PCoA axis).  
+
+There are many types of ordination methods, including (but not limited to):
+* **Principal Component Analysis (PCA)** - "a statistical technique used to reduce the dimensionality of a dataset while retaining most of its variability. It is a linear transformation method that converts the original set of variables into a new set of linearly uncorrelated variables, called principal components (PCs), which are sorted in decreasing order of variance." It primarily uses Euclidian distance - https://r.qcbs.ca/workshop09/book-en/principal-component-analysis.html (**NOTE:** in QIIME2 you choose the distance matrix used to build your PCoAs, such as Bray-Curtis similarity or the Unifrac metric which measures phylogenetic distance betwen samples/species). 
+* **Correspondence Analysis (CA)** - "preserves Chi2 distances" and may be a better option for data with "long ecological gradients", good for when underlying assumptions of PCA are violated by the dataset characteristics - https://r.qcbs.ca/workshop09/book-en/correspondence-analysis.html
+* **Principal Coordinates Analysis (PCoA)** - an "unconstrained ordination" where "points are added to plane space one at a time using Euclidean distance (or whatever distance (dissimilarity) metric you choose)" - https://r.qcbs.ca/workshop09/book-en/principal-coordinates-analysis.html
+* **Nonmetric Multidimentional Scaling (NMDS)** - in NMDS, "the priority is not to preserve the exact distances among sites, but rather to represent as accurately as possible the relationships among objects in a small and number of axes (generally two or three) specified by the user", and so "the biplot produced from NMDS is the better 2D graphical representation of between-objects similarity: dissimilar objects are far apart in the ordination space and similar objects close to one another" - https://r.qcbs.ca/workshop09/book-en/nonmetric-multidimensional-scaling.html
+* Other ordination types mentioned in class: **Detrended Correspondence Analysis (DCA)**, **ReDundancy Analysis (RDA)**, **Distance-based Redundancy Analysis (db-RDA)** also known as **Canonical Analysis of Principal Coordinates (CAP)** - see Baker texbook (above link) for great explanations of all of these and more!
+
+*Choosing between PCA and PCoA can be tricky, but generally PCA is used to summarize multivariate data into as few dimensions as possible, whereas PCoA can be used to visualize distances between points. PCoA can be particularly suited for datasets that have more columns than rows. For example, if hundreds of species have been observed over a set of quadrats, then a approach based on a PCoA using Bray-Curtis similarity may be best suited.* (Quote from: https://r.qcbs.ca/workshop09/book-en/principal-coordinates-analysis.html) 
+
+Goodrich et al. (2016) Conducting a Microbiome Study, Cell, 158(2):250-262 - [https://pmc.ncbi.nlm.nih.gov/articles/PMC5074386/](https://doi.org/10.1016/j.cell.2014.06.037) 
+
+![1-s2 0-S0092867414008642-gr4_lrg](https://github.com/user-attachments/assets/f5208b11-acc8-4473-9578-1bccd0c8e700)
+
+
+
+## Calculating Beta Diversity Metrics
 
 We will calculate the beta-diversity using the bray-curtis metric. 
 
