@@ -71,7 +71,7 @@ We are going to convert the taxonomy to a dataframe
 
 ```
 aldex_taxa_info <- data.frame(tax_table(nematoda_phy_taxon22)) # convert taxonomy table to dataframe
-aldex_taxa_info <- aldex_taxa_info %>% rownames_to_column(var = "OTU") change rownames to column named OTU
+aldex_taxa_info <- aldex_taxa_info %>% rownames_to_column(var = "OTU") # change rownames to column named OTU
 ```
 
 We will filter our results, to only keep the ASV/OTUs with a significant kw.ep and append taxonomy information to it.
