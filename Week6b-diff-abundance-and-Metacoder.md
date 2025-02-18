@@ -4,7 +4,7 @@
 
 Previous studes on DDT barrel dumpsites:
 * Neira et al. 2024 Waste barrel contamination and macrobenthic communities in the San Pedro Basin DDT dumpsite, *Marine Pollution Bulletin*, 203: 116463 - https://www.sciencedirect.com/science/article/pii/S0025326X24004405 (macrofauna patterns & impacts)
-* Kivenson et al. 2019 Ocean dumping of containerized DDT waste was a sloppy process, *Environmental Science and Technology*, 53(6):2791-2980 - https://pubs.acs.org/doi/10.1021/acs.est.8b05859
+* Kivenson et al. 2019 Ocean dumping of containerized DDT waste was a sloppy process, *Environmental Science and Technology*, 53(6):2791-2980 - https://pubs.acs.org/doi/10.1021/acs.est.8b05859 (detailed background information about DDT barrel dumpsites + what we know science-wise)
 
 ---
 
