@@ -1,6 +1,18 @@
 ### Week 6b Other Ecological Statisics and R Packages
 
-Cover PICRUST + other tools this week (we had student requests for this)
+## About our samples - study design and key questions:
+
+Previous studes on DDT barrel dumpsites:
+* Neira et al. 2024 Waste barrel contamination and macrobenthic communities in the San Pedro Basin DDT dumpsite, *Marine Pollution Bulletin*, 203: 116463 - https://www.sciencedirect.com/science/article/pii/S0025326X24004405 (macrofauna patterns & impacts)
+* Kivenson et al. 2019 Ocean dumping of containerized DDT waste was a sloppy process, *Environmental Science and Technology*, 53(6):2791-2980 - https://pubs.acs.org/doi/10.1021/acs.est.8b05859
+
+<img width="1013" alt="Screenshot 2025-02-18 at 8 39 32 AM" src="https://github.com/user-attachments/assets/063a6ca1-e142-4d85-af59-bafb3695b0b6" />
+
+<img width="2531" alt="Screenshot 2025-02-18 at 8 40 06 AM" src="https://github.com/user-attachments/assets/9cdb1343-2564-409f-a730-095ac4691ecd" />
+
+The Bik Lab DDT work is focusing on:
+* Assessing eukaryotic biodiversity patterns using an 18S rRNA metabarcoding approach (using DNA extraction aliquots we obtained from the Jensen lab at UCSD who are doing parallell 16S rRNA analysis of bacterial/archael communities)
+* Looking for nematode "bioindicator" taxa indicative of DDT pollution (e.g. taxa prevalent on/inside the white chemical ring)
 
 ## Calculating Differentially Abundant Nematode Genera
 
