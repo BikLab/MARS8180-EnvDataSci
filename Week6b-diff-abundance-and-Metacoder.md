@@ -45,10 +45,17 @@ library(circlize)
 library(ComplexHeatmap)
 ```
 
+First, lets focus on just the first 2cm sediment so that we can better compare the different Sites.
+
+```
+barrel_one_0_2 <- subset_samples(phylo_obj_tree_sans_contam, Core_Fraction=="0_2") # subset our data 
+barrel_one_0_2 <- prune_taxa(taxa_sums(barrel_one_0_2) > 0, barrel_one_0_2) # remove ASVs not present
+```
+
 Now, lets subset our dataset so we only have ASVs Identified as Nematoda and then agglomerate that taxa at genus level 
 
 ```
-nematoda_phy <- subset_taxa(phylo_obj_tree_sans_contam, Taxon14=="D_13__Nematoda")
+nematoda_phy <- subset_taxa(barrel_one_0_2, Taxon14=="D_13__Nematoda")
 nematoda_phy_taxon22 <- tax_glom(nematoda_phy, taxrank="Taxon22")
 ```
 
@@ -84,6 +91,55 @@ aldex2_sample_site_sig <- aldex2_sample_site %>%
   dplyr::select(OTU, kw.ep, kw.eBH)
   
 sig_aldex2_gen_result_location <- left_join(aldex2_sample_site_sig, aldex_taxa_info) # append taxonomy info
+```
+
+Now, let's get the OTU table from our phyloseq object and merge it with out ALDEX2 results
+
+```
+gen_otu_table_location <- data.frame(phyloseq::otu_table(nematoda_phy_taxon22)) # extract otu table
+gen_otu_table_location <- rownames_to_column(gen_otu_table_location, var = "OTU") # covert rownames to column
+
+sig_aldex2_gen_result_location_tax <- left_join(sig_aldex2_gen_result_location, gen_otu_table_location) # combine the tables
+```
+
+Let's change the rownames from the OTU hash to the assigned Genus
+
+```
+rownames(sig_aldex2_gen_result_location_tax) <- sig_aldex2_gen_result_location_tax$Taxon22 # change Taxon22 (Genus) to rownames
+sig_aldex2_gen_result_location_tax <- sig_aldex2_gen_result_location_tax[, -(1:27)] # remove tax info from otu table
+```
+
+Now, lets log transform the otu table and convert them the reads to a z-score.
+
+```
+shsk_gen_czm_location <- (apply(shsk_gen_czm_location, 1, function(x){log(x+1) - mean(log(x+1))})) # log transform
+Z.Score.gen_location <- scale(t(shsk_gen_czm_location)) # scale the dataset
+```
+
+Now let's prepare for our visualization by order our dataset and creating our heatmap annotations and labels
+
+```
+df <- sample_data(nematoda_phy_taxon22) # extract metadata from phyloseq object
+list=df[order(df$Site, decreasing=T),] # order based on Site so we can group them together
+sample=rownames(list) # extract the rownames from the list (SampleID)
+heatmap_annotation_top = HeatmapAnnotation(
+  Location = df$Site) # We will annotate by site 
+```
+
+Now, we are going to create a scale so we easily visualize our z-score (high z-score is green, low z-score is brown)
+
+```
+col_matrix <- brewer.pal(6, "BrBG")
+```
+
+Finally, after spending all this time data wrangling, we can use the function `Heatmap` to plot out data. The file `Z.Score.gen_location` has our Z-scores. The paramter `column_order` will allow use to group samples from the same Sites together and `col` lets use set the color palette. 
+
+```
+hm_gen_location <- Heatmap(Z.Score.gen_location, name = "Z-score", col = col_matrix,
+                           column_order = sample, 
+                           top_annotation = heatmap_annotation_top,
+                           cluster_columns = F, 
+                           column_names_gp = gpar(fontsize = 6))
 ```
 
 How many nematode genera are differentially abundant in our dataset?
