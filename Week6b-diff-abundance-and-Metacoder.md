@@ -146,7 +146,17 @@ How many nematode genera are differentially abundant in our dataset?
 
 ## Visualizing taxonomy with Metacoder
 
-Metacoder is a package that allows us to visualize taxonomic data using heat trees, instead of the typical barplots. First, we need to install this package using the following command. 
+Metacoder is a package that allows us to visualize taxonomic (or gene ontology) data using "heat trees, instead of the typical barplots. It can be a great way to get a different kind of visual overview of your dataset, and identify taxa/genes that warrant further exploration 
+* GitHub repo (documentation and tutorials): https://grunwaldlab.github.io/metacoder_documentation/
+* Publication to cite: Foster ZSL, Sharpton TJ, Grünwald NJ (2017) Metacoder: An R package for visualization and manipulation of community taxonomic diversity data. PLoS Comput Biol 13(2): e1005404. https://doi.org/10.1371/journal.pcbi.1005404
+
+---
+
+<img width="1032" alt="Screenshot 2025-02-19 at 6 30 20 PM" src="https://github.com/user-attachments/assets/1cb82493-9c94-4016-b05f-faaabdf4fd12" />
+
+---
+
+First, we need to install this package using the following command. 
 
 ```
 BiocManager::install("metacoder")
