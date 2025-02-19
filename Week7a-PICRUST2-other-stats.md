@@ -1,5 +1,14 @@
 ## PICRUST2 Analysis
-PICRUST2 is a method to predict functions using phylogenetic placement of ASV sequences. To do this, we first need to extract the representative sequences and biom table from the QIIME Artifact files. We can do this by using QIIME2 Tools. First, lets copy the script from the `instructor` data directory onto our personal folder. Remember to replace any instances of `userid` with your account ID. 
+PICRUST2 is a method to predict functions using phylogenetic placement of ASV sequences - it can help you explore the **functional potential** of a microbial community, which can then (ideally) be tested/validated through other types of -Omics sequencing such as metagenomics or metatranscriptomics. Note: Some people are skeptical of PICRUSt2 results - as they are highly dependent on reference genome databases - but we still think it is a useful (and popular) tool. 
+* Github wiki with tutorials - https://github.com/picrust/picrust2/wiki
+* Paper to cite: Douglas, G.M., Maffei, V.J., Zaneveld, J.R. et al. PICRUSt2 for prediction of metagenome functions. Nat Biotechnol 38, 685–688 (2020). https://doi.org/10.1038/s41587-020-0548-6
+
+![PICRUSt2_flowchart](https://github.com/user-attachments/assets/e072d959-7c83-48e1-848c-607646cc45da)
+(Figure from PICRUSt2 wiki)
+
+---
+
+To get started, we first need to extract the representative sequences and biom table from the QIIME Artifact files. We can do this by using QIIME2 Tools. First, lets copy the script from the `instructor` data directory onto our personal folder. Remember to replace any instances of `userid` with your account ID. 
 
 ```
 cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts/08-extract-data-qiime2.sh /home/userid/ddt-project/scripts
