@@ -18,17 +18,16 @@ There are several steps to the PICRUST workflow:
 
 However, we can easily run PICRUST2 using a single command that wraps all of our steps into one workflow. 
 
-
-To get started, we first need to extract the representative sequences and biom table from the QIIME Artifact files. We can do this by using QIIME2 Tools. First, lets copy the script from the `instructor` data directory onto our personal folder. Remember to replace any instances of `userid` with your account ID. 
-
-```
-cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/scripts/08-extract-data-qiime2.sh /home/userid/ddt-project/scripts
-```
-
-Now we can nano into the folder and edit our paths 
+You can only run PICRUST on 16S rRNA metabarcoding datasets, so to show you how to run this pipeline we are going to copy over a projects folder from the instructor data folder. Lets copy the script from the `instructor` data directory onto our personal folder. Remember to replace any instances of `userid` with your account ID. 
 
 ```
-nano /home/userid/ddt-project/scripts
+cp -r /work/mars8180/instructor_data/metabarcoding-datasets/memb-project home/userid/
+```
+
+Now we can nano into the scripts and edit our paths. First, lets nano into the script names `07-extract-bio-table-ref-seq.sh`. This script will allow us to export the data (representative sequences and biom table from our QIIME2 artifact files. 
+
+```
+nano /home/userid/ddt-project/scripts/07-extract-bio-table-ref-seq.sh
 ```
 
 ```
@@ -47,11 +46,11 @@ nano /home/userid/ddt-project/scripts
 
 module load QIIME2/2024.10-amplicon
 
-REFSEQ=/home/userid/ddt-project/results/05-dada2-rep-seq.qza
-REFTABLE=/home/userid/ddt-project/results/05-dada2-feature-table.qza
-SEQOUT=/home/userid/ddt-project/results/08-repseq/
-TABLEOUT=/home/userid/ddt-project/results/08-biomtable/
-```
+REFSEQ=/home/userid/memb/results/dada2-rep-seqs.qza
+REFTABLE=/home/userid/memb/results/dada2-table.qza
+SEQOUT=/home/userid/memb/results/repseq/
+TABLEOUT=/home/userid/memb/results/biomtable/
+
 module load QIIME2
 
 qiime tools export \
@@ -62,6 +61,50 @@ qiime tools export \
   --input-path ${REFTABLE} \
   --output-path ${TABLEOUT}
 ```
-make sure that your paths are correct and pointing to the correct locations. The variable `REFSEQ` and the `REFTABLE` should be path to the ASV representative sequences and the feature table output by the DADA2 script. 
+
+Make sure that your paths are pointing to the correct locations. The variable `REFSEQ` and the `REFTABLE` should be path to the ASV representative sequences and the feature table output by the DADA2 script. 
 
 Now we can submit the job to the cluster. This will generate two folders with our exported sequences (`08-repseq/`) and the biom table (`08-biomtable`). We can use these files to run the picrust2 script and predict functions based on our phylogenetic placement of the ASVs.
+
+This time for this scripts, we are going to use 12 threads and 10Gb per thread.
+
+```
+nano /home/userid/ddt-project/scripts/08-picrust2.sh
+```
+
+```
+#!/bin/bash
+#SBATCH --job-name="08-picrust2"
+#SBATCH --partition=highmem
+#SBATCH --nodes=1
+#SBATCH --ntasks=12
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=10G
+#SBATCH --time=3-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=END,FAIL
+#SBATCH -e 08-picrust2.err-%N
+#SBATCH -o 08-picrust2.out-%N
+
+#Path Variables
+SEQ=/home/ad14556/memb/results/repseq/dna-sequences-rc.fasta
+BIOM=/home/ad14556/memb/results/biomtable/feature-table.biom
+OUT=/home/ad14556/memb/results/08-picrust/
+
+# Activate Picrust2
+module load PICRUSt2
+
+# Picrust2 commands
+picrust2_pipeline.py \
+  -s ${SEQ} \
+  -i ${BIOM} \
+  -o ${OUT} -p 12 \
+  --stratified \
+  --in_traits EC,KO
+```
+
+The key output files are:
+
+1. EC_metagenome_out - Folder containing unstratified EC number metagenome predictions (pred_metagenome_unstrat.tsv.gz), sequence table normalized by predicted 16S copy number abundances (seqtab_norm.tsv.gz), and the per-sample NSTI values weighted by the abundance of each ASV (weighted_nsti.tsv.gz).
+2. KO_metagenome_out - As EC_metagenome_out above, but for KO metagenomes.
+3. pathways_out - Folder containing predicted pathway abundances and coverages per-sample, based on predicted EC number abundances.
