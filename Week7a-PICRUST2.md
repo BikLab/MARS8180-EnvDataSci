@@ -8,6 +8,17 @@ PICRUST2 is a method to predict functions using phylogenetic placement of ASV se
 
 ---
 
+There are several steps to the PICRUST workflow: 
+
+1. Align ASVs to Reference Sequences
+2. Place ASVs to Reference Trees
+3. Infer Copy Number
+4. Metagenome Predications Based on Phylogenetic Placement
+5. Infer Pathway Abundances
+
+However, we can easily run PICRUST2 using a single command that wraps all of our steps into one workflow. 
+
+
 To get started, we first need to extract the representative sequences and biom table from the QIIME Artifact files. We can do this by using QIIME2 Tools. First, lets copy the script from the `instructor` data directory onto our personal folder. Remember to replace any instances of `userid` with your account ID. 
 
 ```
@@ -40,7 +51,7 @@ REFSEQ=/home/userid/ddt-project/results/05-dada2-rep-seq.qza
 REFTABLE=/home/userid/ddt-project/results/05-dada2-feature-table.qza
 SEQOUT=/home/userid/ddt-project/results/08-repseq/
 TABLEOUT=/home/userid/ddt-project/results/08-biomtable/
-
+```
 module load QIIME2
 
 qiime tools export \
