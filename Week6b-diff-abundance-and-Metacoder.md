@@ -112,7 +112,7 @@ sig_aldex2_gen_result_location_tax <- sig_aldex2_gen_result_location_tax[, -(1:2
 Now, lets log transform the otu table and convert them the reads to a z-score.
 
 ```
-shsk_gen_czm_location <- (apply(shsk_gen_czm_location, 1, function(x){log(x+1) - mean(log(x+1))})) # log transform
+shsk_gen_czm_location <- (apply(sig_aldex2_gen_result_location_tax, 1, function(x){log(x+1) - mean(log(x+1))})) # log transformation
 Z.Score.gen_location <- scale(t(shsk_gen_czm_location)) # scale the dataset
 ```
 
