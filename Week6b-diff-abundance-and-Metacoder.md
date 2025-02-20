@@ -215,3 +215,12 @@ sd_obj_metacoder <- heat_tree(sd_obj,
                               node_color = n_obs) # visualize the results
 
 ```
+
+User the `ggpubr` package to put the plots side by side and label them 
+
+```
+BiocManager::install("ggpubr") # install the package if you do not have it 
+library(ggpubr) # load the package 
+ggarrange(b1_obj_metacoder, sd_obj_metacoder, labels = c("A. DDT_Barrel_Site_1_North", "B. San_Diego_Trough"), hjust = -0.75) # plot and label
+
+```
