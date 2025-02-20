@@ -8,7 +8,7 @@ Our favorite package is ggtree, and the supplemental package ggtree extra, softw
 
 * Xu S, Dai Z, Guo P, Fu X, Liu S, Zhou L, Tang W, Feng T, Chen M, Zhan L, Wu T, Hu E, Jiang Y, Bo X, Yu G (2021). “ggtreeExtra: Compact visualization of richly annotated phylogenetic data.” Molecular Biology and Evolution, 38, 4039-4042. ISSN 0737-4038, doi:10.1093/molbev/msab166, https://academic.oup.com/mbe/advance-article/doi/10.1093/molbev/msab166/6294410.
 
-An example ggtree figure from a recent Bik Lab paper focused on nematode microbiomes:
+An example ggtree figure from a recent Bik Lab paper focused on nematode microbiomes (phylogeny of host nematode species, and bar plots of key bacterial microbiome taxa):
 
 ![Figure_5](https://github.com/user-attachments/assets/4b3ca216-75ef-4e83-b00d-c67af6dd0afb)
 
