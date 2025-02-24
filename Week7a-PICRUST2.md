@@ -8,6 +8,8 @@ PICRUST2 is a method to predict functions using phylogenetic placement of ASV se
 
 ---
 
+## Predicting Functions Using the PICRUST Workflow
+
 There are several steps to the PICRUST workflow: 
 
 1. Align ASVs to Reference Sequences
@@ -27,7 +29,8 @@ cp -r /work/mars8180/instructor_data/metabarcoding-datasets/memb-project home/us
 Now we can nano into the scripts and edit our paths. First, lets nano into the script names `07-extract-bio-table-ref-seq.sh`. This script will allow us to export the data (representative sequences and biom table from our QIIME2 artifact files. 
 
 ```
-nano /home/userid/ddt-project/scripts/07-extract-bio-table-ref-seq.sh
+cd /home/userid/memb-project/scripts/
+nano 07-extract-bio-table-ref-seq.sh
 ```
 
 ```
@@ -39,17 +42,17 @@ nano /home/userid/ddt-project/scripts/07-extract-bio-table-ref-seq.sh
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=4G
 #SBATCH --time=01:00:00
-#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-user=userid@uga.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH -e 07-extract-data.err-%N
 #SBATCH -o 07-extract-data.out-%N
 
 module load QIIME2/2024.10-amplicon
 
-REFSEQ=/home/userid/memb/results/dada2-rep-seqs.qza
-REFTABLE=/home/userid/memb/results/dada2-table.qza
-SEQOUT=/home/userid/memb/results/repseq/
-TABLEOUT=/home/userid/memb/results/biomtable/
+REFSEQ=/home/userid/memb-project/results/dada2-rep-seqs.qza
+REFTABLE=/home/userid/memb-project/results/dada2-table.qza
+SEQOUT=/home/userid/memb-project/results/repseq/
+TABLEOUT=/home/userid/memb-project/results/biomtable/
 
 module load QIIME2
 
@@ -64,12 +67,50 @@ qiime tools export \
 
 Make sure that your paths are pointing to the correct locations. The variable `REFSEQ` and the `REFTABLE` should be path to the ASV representative sequences and the feature table output by the DADA2 script. 
 
-Now we can submit the job to the cluster. This will generate two folders with our exported sequences (`08-repseq/`) and the biom table (`08-biomtable`). We can use these files to run the picrust2 script and predict functions based on our phylogenetic placement of the ASVs.
-
-This time for this scripts, we are going to use 12 threads and 10Gb per thread.
+Now we can submit the job to the cluster. This will generate two folders with our exported sequences (`07-repseq/`) and the biom table (`07-biomtable/`).
 
 ```
-nano /home/userid/ddt-project/scripts/08-picrust2.sh
+sbatch 07-extract-bio-table-ref-seq.sh
+```
+
+I've aleady tried running PICRUST before and I ended up with an error claiming that none of my sequences could be placed to the phylogenetic tree. Out of curiosity, I BLASTed a random sequence and realized that the sequences are in the correct orientation. So, we will use the package `seqtk` to reverse-complement all of our sequences
+
+```
+nano 07-rev_complement.sh
+```
+
+```
+#!/bin/sh
+#SBATCH --job-name="rev-com"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=4G
+#SBATCH --time=01:00:00
+#SBATCH --mail-user=userid@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e 07-rev-comp.err-%N
+#SBATCH -o 07-rev-comp.out-%N
+
+module load seqtk
+
+IN=/home/userid/memb-project/results/07-repseq/dna-sequences.fasta
+OUT=/home/userid/memb-project/results/07-biomtable/dna-sequences-rc.fasta
+
+seqtk seq -r ${IN}/ > ${OUT}
+```
+
+After you edit your script, you can submit the job. 
+
+```
+sbatch 07-rev_complement.sh
+```
+
+Now we can use these files to run the picrust2 script and predict functions based on our phylogenetic placement of the ASVs. This time for this scripts, we are going to use 12 threads and 10Gb per thread.
+
+```
+nano 08-picrust2.sh
 ```
 
 ```
@@ -81,15 +122,15 @@ nano /home/userid/ddt-project/scripts/08-picrust2.sh
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=10G
 #SBATCH --time=3-00:00:00
-#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-user=userid@uga.edu
 #SBATCH --mail-type=END,FAIL
 #SBATCH -e 08-picrust2.err-%N
 #SBATCH -o 08-picrust2.out-%N
 
 #Path Variables
-SEQ=/home/ad14556/memb/results/repseq/dna-sequences-rc.fasta
-BIOM=/home/ad14556/memb/results/biomtable/feature-table.biom
-OUT=/home/ad14556/memb/results/08-picrust/
+SEQ=/home/userid/memb-project/results/07-repseq/dna-sequences-rc.fasta
+BIOM=/home/userid/memb-project/results/07-biomtable/feature-table.biom
+OUT=/home/userid/memb-project/results/08-picrust/
 
 # Activate Picrust2
 module load PICRUSt2
@@ -105,6 +146,23 @@ picrust2_pipeline.py \
 
 The key output files are:
 
-1. EC_metagenome_out - Folder containing unstratified EC number metagenome predictions (pred_metagenome_unstrat.tsv.gz), sequence table normalized by predicted 16S copy number abundances (seqtab_norm.tsv.gz), and the per-sample NSTI values weighted by the abundance of each ASV (weighted_nsti.tsv.gz).
-2. KO_metagenome_out - As EC_metagenome_out above, but for KO metagenomes.
-3. pathways_out - Folder containing predicted pathway abundances and coverages per-sample, based on predicted EC number abundances.
+1. **`EC_metagenome_out`** - Folder containing unstratified EC number metagenome predictions (pred_metagenome_unstrat.tsv.gz), sequence table normalized by predicted 16S copy number abundances (seqtab_norm.tsv.gz), and the per-sample NSTI values weighted by the abundance of each ASV (weighted_nsti.tsv.gz).
+2. **`KO_metagenome_out`** - As EC_metagenome_out above, but for KO metagenomes.
+3. **`pathways_out`** - Folder containing predicted pathway abundances and coverages per-sample, based on predicted EC number abundances.
+
+## Importing PICRUST files into a phyloseq object 
+
+Phyloseq is agnostic to data types - all it requires is the following
+
+1. Table with the number each function/sequence is observed in each sample
+2. Table with a descrption for each row (function/sequence)
+3. Table with a description for each sample
+
+Before we can import these files, we need to download these to our results and metadata folder. Typically, we would create a **new** Rproject, but for the sake of time we will save these to our current DDT-project folder. 
+
+Here are the list of files you will have to download from the cluster: 
+
+**Sample Metadata**: `/work/mars8180/instructor_data/metabarcoding-datasets/memb-project/metadata/16S-memb-metadata.txt`
+**Function Metadata**: `/work/mars8180/instructor_data/metabarcoding-datasets/memb-project/metadata/ec_traits_pathway.txt`
+**Function Biom Table**: `/work/mars8180/instructor_data/metabarcoding-datasets/memb-project/results/08-picrust/KO_metagenome_out/`
+
