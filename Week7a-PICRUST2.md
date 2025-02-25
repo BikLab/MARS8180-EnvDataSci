@@ -166,3 +166,93 @@ Here are the list of files you will have to download from the cluster:
 **Function Metadata**: `/work/mars8180/instructor_data/metabarcoding-datasets/memb-project/metadata/ec_traits_pathway.txt`
 **Function Biom Table**: `/work/mars8180/instructor_data/metabarcoding-datasets/memb-project/results/08-picrust/KO_metagenome_out/`
 
+
+After you have downloaded all these files your projects folder, we can import them and convert them into a phyloseq object. 
+
+First, let's use the function `read.delim2` to import our files. 
+
+```
+metadata_ec <- read.delim2("metadata/ec_name.txt", sep = "\t", header = F, row.names = 1)
+metadata_sample <- read.delim2("metadata/16S-memb-metadata.txt", sep = "\t", header = T, row.names = 1)
+ec_predicted <- read.delim2("results/pred_metagenome_unstrat.tsv.gz", sep = "\t", header = T, row.names = 1)
+```
+
+Now we need to do some lite data wrangling - we need to make sure that the sample names are consistent across files. We'll use `gsub` to rename some of the colnames from the file `ec_predicted`
+
+```
+colnames(ec_predicted) <- gsub("X16Snem", "MEMB.nem.", colnames(ec_predicted))
+colnames(ec_predicted) <- gsub("X16SNegCtrl", "Neg.ctrl", colnames(ec_predicted))
+colnames(ec_predicted) <- gsub("X16SZymoStandctrl", "Zymo.stand.ctrl", colnames(ec_predicted))
+```
+
+Next, we will remove the pattern **EC:** from the file `ec_predicted` and convert the cells to numeric datatype. 
+
+```
+rownames(ec_predicted) <- gsub("EC:", "", rownames(ec_predicted))
+ec_predicted[,1:304] <- as.numeric(unlist(ec_predicted[,1:304]))
+```
+
+This next part will look familiar! We can not convert our files into a phyloseq object. 
+
+```
+ec_phy <- otu_table(ec_predicted, taxa_are_rows = TRUE) # notes taxa (AVSs) are as rows
+tax_phy <- tax_table(as.matrix(metadata_ec))
+samples <- sample_data(metadata_sample)
+
+picrust_phyloseq <- phyloseq(ec_phy, tax_phy, samples)
+```
+
+## Analyzing the predicted functional diversity
+
+Now, we can use similar workflows that we have gone through before to analyze our predicted metagenomic data. 
+
+Let's normalize our data by relative abundance. 
+
+```
+picrust_phyloseq_relab <- transform_sample_counts(picrust_phyloseq, 
+                                                  function(x) x /sum(x) )
+```
+
+Now, we will remove samples without any predicted functions (the sum of each column is equal to 0) and the blanks. Typically, we would want to either use decontam or other methods to decontaminate our sample, but for the sake of time we will remove them from the dataset. 
+
+```
+picrust_phyloseq_relab_prune <- prune_samples(sample_sums(picrust_phyloseq_relab) >= 1, picrust_phyloseq_relab) # keep samples with at least 1 count
+picrust_phyloseq_relab_prune <- subset_samples(picrust_phyloseq_relab_prune, 
+                                               FeedingGroup %in% c("1A", "1B", "2A", "2B")) # only keep Feeding Groups 1A, 1B, 2A, 2B 
+```
+
+Now, let's use bray-curtis metric to assess dissimilarity of the predicted pathways between samples. 
+
+```
+picrust_phyloseq_pcoa <- ordinate(picrust_phyloseq_relab_prune, "PCoA", "bray") 
+plot_ordination(picrust_phyloseq_relab_prune, picrust_phyloseq_pcoa, color = "FeedingGroup") + 
+  geom_point(size = 3) 
+```
+
+If we want to plot the top 20 functions, we can first get a sorted vector and get the top 20 most common functions. Afterwards, let's use this vector to filter our phyloseq object. 
+
+```
+top20functions <- names(sort(taxa_sums(picrust_phyloseq_relab_prune), TRUE)[1:20])
+
+#subset phyloseq object to only selected taxa
+top20functions_phy <- prune_taxa(family20, picrust_phyloseq_relab_prune) 
+```
+
+We will use our favorite R package to visualize the barplots. 
+
+```
+plot_bar(top20functions_phy, fill="V2") + 
+  facet_grid(~FeedingGroup, space = "free", scales = "free")
+```
+
+Finally, we will edit the theme to make the axis text smaller and make the legend more readable. 
+
+```
+plot_bar(top20functions_phy, fill="V2") + 
+  facet_grid(~FeedingGroup, space = "free", scales = "free") +
+  theme(axis.text.x = element_text(size = 4, vjust = 0.5),
+        legend.text = element_text(size=6),
+        legend.key.height = unit(0.25, 'cm'), #change legend key height
+        legend.key.width = unit(1, 'cm')) +
+  guides(fill=guide_legend(title="EC Descriptions"))
+```
