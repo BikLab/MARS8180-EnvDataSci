@@ -168,7 +168,7 @@ Here are the list of files you will have to download from the cluster:
 
 **Sample Metadata**: `/work/mars8180/instructor_data/metabarcoding-datasets/memb-project/metadata/16S-memb-metadata.txt`
 **Function Metadata**: `/work/mars8180/instructor_data/metabarcoding-datasets/memb-project/metadata/ec_traits_pathway.txt`
-**Function Biom Table**: `/work/mars8180/instructor_data/metabarcoding-datasets/memb-project/results/08-picrust/EC_metagenome_out/`
+**Function Biom Table**: `/work/mars8180/instructor_data/metabarcoding-datasets/memb-project/results/08-picrust/EC_metagenome_out/pred_metagenome_unstrat.tsv.gz`
 
 
 After you have downloaded all these files your projects folder, we can import them and convert them into a phyloseq object. 
