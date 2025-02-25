@@ -238,21 +238,28 @@ top20functions <- names(sort(taxa_sums(picrust_phyloseq_relab_prune), TRUE)[1:20
 top20functions_phy <- prune_taxa(family20, picrust_phyloseq_relab_prune) 
 ```
 
-We will use our favorite R package to visualize the barplots. 
+We will use our favorite R package to plot them as barplots. 
 
 ```
 plot_bar(top20functions_phy, fill="V2") + 
   facet_grid(~FeedingGroup, space = "free", scales = "free")
 ```
 
-Finally, we will edit the theme to make the axis text smaller and make the legend more readable. 
+Finally, we will edit the theme to make the axis text smaller and make the legend more readable. We'll start by making a color palette for our data 
 
 ```
+library(microViz)
+color_list <- distinct_palette(n = 20, pal = "brewerPlus", add = "lightgrey")
+
 plot_bar(top20functions_phy, fill="V2") + 
+  geom_bar(aes(color=V2), stat = "identity") +
   facet_grid(~FeedingGroup, space = "free", scales = "free") +
   theme(axis.text.x = element_text(size = 4, vjust = 0.5),
         legend.text = element_text(size=6),
         legend.key.height = unit(0.25, 'cm'), #change legend key height
         legend.key.width = unit(1, 'cm')) +
-  guides(fill=guide_legend(title="EC Descriptions"))
+  guides(fill=guide_legend(title="EC Descriptions"),
+         color=guide_legend(title="EC Descriptions")) +
+  scale_color_manual(values = color_list) +
+  scale_fill_manual(values = color_list)
 ```
