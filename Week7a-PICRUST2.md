@@ -1,3 +1,7 @@
+## While we're getting started... 
+
+Please fill out another round of Minute cards: https://forms.gle/fK2FGG1uUSoaZTSo6
+
 ## PICRUST2 Analysis
 PICRUST2 is a method to predict functions using phylogenetic placement of ASV sequences - it can help you explore the **functional potential** of a microbial community, which can then (ideally) be tested/validated through other types of -Omics sequencing such as metagenomics or metatranscriptomics. Note: Some people are skeptical of PICRUSt2 results - as they are highly dependent on reference genome databases - but we still think it is a useful (and popular) tool. 
 * Github wiki with tutorials - https://github.com/picrust/picrust2/wiki
