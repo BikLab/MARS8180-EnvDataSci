@@ -196,7 +196,7 @@ rownames(ec_predicted) <- gsub("EC:", "", rownames(ec_predicted))
 ec_predicted[,1:304] <- as.numeric(unlist(ec_predicted[,1:304]))
 ```
 
-This next part will look familiar! We can not convert our files into a phyloseq object. 
+This next part will look familiar! We can convert our files into a phyloseq object. 
 
 ```
 ec_phy <- otu_table(ec_predicted, taxa_are_rows = TRUE) # notes taxa (AVSs) are as rows
@@ -239,7 +239,7 @@ If we want to plot the top 20 functions, we can first get a sorted vector and ge
 top20functions <- names(sort(taxa_sums(picrust_phyloseq_relab_prune), TRUE)[1:20])
 
 #subset phyloseq object to only selected taxa
-top20functions_phy <- prune_taxa(family20, picrust_phyloseq_relab_prune) 
+top20functions_phy <- prune_taxa(top20functions, picrust_phyloseq_relab_prune) 
 ```
 
 We will use our favorite R package to plot them as barplots. 
