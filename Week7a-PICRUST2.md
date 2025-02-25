@@ -252,6 +252,7 @@ plot_bar(top20functions_phy, fill="V2") +
 Finally, we will edit the theme to make the axis text smaller and make the legend more readable. We'll start by making a color palette for our data 
 
 ```
+remotes::install_github("david-barnett/microViz")
 library(microViz)
 color_list <- distinct_palette(n = 20, pal = "brewerPlus", add = "lightgrey")
 
