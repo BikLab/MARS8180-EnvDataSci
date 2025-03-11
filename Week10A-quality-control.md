@@ -44,7 +44,7 @@ What lingering questions do you have about metagenomic data analysis? What aspec
 #### 12:00 - 12:25 - Metagenomics coding tutorial
 
 ## The Metagenomic Dataset 
-Starting today, we will start going to go through how to analyze metagenomic data. The test dataset, we are using here are 6 single-worm metagenomic sequences from two different families belonging to the family Oncholimidae and Epacanthion.
+Starting today, we will start going to go through how to analyze metagenomic data. The test dataset we are using here are 6 single-worm metagenomic sequences belonging to two different families - Oncholimidae and Thoracostomopsidae.
 
 These worms were collected from Tybee Island in 2022 and 2023. They underwent REPLI-g amplification and sequencing using Illumina short-reads. Therefore, there are two major components in each metagenomic samples: 1) The host organisms and 2) the microbial members of the microbiome. 
 
