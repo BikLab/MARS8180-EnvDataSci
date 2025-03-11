@@ -4,7 +4,7 @@
 
 #### 11:10-11:20: Written Reflection
 
-In what ways does metagenomic data differ from amplicon (e.g. 16S/18S rRNA) datasets? What are the advantages/disadvantages of metagenomic datasets? Take 5 minutes to job down some thoguths here: https://docs.google.com/document/d/1CCKfkQk5Hl0owHBzxY7mBf7Nk-fGh1F1Ngd7JNpo7Gg/edit?usp=sharing
+In what ways does metagenomic data differ from amplicon (e.g. 16S/18S rRNA) datasets? What are the advantages/disadvantages of metagenomic datasets? Take 5 minutes to jot down some thoguths here: https://docs.google.com/document/d/1CCKfkQk5Hl0owHBzxY7mBf7Nk-fGh1F1Ngd7JNpo7Gg/edit?usp=sharing
 
 #### 11:20 - 11:50 - Metagenomics Journal Club
 
@@ -39,7 +39,7 @@ New & Brito (2020) review paper - http://dx.doi.org/10.1146/annurev-micro-012520
 
 #### 11:50 - 12:00 - Written Reflection
 
-What lingering questions do you have about metagenomic data analysis? What aspects are you especially curious about? Take 5 minutes to job down some thoguths here: https://docs.google.com/document/d/1CCKfkQk5Hl0owHBzxY7mBf7Nk-fGh1F1Ngd7JNpo7Gg/edit?usp=sharing
+What lingering questions do you have about metagenomic data analysis? What aspects are you especially curious about? Take 5 minutes to jot down some thoguths here: https://docs.google.com/document/d/1CCKfkQk5Hl0owHBzxY7mBf7Nk-fGh1F1Ngd7JNpo7Gg/edit?usp=sharing
 
 #### 12:00 - 12:25 - Metagenomics coding tutorial
 
