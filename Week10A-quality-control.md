@@ -29,6 +29,14 @@ Quince et al. (2015) review paper - http://dx.doi.org/10.1038/nbt.3935
 
 (Table 4 from Quince et al. 2015)
 
+New & Brito (2020) review paper - http://dx.doi.org/10.1146/annurev-micro-012520-072314
+* Gives some really good vignettes about the challenges of metagenomics, although many examples are very biomedical focused (e.g. human microbiome studies)
+* _Just a single drop (0.4mL) of ocean water collected from the Sargasso Sea contained 6,236 genomes (average of 38% completeness)...less than 0.1% of the genomes were from the same species_ (Brito & New 2020)
+  
+<img width="809" alt="Screenshot 2025-03-11 at 10 02 53 AM" src="https://github.com/user-attachments/assets/3e639abc-92f5-493f-b463-cb8221bfecc1" />
+
+(Figure 1 - New & Brito 2020)
+
 #### 11:50 - 12:00 - Written Reflection
 
 What lingering questions do you have about metagenomic data analysis? What aspects are you especially curious about? Take 5 minutes to job down some thoguths here: https://docs.google.com/document/d/1CCKfkQk5Hl0owHBzxY7mBf7Nk-fGh1F1Ngd7JNpo7Gg/edit?usp=sharing
