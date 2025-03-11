@@ -14,15 +14,19 @@ Quince et al. (2015) review paper - http://dx.doi.org/10.1038/nbt.3935
 * Some updates in software tools - many of the "newer" or "automated" software mentioned in this paper are now very standard (e.g. CONCOCT, MetaBAT)
 
 <img width="841" alt="Screenshot 2025-03-11 at 8 56 15 AM" src="https://github.com/user-attachments/assets/cbed5ca7-a662-4fe2-8551-b3881ec5bbcf" />
+
 (Figure 1 from Quince et al. 2015)
 
 <img width="848" alt="Screenshot 2025-03-11 at 9 01 08 AM" src="https://github.com/user-attachments/assets/9fb45877-7782-45ed-9485-43b2502da2df" />
+
 (Figure 2 from Quince et al. 2015)
 
 <img width="846" alt="Screenshot 2025-03-11 at 9 02 16 AM" src="https://github.com/user-attachments/assets/8ca54571-1f45-41b6-87b1-de70263b05b9" />
+
 (Table 1 from Quince et al. 2015)
 
 <img width="849" alt="Screenshot 2025-03-11 at 9 01 45 AM" src="https://github.com/user-attachments/assets/6f1ac941-b938-4c34-8939-dc37e14f90be" />
+
 (Table 4 from Quince et al. 2015)
 
 #### 11:50 - 12:00 - Written Reflection
