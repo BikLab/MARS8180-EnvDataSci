@@ -191,9 +191,36 @@ scp -r ad14556@txfer.gacrc.uga.edu:/work/mars8180/instructor_data/metagenomic-da
 
 The files will include an `html` file that we can open using any internet browser. 
 
-## Taxonomic Composition of Metagenomic Data
+## Taxonomic Profiling of Metagenomic Data
 
 There are several tools you can use to assign taxonomy to short metagenomic reads, inlcuding KRAKEN, METPHLAN, and CENETRIFUGE. Today, we will use METAPHLAN4 to assign taxonomy to the nematode microbiome.
+
+Description of MetaPhlAn from the Huttenhower Lab website (go here for user manual, tutorials, help forums, etc.): https://huttenhower.sph.harvard.edu/metaphlan/
+
+MetaPhlAn is a computational tool for profiling the composition of microbial communities (Bacteria, Archaea and Eukaryotes) from metagenomic shotgun sequencing data (i.e. not 16S) with species-level. With StrainPhlAn, it is possible to perform accurate strain-level microbial profiling. MetaPhlAn 4 relies on ~5.1M unique clade-specific marker genes identified from ~1M microbial genomes (~236,600 references and 771,500 metagenomic assembled genomes) spanning 26,970 species-level genome bins (SGBs, http://segatalab.cibio.unitn.it/data/Pasolli_et_al.html), 4,992 of them taxonomically unidentified at the species level, allowing:
+
+* unambiguous taxonomic assignments
+* an accurate estimation of organismal relative abundance
+* SGB-level resolution for bacteria, archaea and eukaryotes
+* strain identification and tracking
+* orders of magnitude speedups compared to existing methods.
+* metagenomic strain-level population genomics
+
+Software papers: 
+ * **MetaPhlAn4**: Blanco-Míguez, A., Beghini, F., Cumbo, F., McIver, L. J., Thompson, K. N., Zolfo, M., ... & Segata, N. (2023). [Extending and improving metagenomic taxonomic profiling with uncharacterized species using MetaPhlAn 4](https://www.nature.com/articles/s41587-023-01688-w). _Nature Biotechnology_, 41(11), 1633-1644.
+* **StrainPhlAn**: Truong, D. T., Tett, A., Pasolli, E., Huttenhower, C., & Segata, N. (2017). [Microbial strain-level population structure and genetic diversity from metagenomes](https://genome.cshlp.org/content/27/4/626.short). _Genome Research_, 27(4), 626-638.
+
+<img width="926" alt="Screenshot 2025-03-13 at 8 51 00 AM" src="https://github.com/user-attachments/assets/74cff63b-a097-482f-9eb9-32d3a3122b05" />
+
+(Figure 1 from Blanco-Míguez et al. 2023)
+
+MetaPhlAn4 is more accurate than other software both in the detection of which taxa are present (higher F1 score) and their quantitative estimation (lower Bray-Curtis value asessing estimated taxon profiles vs. known abundance in gold standard dataset) - depicted Figure 2 from from Blanco-Míguez et al. 2023:
+
+<img width="927" alt="Screenshot 2025-03-13 at 8 54 31 AM" src="https://github.com/user-attachments/assets/dceb783d-dee1-47bb-bb8e-a3f4727329dc" />
+
+**However, note that every software paper will say their approach is the best! Authors assess their software using specific datasets (e.g. Human Microbiome Project studies) - You need to evaluate outputs from different tools on your own dataset!**
+
+## Coding Tutorial
 
 Let's `cd` into the scripts directory and use `nano` to edit the metaphlan4 script.
 
