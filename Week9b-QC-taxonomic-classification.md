@@ -1,7 +1,7 @@
 ![Untitled (6)](https://github.com/user-attachments/assets/e797dd79-0e91-4dcb-8d93-026604b0a5b7)
 ## The Metagenomic Dataset 
 
-Starting today, we will start going to go through how to analyze metagenomic data. The test dataset we are using here are 6 single-worm metagenomic sequences belonging to two different families - Oncholimidae and Thoracostomopsidae.
+Starting today, we will start going to go through how to analyze metagenomic data. The test dataset we are using here are 6 single-worm metagenomic sequences belonging to two different families - Oncholaimidae and Thoracostomopsidae.
 
 These worms were collected from Tybee Island in 2022 and 2023. They underwent REPLI-g amplification and sequencing using Illumina short-reads. Therefore, there are two major components in each metagenomic samples: 1) The host organisms and 2) the microbial members of the microbiome. 
 
