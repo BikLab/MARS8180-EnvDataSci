@@ -193,7 +193,7 @@ The files will include an `html` file that we can open using any internet browse
 
 ## Taxonomic Profiling of Metagenomic Data
 
-There are several tools you can use to assign taxonomy to short metagenomic reads, inlcuding KRAKEN, METPHLAN, and CENETRIFUGE. Today, we will use METAPHLAN4 to assign taxonomy to the nematode microbiome.
+There are several tools you can use to assign taxonomy to short metagenomic reads, inlcuding [Kracken/Bracken](https://ccb.jhu.edu/software/bracken/), MetaPhlAn, [mOTUs2](https://www.nature.com/articles/s41467-019-08844-4), and [Centrifuge](https://ccb.jhu.edu/software/centrifuge/). Today, we will use MetaPhlAn4 to assign taxonomy to the nematode microbiome.
 
 Description of MetaPhlAn from the Huttenhower Lab website (go here for user manual, tutorials, help forums, etc.): https://huttenhower.sph.harvard.edu/metaphlan/
 
