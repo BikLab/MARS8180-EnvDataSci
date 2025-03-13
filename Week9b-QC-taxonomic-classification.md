@@ -93,7 +93,7 @@ nano 02-multiqc.sh
 module load MultiQC
 
 INPUT=/home/userid/nematode-microbiome/results/01-fastqc
-OUTPUT=//home/userid/nematode-microbiome/results/02-multiqc
+OUTPUT=/home/userid/nematode-microbiome/results/02-multiqc
 
 multiqc --outdir ${OUTPUT} ${INPUT}
 ```
