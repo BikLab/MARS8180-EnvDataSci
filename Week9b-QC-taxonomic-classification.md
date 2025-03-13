@@ -8,7 +8,7 @@ These worms were collected from Tybee Island in 2022 and 2023. They underwent RE
 We will go though the following steps through the next few modules: 
 
 1. Quality Control of the Raw Metagenomic Data
-2. Rapid Taxonomic Identification of Microbiome
+2. Rapid Taxonomic Identification of the Microbiome
 2. Assembling Metagenomic Reads
 3. Binning the contigs into Metagenome-assembled Genomes (MAGs)
 4. Functional Annotations of metagenomic samples and MAGs 
@@ -31,7 +31,7 @@ drwxr-xr-x. 9 ad14556 mars8180_instructor 10 Mar  4 21:37 results
 drwxr-xr-x. 2 ad14556 mars8180_instructor 10 Mar  4 21:59 scripts
 ```
 
-## Visualizng Quality of Metagenomic Data
+## Visualizing Quality of Metagenomic Data
 
 As usual, we will start by going through the quality control of our metagenomic sequences. We will start by implementing `FASTQC` for every fastq file and collating that information with the `MULTIQC` package.
 
