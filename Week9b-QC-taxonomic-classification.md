@@ -1,3 +1,4 @@
+![Untitled (6)](https://github.com/user-attachments/assets/e797dd79-0e91-4dcb-8d93-026604b0a5b7)
 ## The Metagenomic Dataset 
 
 Starting today, we will start going to go through how to analyze metagenomic data. The test dataset we are using here are 6 single-worm metagenomic sequences belonging to two different families - Oncholimidae and Thoracostomopsidae.
