@@ -18,7 +18,7 @@ Although we are analyzing a host-associated microbiome dataset, these same steps
 Before we begin, let's copy our files from the `instructors_data` directory. 
 
 ```
-cp -r work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome /home/userid
+cp -r /work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome /home/userid
 ```
 
 You should have the following folders in your directory:
