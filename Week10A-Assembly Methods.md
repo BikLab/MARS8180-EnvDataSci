@@ -39,7 +39,7 @@ nano 07-megahit.sh
 #SBATCH --cpus-per-task=24
 #SBATCH --mem-per-cpu=30G
 #SBATCH --time=7-00:00:00
-#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-user=userid@uga.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH -e 07-megahit.err-%N
 #SBATCH -o 07-megahit.out-%N
@@ -102,14 +102,14 @@ nano 08-metaMDBG-long-reads.sh
 #SBATCH --cpus-per-task=25
 #SBATCH --mem-per-cpu=10G
 #SBATCH --time=7-00:00:00
-#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-user=userid@uga.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH -e metaMDBG-%N
 #SBATCH -o metaMDBG-%N
 
 # path variables and modules
 module load Miniconda3
-source activate /home/ad14556/conda-env/metaMDBG
+source activate /home/userid/conda-env/metaMDBG
 
 INPUT=/home/userid/nematode-microbiome/data-long-read
 OUTPUT=/scratch/userid/nematode-microbiome/results/08-long-read-assembly
