@@ -45,7 +45,7 @@ We are going to assemble each sample individually. Although most of these nemato
 
 We have to first create a for loop for each sample. Afterwards we save the `basename` of each sample. Afterwards we can use the `megahit` software to assemble our paired-end reads (R1 and R2). We will use a preset called `meta-sensitive` which specifies the list of Kmers to use to build succint de brujin graphs. 
 
-**Important Definition**
+**Important Definitions**
 
 * **Kmers:** A substring of a sequence of the length K 
 	
