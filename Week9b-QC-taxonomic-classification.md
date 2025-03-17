@@ -317,3 +317,57 @@ scp /work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/resu
 What bacteria might be members of the Oncholaimid core microbiome?
 
 What bacteria might be members of the Epacanthion core microbiome?
+
+## Taxonomic Profiling of Long-Read Metagenomic Data
+
+Tools and algorithms for the taxonomoic profiling of metagenomic data were first developed for short-read sequences. These taxonomic profilers, such as metaphlan can NOT be used for long-read seqeunces because they utilize read alignment tools specifically designed for short-read sequences (<1,000 bp). Therefore, we are going to use a new tool, **Sourmash**, that is uses a k-mer approach to identify the taxonomic composition of unassembled long-read sequences. 
+
+First, lets `cd` into our scripts directory and `nano` to edit our script
+
+```
+cd /home/ad14556/nematode-microbiome/scripts
+nano 08-taxonomy-sourmash-long-reads.sh
+```
+
+```
+#!/bin/bash
+
+#SBATCH --job-name="sourmash"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=15G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e sourmash.err-%N
+#SBATCH -o sourmash.out-%N
+
+# path variables and modules
+module load sourmash
+
+INPUT=/home/userid/nematode-microbiome/data-long-read
+OUTPUT=/home/userid/nematode-microbiome/results/08-taxonomy-long-read
+DATABASE=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/database/sourmash
+
+# single assembly
+mkdir -p "$OUTPUT"
+
+for FILE in "$INPUT"/*.fastq.gz; do
+    SAMPLE=$(basename "$FILE" .fastq.gz)
+    sourmash sketch dna -p scaled=1000,k=31 ${FILE} -o ${OUTPUT}/${SAMPLE}.sig
+    sourmash gather ${OUTPUT}/${SAMPLE}.sig ${DATABASE}/gtdb-rs214-reps.k31.zip -o ${OUTPUT}/${SAMPLE}.csv --threshold-bp=3000
+done
+
+sourmash tax metagenome --gather-csv ${OUTPUT}/*.csv --taxonomy ${DATABASE}/gtdb-rs214.lineages.csv -o ${OUTPUT} --output-format kreport --rank genus
+```
+
+The sourmash developers have indexed various databases that can be directly used with their tool [https://sourmash.readthedocs.io/en/latest/databases.html](https://sourmash.readthedocs.io/en/latest/databases.html). To save time, we will be using the GTDB genomic representatives with 85,205 species-level genomes (indexed using a k-mer size of 31). For each each prepared database, they also made a file with the taxonomic information linking each genome with its assigned lineage (using either the GTDB or NCBI database as appropriate). **However, keep in mind that to accurately assign taxonomy to environmental samples you should use a more comprehensive database - in this case the Genbank bacterial database can be used to increase taxonomy assignments** This is especially important to K-mer approaches compared to alignment methods. K-mer methods look to **EXACT** sequence matches and a single SNP will cause that K-mer to remain unassigned.
+
+The first step is to create a `sketch` or a list of k-mers that are seen in the metagenomic database. We are using a k-mer size of 31. A previous study has show that a k-mer size of either 31 or 51 have a high accuracy and precision in taxonomy assignments. The important part is the k-mer of the metagenome should match the database. 
+
+Afterwards, the `gather` subcommand will be used to identify k-mers that are present in the reference genome. The `threshold-bp` indicates the the minimum estimated overlap for reporting a match. From the developers of sourmash:
+
+> We have found a good intermediate threshold is 3 times the scaled value, e.g. --threshold-bp=3000 for a scaled value of 1000. This requires at least three overlapping hashes before a match is reported. If you are using a lower scaled value (a higher density sketch) because you are looking for matches between shorter sequences, then setting threshold-bp to 3 times that scaled value will take advantage of the increased sensitivity to short matches without introducing more false positives.
+
