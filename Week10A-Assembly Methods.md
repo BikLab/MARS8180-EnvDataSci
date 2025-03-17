@@ -78,7 +78,7 @@ Now we can use the following commands to install the software:
 module load Miniconda3
 
 mkdir /home/userid/conda-env/metaMDBG/
-conda -p /home/userid/conda-env/metaMDBG/
+conda create -p /home/userid/conda-env/metaMDBG/
 source activate /home/userid/conda-env/metaMDBG/
 conda install -c conda-forge -c bioconda metamdbg
 ```
