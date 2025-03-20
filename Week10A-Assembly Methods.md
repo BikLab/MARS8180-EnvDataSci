@@ -1,4 +1,6 @@
-**Important Definition**
+## Metagenome Assemblies
+
+#### Important Definitions:
 
 * **Kmers:** A substring of a sequence of the length K 
 	
@@ -11,10 +13,20 @@
 
 	This is useful because we can count how many unique and total kmers we find in a sequence and quickly compare them to other sequences. In the example above, there are 5 tetramers (4 unique tetramers). This is useful because alignment algorithms require a lot of resources - the computational time and memory required grow exponentially for each added sequence. Using the same example above, there are only 256 (4^4) unique tetramers. If we increase the size of the kmer, we have more unique kmer combination but fewer overlapping substrings. Even BLAST utilizes Kmers (default size 28; 4^28 unique combinations) to identify exact matches across the entire NCBI database (>3.7 billion sequences). 
 
-* **De brujin Graphs:** Graph theory underpin many -omics assembly methods. De brujin graphs are old - they were first developed in 1946 by the Mathmatecian Nicolaas de Brujin. In short they are a directed graph-based method of visualizing and assembling sequence data. You take your kmers and connect them if they overlap. Afterwards, you can follow all your overlapping sequences to identify assembled contigs. 
+* **De Bruijn Graphs:** Graph theory underpin many -omics assembly methods. De brujin graphs are old - they were first developed in 1946 by the Mathmatecian Nicolaas de Brujin. In short they are a directed graph-based method of visualizing and assembling sequence data. You take your kmers and connect them if they overlap. Afterwards, you can follow all your overlapping sequences to identify assembled contigs. **Most modern assemblers are based on De Bruijn Graphs**, although older tools can use other methods such as the Naïve approach, Greedy approach, or Overlap Layout Consensus.
 
+<img width="1294" alt="Screenshot 2025-03-20 at 8 58 40 AM" src="https://github.com/user-attachments/assets/aaa54f12-a53c-4aff-8bc6-75e0bf378c52" />
+
+What a De Bruijn Graph actually looks like (visualization of the underlying math - Image from Wikipedia https://en.wikipedia.org/wiki/De_Bruijn_graph) 
+
+How this actually works in practice: https://www.youtube.com/watch?v=OY9Q_rUCGDw 
 
 ## Assembling Short-Read Sequences
+
+Two most popular metagenome assemblers for Illumina short read sequences: 
+
+* **MEGAHIT** (Li et al. 2015, MEGAHIT: an ultra-fast single-node solution for large and complex metagenomics assembly via succinct de Bruijn graph https://academic.oup.com/bioinformatics/article/31/10/1674/177884) 
+* **metaSPAdes** (Nurk et al. 2017, metaSPAdes: a new versatile metagenomic assembler - https://genome.cshlp.org/content/27/5/824) 
 
 There are several tools you can use to assembly short-read metagenomics, but we are going to implement MegaHit for three main reasons: 1) it is incredibly fast, 2) it requires less computational resources, and 3) assembles metagenomic datasets fairly well. 
 
