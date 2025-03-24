@@ -60,3 +60,23 @@ done
 
 We are now able to use our abundance information to bin bacterial contigs into metagenome-assembled genomes. We are going to use three tools 1) metabat2, 2) comebin, and 3) dastool. Both Metabat2 and Comebin use tetranucleotide frequencies in conjunction with abundance information for genome reconstruction. However, Comebin uses a contrastive multi-view representation learning to determine the best MAGs and incorporates single-copy gene information and contig length. Finally, Dastool compares the MAGs produced by any binning algorithm and determine the most complete MAGs (with least amount of contamination). 
 
+For metabat2, we are first going to summarize our BAM file and then reconstruct the genomes.
+
+```
+jgi_summarize_bam_contig_depths --outputDepth contig-depth.txt alignment.bam
+metabat2 -i final.contigs.fa -a contig_depth -o sample-name
+```
+
+Comebin can be run with a single-line
+
+```
+run_comebin.sh -a final.contigs.fa -o sample-directory -p alignment.bam -t 40
+```
+
+Finally, to run DASTool we first need to make a list of contigs that belong to each bin. Afterwards we can compare the assemblies and choose the best one. We can set the score-threshold to 0 to force it to unbin incomplete bins. 
+
+```
+Fasta_to_Contig2Bin.sh -i metabat-bins -e fa > metabat-summary.txt
+Fasta_to_Contig2Bin.sh -i comebin-bins -e fa > comebin-summary.txt
+Rscript DAS_Tool.R -i comebin-summary.txt,metabat-summary.txt -l comebin,metabat -c final.contigs.fa -o dastool-bins --write_bins --write_bin_evals -t 12 --score_threshold=0
+```
