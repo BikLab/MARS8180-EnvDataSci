@@ -66,7 +66,7 @@ We are now able to use our abundance information to bin bacterial contigs into m
 * **Comebin** (Wang et al. 2024, Effective binning of metagenomic contigs using contrastive multi-view representation learning - [https://www.nature.com/articles/s41467-023-44290-z](https://www.nature.com/articles/s41467-023-44290-z))
 * **Dastool** (Sieber et al. 2018, Recovery of genomes from metagenomes via a dereplication, aggregation and scoring strategy - [https://www.nature.com/articles/s41564-018-0171-1](https://www.nature.com/articles/s41564-018-0171-1))
 
-### MetaBat2
+## MetaBat2
 
 ![peerj-03-1165-g001](https://github.com/user-attachments/assets/d3604d96-0238-42dd-a283-4590f7fae801)
 
@@ -79,7 +79,7 @@ jgi_summarize_bam_contig_depths --outputDepth contig-depth.txt alignment.bam
 metabat2 -i final.contigs.fa -a contig_depth -o sample-name
 ```
 
-### Comebin
+## Comebin
 
 ![41467_2023_44290_Fig6_HTML](https://github.com/user-attachments/assets/fa8c5aee-699a-47e3-aeb1-0e91badc0ded)
 
@@ -95,7 +95,7 @@ Comebin can be run with a single-line
 run_comebin.sh -a final.contigs.fa -o sample-directory -p alignment.bam -t 40
 ```
 
-### DAStool 
+## DAStool 
 
 ![image](https://github.com/user-attachments/assets/d6cd0bbb-ed5c-42df-8625-76b8963998d0)
 
@@ -112,7 +112,7 @@ Fasta_to_Contig2Bin.sh -i comebin-bins -e fa > comebin-summary.txt
 Rscript DAS_Tool.R -i comebin-summary.txt,metabat-summary.txt -l comebin,metabat -c final.contigs.fa -o dastool-bins --write_bins --write_bin_evals -t 12 --score_threshold=0
 ```
 
-### In Practice: Binning our Nematode-associated Metagenome-Assembled Genomes
+## In Practice: Binning our Nematode-associated Metagenome-Assembled Genomes
 
 Let's copy the binning scripts to our home directory.
 
