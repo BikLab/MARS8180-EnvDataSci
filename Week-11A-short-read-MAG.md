@@ -42,17 +42,16 @@ Now use the text editor to edit the script:
 module load BWA
 module load SAMtools
 
-CONTIGS=/home/userid/nematode-microbiome/results/07-assembly
+CONTIGS=/scratch/userid/nematode-microbiome/results/07-assembly
 READS=/home/userid/nematode-microbiome/results/03-trimmomatic
 OUTPUT=/scratch/userid/nematode-microbiome/results/10-read-map-short-reads
 
-mkdir -p ${OUTPUT}
-
 for FILE in ${CONTIGS}/*; do
   SAMPLE=$(basename ${FILE})
+  mkdir -p ${OUTPUT}/${SAMPLE}/
   bwa index ${CONTIGS}/${SAMPLE}/final.contigs.fa
-  bwa mem -t 48 ${CONTIGS}/${SAMPLE}/final.contigs.fa ${READS}/${SAMPLE}_R1_paired.fastq.gz ${READS}/${SAMPLE}_R2_paired.fastq.gz | samtools sort -o ${OUTPUT}/alignment.bam --threads 48
-  samtools index -@ 48 ${OUTPUT}/alignment.bam
+  bwa mem -t 48 ${CONTIGS}/${SAMPLE}/final.contigs.fa ${READS}/${SAMPLE}_R1_paired.fastq.gz ${READS}/${SAMPLE}_R2_paired.fastq.gz | samtools sort -o ${OUTPUT}/${SAMPLE}/${SAMPLE}-alignment.bam --threads 48
+  samtools index -@ 48 ${OUTPUT}/${SAMPLE}/${SAMPLE}-alignment.bam
 done
 ```
 
@@ -79,4 +78,95 @@ Finally, to run DASTool we first need to make a list of contigs that belong to e
 Fasta_to_Contig2Bin.sh -i metabat-bins -e fa > metabat-summary.txt
 Fasta_to_Contig2Bin.sh -i comebin-bins -e fa > comebin-summary.txt
 Rscript DAS_Tool.R -i comebin-summary.txt,metabat-summary.txt -l comebin,metabat -c final.contigs.fa -o dastool-bins --write_bins --write_bin_evals -t 12 --score_threshold=0
+```
+
+Let's copy the binning scripts to our home directory.
+
+```
+cp /work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/scripts/11-metabat2-short-reads.sh /home/userid/nematode-microbiome/scripts 
+cp /work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/scripts/12-comebin-short-reads.sh /home/userid/nematode-microbiome/scripts 
+```
+
+Let's edit the metabat2 using a text editor. 
+
+```
+cd /home/userid/nematode-microbiome/scripts 
+nano 11-metabat2-short-reads.sh
+```
+
+```
+#!/bin/bash
+
+#SBATCH --job-name="metabat"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=24
+#SBATCH --mem-per-cpu=2G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=userid@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e metabat.err-%N
+#SBATCH -o metabat.out-%N
+
+# path variables and modules
+module load MetaBAT
+
+CONTIGS=/scratch/ad14556/nematode-microbiome/results/07-assembly
+MAP=/scratch/userid/nematode-microbiome/results/10-read-map-short-reads
+DEPTH=/scratch/userid/nematode-microbiome/results/11-metabat-short-reads
+
+for FILE in ${CONTIGS}/*; do
+  mkdir ${DEPTH}/${SAMPLE}
+  SAMPLE=$(basename ${FILE})
+  jgi_summarize_bam_contig_depths --outputDepth ${DEPTH}/${SAMPLE}-depth.txt ${MAP}/${SAMPLE}/${SAMPLE}-alignment.bam
+  metabat2 -i ${CONTIGS}/${SAMPLE}/final.contigs.fa -a ${DEPTH}/${SAMPLE}-depth.txt -o ${DEPTH}/${SAMPLE}/${SAMPLE} -t 24
+done
+```
+
+For comebin, we will first need to install this as a conda environment since it is not currently installed on the cluster
+
+```
+interact --partition=batch --mem=15G
+module load Miniconda3
+
+mkdir /home/ad14556/conda-env/comebin
+conda create -p /home/ad14556/conda-env/comebin
+source activate /home/ad14556/conda-env/comebin
+conda install -c conda-forge -c bioconda comebin
+```
+
+While this is installing, we can create/edit our script to use this software to bin our metagenomes. 
+
+```
+nano 12-comebin-short-reads.sh
+```
+
+```
+#!/bin/bash
+
+#SBATCH --job-name="comebin"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=40
+#SBATCH --mem-per-cpu=2G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=userid@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e comebin.err-%N
+#SBATCH -o comebin.out-%N
+
+# path variables and modules
+module load MetaBAT
+
+CONTIGS=/scratch/ad14556/nematode-microbiome/results/07-assembly
+MAP=/scratch/userid/nematode-microbiome/results/10-read-map-short-reads
+BIN=/scratch/userid/nematode-microbiome/results/12-comebin-short-reads
+
+for FILE in ${CONTIGS}/*; do
+  mkdir ${BIN}/${SAMPLE}
+  SAMPLE=$(basename ${FILE})
+  run_comebin.sh -a ${CONTIGS}/${SAMPLE}/final.contigs.fa -o ${BIN}/${SAMPLE} -p ${MAP}/${SAMPLE} -t 24
+done
 ```
