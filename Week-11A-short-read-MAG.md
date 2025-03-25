@@ -4,6 +4,9 @@ When we assemble our genome we lose quantitative information. We can map our rea
 
 We will use two tools - **BWA** and **SAMTools** - to read map our samples. BWA will map short-reads to the assembly. After we will sort the BAM file and index it for rapid random access. 
 
+* **BWA** (Li et al. 2009, Fast and accurate short read alignment with Burrows–Wheeler transform - [https://academic.oup.com/bioinformatics/article/25/14/1754/225615?login=false](https://academic.oup.com/bioinformatics/article/25/14/1754/225615?login=false))
+* **SamTools** (Danecek et al. 2021, Twelve years of SAMtools and BCFtools - [https://academic.oup.com/gigascience/article/10/2/giab008/6137722?login=false](https://academic.oup.com/gigascience/article/10/2/giab008/6137722?login=false))
+
 To read map our samples, we 1) index our assembly, 2) read map using BWA, 3) sort to SAM file and convert to BAM, and 4) index the sorted BAM file.
 
 In practice it looks like this:
@@ -58,6 +61,11 @@ done
 ## Metagenome-assembled Genomes
 
 We are now able to use our abundance information to bin bacterial contigs into metagenome-assembled genomes. We are going to use three tools 1) metabat2, 2) comebin, and 3) dastool. Both Metabat2 and Comebin use tetranucleotide frequencies in conjunction with abundance information for genome reconstruction. However, Comebin uses a contrastive multi-view representation learning to determine the best MAGs and incorporates single-copy gene information and contig length. Finally, Dastool compares the MAGs produced by any binning algorithm and determine the most complete MAGs (with least amount of contamination). 
+
+* **Metabat2** (Kang et al. 2019, MetaBAT 2: an adaptive binning algorithm for robust and efficient genome reconstruction from metagenome assemblies - [https://peerj.com/articles/7359/](https://peerj.com/articles/7359/))
+* **Comebin** (Wang et al. 2024, Effective binning of metagenomic contigs using contrastive multi-view representation learning - [https://www.nature.com/articles/s41467-023-44290-z](https://www.nature.com/articles/s41467-023-44290-z))
+* **Dastool** (Sieber et al. 2018, Recovery of genomes from metagenomes via a dereplication, aggregation and scoring strategy - [https://www.nature.com/articles/s41564-018-0171-1](https://www.nature.com/articles/s41564-018-0171-1))
+
 
 For metabat2, we are first going to summarize our BAM file and then reconstruct the genomes.
 
@@ -126,6 +134,7 @@ done
 
 ![41467_2023_44290_Fig6_HTML](https://github.com/user-attachments/assets/fa8c5aee-699a-47e3-aeb1-0e91badc0ded)
 
+Comebin is an 
 For comebin, we will first need to install this as a conda environment since it is not currently installed on the cluster
 
 ```
