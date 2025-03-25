@@ -60,19 +60,27 @@ done
 
 ## Metagenome-assembled Genomes
 
-We are now able to use our abundance information to bin bacterial contigs into metagenome-assembled genomes. We are going to use three tools 1) metabat2, 2) comebin, and 3) dastool. Both Metabat2 and Comebin use tetranucleotide frequencies in conjunction with abundance information for genome reconstruction. However, Comebin uses a contrastive multi-view representation learning to determine the best MAGs and incorporates single-copy gene information and contig length. Finally, Dastool compares the MAGs produced by any binning algorithm and determine the most complete MAGs (with least amount of contamination). 
+We are now able to use our abundance information to bin bacterial contigs into metagenome-assembled genomes. We are going to use three tools 1) MetaBat2, 2) comebin, and 3) dastool. Both MetaBat2 and Comebin use tetranucleotide frequencies in conjunction with abundance information for genome reconstruction. However, Comebin uses a contrastive multi-view representation learning to determine the best MAGs and incorporates single-copy gene information and contig length. Finally, Dastool compares the MAGs produced by any binning algorithm and determine the most complete MAGs (with least amount of contamination). 
 
-* **Metabat2** (Kang et al. 2019, MetaBAT 2: an adaptive binning algorithm for robust and efficient genome reconstruction from metagenome assemblies - [https://peerj.com/articles/7359/](https://peerj.com/articles/7359/))
+* **MetaBat2** (Kang et al. 2019, MetaBAT 2: an adaptive binning algorithm for robust and efficient genome reconstruction from metagenome assemblies - [https://peerj.com/articles/7359/](https://peerj.com/articles/7359/))
 * **Comebin** (Wang et al. 2024, Effective binning of metagenomic contigs using contrastive multi-view representation learning - [https://www.nature.com/articles/s41467-023-44290-z](https://www.nature.com/articles/s41467-023-44290-z))
 * **Dastool** (Sieber et al. 2018, Recovery of genomes from metagenomes via a dereplication, aggregation and scoring strategy - [https://www.nature.com/articles/s41564-018-0171-1](https://www.nature.com/articles/s41564-018-0171-1))
 
 
-For metabat2, we are first going to summarize our BAM file and then reconstruct the genomes.
+![peerj-03-1165-g001](https://github.com/user-attachments/assets/d3604d96-0238-42dd-a283-4590f7fae801)
+
+The figure above is from the MetaBat1 software; howwever, MetaBat2 works similarly, except that it is iterative and chooses the best parameters according to your dataset. It does not require to make any decisions about which parameters would be best suited for your dataset. Additionally, MetaBat2 constructs a graph using the tetranucleotide frequency and read abundance to cluster contigs that appear to be similar in structure. 
+
+For MetaBat2, we are first going to summarize our BAM file and then reconstruct the genomes.
 
 ```
 jgi_summarize_bam_contig_depths --outputDepth contig-depth.txt alignment.bam
 metabat2 -i final.contigs.fa -a contig_depth -o sample-name
 ```
+
+![41467_2023_44290_Fig6_HTML](https://github.com/user-attachments/assets/fa8c5aee-699a-47e3-aeb1-0e91badc0ded)
+
+From the manuscript, "The key contributions of COMEBin can be summarized as follows: 1) We introduce a data augmentation approach that generates multiple views for each contig, enabling contrastive learning and yielding high-quality representations of the heterogeneous features; 2) COMEBin incorporates a “Coverage module” to obtain fixed-dimensional coverage embeddings, which enhances its performance across datasets with varying numbers of sequencing samples; 3) COMEBin employs the advanced community detection algorithm, Leiden21, for clustering. Moreover, we adapt the settings of Leiden specifically for the binning task, considering single-copy gene information22 and contig length. This adaptation ensures that COMEBin produces robust and reliable binning results across diverse datasets." 
 
 Comebin can be run with a single-line
 
@@ -131,10 +139,6 @@ for FILE in ${CONTIGS}/*; do
   metabat2 -i ${CONTIGS}/${SAMPLE}/final.contigs.fa -a ${DEPTH}/${SAMPLE}-depth.txt -o ${DEPTH}/${SAMPLE}/${SAMPLE} -t 24
 done
 ```
-
-![41467_2023_44290_Fig6_HTML](https://github.com/user-attachments/assets/fa8c5aee-699a-47e3-aeb1-0e91badc0ded)
-
-Comebin is an 
 For comebin, we will first need to install this as a conda environment since it is not currently installed on the cluster
 
 ```
