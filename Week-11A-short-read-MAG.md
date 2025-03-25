@@ -124,6 +124,8 @@ for FILE in ${CONTIGS}/*; do
 done
 ```
 
+![41467_2023_44290_Fig6_HTML](https://github.com/user-attachments/assets/fa8c5aee-699a-47e3-aeb1-0e91badc0ded)
+
 For comebin, we will first need to install this as a conda environment since it is not currently installed on the cluster
 
 ```
