@@ -146,7 +146,7 @@ nano 11-metabat2-short-reads.sh
 # path variables and modules
 module load MetaBAT
 
-CONTIGS=/scratch/ad14556/nematode-microbiome/results/07-assembly
+CONTIGS=/scratch/userid/nematode-microbiome/results/07-assembly
 MAP=/scratch/userid/nematode-microbiome/results/10-read-map-short-reads
 DEPTH=/scratch/userid/nematode-microbiome/results/11-metabat-short-reads
 
