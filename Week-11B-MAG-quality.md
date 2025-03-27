@@ -14,7 +14,11 @@ It should be noted that there is no minumum assembly size since genomes smaller 
 
 **Bowers et al. (2017) Minimum information about a single amplified genome (MISAG) and a metagenome-assembled genome (MIMAG) of bacteria and archaea [https://www.nature.com/articles/nbt.3893](https://www.nature.com/articles/nbt.3893)**
 
-We will use the software program **CheckM2** to determine the quality of the MAGs. It uses two machine learning models to determine the quality depending on wether the genome is **novel** or if it is closely related to a genome in the training set. These two machine learning methods are 
+We will use the software program **CheckM2** to determine the quality of the MAGs:
+
+* Chklovski A, Parks DH, Woodcroft BJ, Tyson GW (2023) CheckM2: a rapid, scalable and accurate tool for assessing microbial genome quality using machine learning. _Nature Methods_, 20: 1203-1212 - https://www.nature.com/articles/s41592-023-01940-w
+
+It uses two machine learning models to determine the quality depending on wether the genome is **novel** or if it is closely related to a genome in the training set. These two machine learning methods are:  
 
 ![41592_2023_1940_Fig1_HTML](https://github.com/user-attachments/assets/ab024524-5f37-40a0-b906-8e2a6f3ad8a2)
 
