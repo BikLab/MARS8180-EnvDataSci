@@ -191,9 +191,11 @@ nano 12-comebin-short-reads.sh
 #SBATCH -o comebin.out-%N
 
 # path variables and modules
-module load MetaBAT
+module load Miniconda3
+module load CUDA
+source activate /home/userid/conda-env/comebin
 
-CONTIGS=/scratch/ad14556/nematode-microbiome/results/07-assembly
+CONTIGS=/scratch/userid/nematode-microbiome/results/07-assembly
 MAP=/scratch/userid/nematode-microbiome/results/10-read-map-short-reads
 BIN=/scratch/userid/nematode-microbiome/results/12-comebin-short-reads
 
@@ -201,5 +203,46 @@ for FILE in ${CONTIGS}/*; do
   mkdir ${BIN}/${SAMPLE}
   SAMPLE=$(basename ${FILE})
   run_comebin.sh -a ${CONTIGS}/${SAMPLE}/final.contigs.fa -o ${BIN}/${SAMPLE} -p ${MAP}/${SAMPLE} -t 24
+done
+```
+
+After metabat2 and Comebin finish running, we can use DASTool to determine the best bins: 
+
+```
+nano 13-dastool-best-bins.sh
+```
+
+```
+#!/bin/bash
+
+#SBATCH --job-name="dastool"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=12
+#SBATCH --mem-per-cpu=2G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=userid@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e dastool.err-%N
+#SBATCH -o dastool.out-%N
+
+# path variables and modules
+module load Miniconda3
+source activate /home/ad14556/conda-env/dastool
+
+CONTIGS=/scratch/userid/nematode-microbiome/results/07-assembly
+MAP=/scratch/userid/nematode-microbiome/results/10-read-map-short-reads
+METABAT=/scratch/userid/nematode-microbiome/results/11-metabat-short-reads
+COMEBIN=/scratch/userid/nematode-microbiome/results/12-comebin-short-reads
+OUTPUT=/scratch/userid/nematode-microbiome/results/13-dastool-short-reads
+
+for FILE in ${CONTIGS}/*; do
+  SAMPLE=$(basename ${FILE})
+  mkdir -p ${OUTPUT}/${SAMPLE}
+  Fasta_to_Contig2Bin.sh -i ${METABAT}/${SAMPLE} -e fa > ${OUTPUT}/${SAMPLE}-metabat-scaffolds2bin.tsv
+  Fasta_to_Contig2Bin.sh -i ${COMEBIN}/${SAMPLE} -e fa > ${OUTPUT}/${SAMPLE}-comebin-scaffolds2bin.tsv
+  DAS_Tool -i ${COMEBIN}/${SAMPLE}-metabat-scaffolds2bin.tsv,${METABAT}/${SAMPLE}-metabat-scaffolds2bin.tsv -l comebin,metabat \
+    -c ${CONTIGS}/${SAMPLE}/final.contigs.fa -o ${OUTPUT}/${SAMPLE} --write_bins --write_bin_evals -t 12 --score_threshold=0
 done
 ```
