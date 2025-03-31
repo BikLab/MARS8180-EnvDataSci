@@ -104,3 +104,19 @@ So, we are going to have to change that using a bash commands - we will need the
 ```
 awk 'NR == FNR { a[$2] = $1; next } { $1 = a[$1] } 1' contig-rename-report.txt sample_DASTool_contig2bin.tsv > sample_DASTool_contig2bin-final.tsv
 ```
+
+## METABOLIC
+
+There are other tools that are not available via Anvi'o that allow you to predict metabolic and biogeochemical functional trait from metagenomic data. One of the tools is METABOLIC. The genomic datasets can either be metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or isolated strain sequenced genomes. There are two programs we can run with METABOLIC - METABOLIC-C and METABOLIC-G. 
+
+GitHub: [https://github.com/AnantharamanLab/METABOLIC](https://github.com/AnantharamanLab/METABOLIC)
+
+### METABOLIC-G.pl	
+> Allows for classification of the metabolic capabilities of input genomes.
+
+### METABOLIC-C.pl	
+> Allows for classification of the metabolic capabilities of input genomes,
+> calculation of genome coverage, creation of biogeochemical cycling diagrams,
+> and visualization of community metabolic interactions and contribution to biogeochemical processes by each microbial group.
+
+For our purposed, we are going to use METABOLIC-G.  
