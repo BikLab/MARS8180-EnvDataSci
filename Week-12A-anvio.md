@@ -5,15 +5,15 @@ Anvi'o is a really powerful tool that allows you to analyze -omics datasets usin
 
 Before, we start there are a few terms specific to Anvi'o that you should know. 
 
-###Contigs database
+### Contigs database
 
 > A self-contained database containing a lot of information associated with your contig (or scaffold) sequences. This includes data that isn’t dependent on which sample the contigs came from, like positions of open reading frames, k-mer frequencies, split start/end points, functional and taxonomic annotations among others. You can initialize a basic contigs database from a FASTA file with the command anvi-gen-contigs-database and supplement it with additional information later in your analysis.
 
-###Profile database
+### Profile database
 
 > A database containing sample-specific information about your contigs; for instance, coverage information from mapping reads to the contigs in a sample. Single profiles, each of which contains data for a particular sample, can be combined into a merged profile if they link to the same contigs database. The information across samples in a merged profile can be visualized as a ‘view’ in the anvi’o interactive database.
 
-###Collection
+### Collection
 
 > A virtual construct to store bins of items in an anvi’o profile database. Each collection contains one or more bins, and each bin contains one or more items. These items can be gene clusters, contigs, or other things depending on the display mode. See collection for more information.
 
