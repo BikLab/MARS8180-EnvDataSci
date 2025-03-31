@@ -36,6 +36,75 @@ checkm2 predict --threads 30 --input <folder_with_bins> --output-directory <outp
 
 
 
+To run CheckM, copy the script from the instructor_directory folder:
 
+```
+cp /work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/scripts/15-checkm.sh /home/ad14556/nematode-microbiome/scripts/
+nano /home/ad14556/nematode-microbiome/scripts/15-checkm.sh
+```
 
+```
+#!/bin/bash
+
+#SBATCH --job-name="checkm"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=24
+#SBATCH --mem-per-cpu=2G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e checkm.err-%N
+#SBATCH -o checkm.out-%N
+
+# path variables and modules
+module load CheckM2
+
+BINS=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/13-dastool-short-reads
+OUTPUT=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/15-checkm-short-reads
+DATABASE=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/database/CheckM2_database/uniref100.KO.1.dmnd
+
+for FILE in ${BINS}/*; do
+  SAMPLE=$(basename ${FILE})
+  checkm2 predict --force -x .fa --threads 24 --database_path ${DATABASE} --input ${BINS}/${SAMPLE}/${SAMPLE}_DASTool_bins --output-directory ${OUTPUT}/${SAMPLE}
+done
+(/home/ad14556
+```
+
+## Classifying Bacterial MAGs 
+
+To identify taxonomically classify the the bacterial bins, we can use the GTDB-tk. This tool will identify single-copy genes and place them on a phylogenetic tree. It will out put a text file with the taxonomic id of each bin 
+
+```
+cp /work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/scripts14-gtdb-tk.sh /home/ad14556/nematode-microbiome/scripts/
+nano /home/ad14556/nematode-microbiome/scripts/14-gtdb-tk.sh
+```
+
+```
+#!/bin/bash
+
+#SBATCH --job-name="gtdb-tk"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=30
+#SBATCH --mem-per-cpu=2G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e gtdb-tk.err-%N
+#SBATCH -o gtdb-tk.out-%N
+
+# path variables and modules
+module load GTDB-Tk
+
+BINS=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/13-dastool-short-reads
+OUTPUT=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/14-gtdbtk-short-reads
+
+for FILE in ${BINS}/*; do
+  SAMPLE=$(basename ${FILE})
+  gtdbtk classify_wf --genome_dir ${BINS}/${SAMPLE}/${SAMPLE}_DASTool_bins --out_dir ${OUTPUT}/${SAMPLE} --skip_ani_screen -x fa --cpus 24 --pplacer_cpus 24
+done
+```
 
