@@ -64,15 +64,7 @@ anvi-gen-contigs-database -f contigs-renamed.fa \
 	-o sample.db -n sample-name 
 ```
 
-Since we simplified the contig names, we will have to rename them in the BAM files we previously made. Fortunately, the developers of anvi'o have a script for that.
-
-```
-anvi-script-reformat-bam sample.bam \
-  -r contig-rename-report.txt \
-  -o sample-rename.bam
-```
-
-Now we can create a sample profile for this database - this will include read mapping information. 
+Since we simplified the contig names, we have to make sure the contig names from the BAM files match. **We will have to redo the read mapping**. Afterwards, we can create a sample profile for this database - this will include read mapping information. 
 
 ```
 anvi-profile -i  sample-rename.bam \
@@ -101,8 +93,106 @@ k141_1056006	10630
 
 So, we are going to have to change that using a bash commands - we will need the report file we created earlier. 
 
+**I have already run the commands below for sample Epacanthion.1**
+
 ```
+# change contig names to match changes made by anvio
 awk 'NR == FNR { a[$2] = $1; next } { $1 = a[$1] } 1' contig-rename-report.txt sample_DASTool_contig2bin.tsv > sample_DASTool_contig2bin-final.tsv
+
+# replace spaces with tabs
+sed 's/  \+/\t/g' sample_DASTool_contig2bin-final.tsv > dastool-scaffolds2bin-tab-final-no-spaces.tsv
+
+# add sample name to bins (anvio doesnt like it when names start with numebers)
+sed 's/\t/\t\epacanthion-1-/' dastool-scaffolds2bin-tab-final-no-spaces.tsv >> dastool-scaffolds2bin-tab-final-no-spaces-rename-bins.tsv
+
+```
+
+Afterwards, we can add our bins to the collection: 
+
+```
+anvi-import-collection sample-dastool-scaffolds2bin-tab-final-no-spaces-rename-bins.tsv -C description -p PROFILE -c sample.db --contigs-mode
+```
+
+Let's copy the scripts from the instructors directory.
+
+```
+cp /work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/scripts/17A-anvio-read-mapping.sh /home/userid/nematode-microbiome/scripts
+cp /work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/scripts/17B-anvio-viz.sh /home/userid/nematode-microbiome/scripts
+```
+
+First, we need to read map one more time so that the file has the correct contigs names
+
+```
+nano /home/userid/nematode-microbiome/scripts/17A-anvio-read-mapping.sh
+```
+
+```
+#!/bin/bash
+
+#SBATCH --job-name="read-map"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=24
+#SBATCH --mem-per-cpu=4G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e read-map.err-%N
+#SBATCH -o read-map.out-%N
+
+# path variables and modules
+module load BWA
+module load SAMtools
+
+CONTIGS=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/18-anvio-short-reads/epacanthion.1/final-contigs-reformat.fa
+FORWARD=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/03-trimmomatic/epacanthion.1_R1_paired.fastq.gz
+REVERSE=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/03-trimmomatic/epacanthion.1_R2_paired.fastq.gz
+OUTPUT=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/18-anvio-short-reads/epacanthion.1
+
+bwa index ${CONTIGS}
+bwa mem -t 24 ${CONTIGS} ${FORWARD} ${REVERSE} | samtools sort -o ${OUTPUT}/epacanthion.1-alignment-rename.bam --threads 48
+samtools index -@ 24 ${OUTPUT}/epacanthion.1-alignment-rename.bam
+```
+
+Then, we can run through the Anvi'o workflow:
+
+```
+nano /home/userid/nematode-microbiome/scripts/17B-anvio-viz.sh
+```
+
+```
+#!/bin/bash
+
+#SBATCH --job-name="anvio"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=24
+#SBATCH --mem-per-cpu=4G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e anvio.err-%N
+#SBATCH -o anvio.out-%N
+
+# path variables and modules
+module load Miniconda3
+source activate /home/ad14556/conda-env/anvio
+
+CONTIGS=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/07-assembly/epacanthion.1/final.contigs.fa
+BINS=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/13-dastool-short-reads/epacanthion.1/epacanthion_003_GA_TI_202311_DASTool_contig2bin.tsv
+BAM=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/18-anvio-short-reads/epacanthion.1/epacanthion.1-alignment-rename.bam
+OUTPUT=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/18-anvio-short-reads/epacanthion.1
+
+# simplify contig names
+anvi-script-reformat-fasta ${CONTIGS} -o ${OUTPUT}/final-contigs-reformat.fa --simplify-names --report-file ${OUTPUT}/final-contigs-reformat.txt
+# create the contigs database
+anvi-gen-contigs-database -f ${OUTPUT}/final-contigs-reformat.fa -o ${OUTPUT}/epacanthion.1.db -n epacanthion.1 -T 24
+# create single sample profile
+anvi-profile -i ${OUTPUT} -c ${OUTPUT}/epacanthion.1.db -o ${OUTPUT}/profile --sample-name epacanthion_1 -T 24
+#import bins
+anvi-import-collection ${OUTPUT}/epacanthion-1-dastool-scaffolds2bin-tab-final-no-spaces-rename-bins.tsv -C dastool -p ${OUTPUT}/profile/PROFILE.db -c ${OUTPUT}/epacanthion.1.db --contigs-mode
 ```
 
 ## METABOLIC
@@ -120,3 +210,43 @@ GitHub: [https://github.com/AnantharamanLab/METABOLIC](https://github.com/Ananth
 > and visualization of community metabolic interactions and contribution to biogeochemical processes by each microbial group.
 
 For our purposed, we are going to use METABOLIC-G.  
+
+```
+cp /work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/scripts/18-metabolic.sh /home/userid/nematode-microbiome/scripts/17A-anvio-read-mapping.sh
+```
+
+```
+nano /home/userid/nematode-microbiome/scripts/17A-anvio-read-mapping.sh
+```
+
+```
+#!/bin/sh
+
+#SBATCH --job-name="metabolic"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=24
+#SBATCH --mem-per-cpu=2G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=END,FAIL
+#SBATCH -e metabolic.err-%N
+#SBATCH -o metabolic.out-%N
+
+#Path Variables
+module load HMMER
+module load METABOLIC
+module load GTDB-Tk
+
+INPUT=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/16-final-bins-short-reads/epacanthion.1
+OUTPUT=/work/mars8180/instructor_data/metagenomic-datasets/nematode-microbiome/results/19-metabolic/epacanthion.1
+
+mkdir -p ${OUTPUT}/input
+mkdir -p ${OUTPUT}/output
+
+cp ${INPUT}/*.fa ${OUTPUT}/input
+rename ".fa" ".fasta" ${OUTPUT}/input/*
+
+METABOLIC-G.pl -p meta -t 24 -in-gn ${OUTPUT}/input -o ${OUTPUT}/output
+```
