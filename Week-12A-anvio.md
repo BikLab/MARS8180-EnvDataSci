@@ -25,9 +25,9 @@ We will need to install Anvi'o using CONDA
 interact --mem=15G
 
 module load Miniconda3
-mkdir /home/ad14556/conda-env/anvio
-conda create -p /home/ad14556/conda-env/anvio
-source activate /home/ad14556/conda-env/anvio
+mkdir /home/userid/conda-env/anvio
+conda create -p /home/userid/conda-env/anvio
+source activate /home/userid/conda-env/anvio
 
 conda install -y -c conda-forge -c bioconda python=3.10 \
         sqlite=3.46 prodigal idba mcl muscle=3.8.1551 famsa hmmer diamond \
