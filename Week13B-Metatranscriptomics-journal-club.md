@@ -49,9 +49,13 @@ Aplakidou E, Vergoulidis N, Chasapi M, Venetsianou NK, Kokoli M, Panagiotopoulou
 * It is common to map transcripts directly to genomes you are interested in (e.g. using the MMETSP database)
 * You **must** decide what RNA pool to target, and how to treat your sample during library prep
 
+---
+
 How mRNA standards work (figure 1 from Moran et al. 2013): 
 
 <img width="666" alt="Screenshot 2025-04-02 at 6 14 53 PM" src="https://github.com/user-attachments/assets/a4b3fd6d-12a0-4c0b-949c-e40e9c260d2c" />
+
+---
 
 Choosing what RNA pool to target:
 1. **ribosomal RNA (rRNA) depletion** - in which rRNA is removed and non-coding RNA and mRNA remain
@@ -64,17 +68,25 @@ These two methods differ in their resulting RNA pools, coverage, and quantitaive
 * Additionally, rRNA depletion better recovers important eukaryotic organelle transcripts without selection bias (plastid expression, e.g. Rubisco, cytochrome oxidase)
 * rRNA depletion will will most likely show low recovery of microeukaryotes, and prokaryotes are likely to dominate the majority of the sequencing library
 
+---
+
 Some common metatranscriptomics workflows driven by biological questions (Supp. Figure 1 from Cohen et al. 2021):
 
 <img width="627" alt="Screenshot 2025-04-02 at 6 57 14 PM" src="https://github.com/user-attachments/assets/5f2c56f4-5982-4ea7-96a0-ecb2d43a259e" />
+
+---
 
 Databases and Repositories for Metatranscriptomics Studies (Aplakidou et al. 2024) - resources below we find especially useful are IMG/M, GOLD, KBase, and the NMDC: 
 
 <img width="701" alt="Screenshot 2025-04-02 at 6 35 29 PM" src="https://github.com/user-attachments/assets/2cb0abde-7e27-40e3-856a-f25ed12f1d14" />
 
+---
+
 Some useful visualization concepts and approaches (Figure 2 from Aplakidou et al. 2024): 
 
 <img width="684" alt="Screenshot 2025-04-02 at 6 40 01 PM" src="https://github.com/user-attachments/assets/1107e748-6df0-4c3f-91b1-6a065f3cd466" />
+
+---
 
 Table 3 from from Aplakidou et al. 2024 also has a partial list of tools and software that can be used in -Omics studies. We haven't talked about Geone Browsers much, but you may find JBrowse and Genious especially useful for exploring Genomic and Muti-Omics datasets: 
 
