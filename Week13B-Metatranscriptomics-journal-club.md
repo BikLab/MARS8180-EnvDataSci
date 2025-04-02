@@ -10,7 +10,7 @@ A visual on what this looks like in the environment from this paper:
 
 <img width="326" alt="Screenshot 2025-04-02 at 6 16 31 PM" src="https://github.com/user-attachments/assets/778b72ba-5839-4e2b-b705-8d2e41a3d5f4" />
 
-* Lab studies indicate that mRNA has an average half-life of 2.4 to 5 minutes. In contrast, the half-life of a typical bacterial protein is ~20 hours, which is about two orders of magnitude longer than an mRNA half-life.
+* Lab studies indicate that **mRNA has an average half-life of 2.4 to 5 minutes**. In contrast, the half-life of a typical bacterial protein is ~20 hours, which is about two orders of magnitude longer than an mRNA half-life.
 * mRNA responds sensitively to the beginning and end of envionrmental fluctions - relative shifts in proteins show a lag time, and proteins are thus less responsive to rapid environmental dynamics.
 
 #### Four Key Observations from Moran et al. 2013: 
