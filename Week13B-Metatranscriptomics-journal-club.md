@@ -43,7 +43,7 @@ Aplakidou E, Vergoulidis N, Chasapi M, Venetsianou NK, Kokoli M, Panagiotopoulou
 11. Taxonomic and Functional Annotations
 12. Normalization and Differential Abundance Analysis (e.g. EdgeR, DESeq2)
 
-Unique aspects of metatranscriptomics studies:
+#### Unique aspects of metatranscriptomics studies:
 
 * The use of mRNA standards to quantify absolute transcript abundance
 * It is common to map transcripts directly to genomes you are interested in (e.g. using the MMETSP database)
