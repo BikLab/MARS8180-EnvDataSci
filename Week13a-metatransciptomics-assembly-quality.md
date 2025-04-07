@@ -39,6 +39,7 @@ We have already gone through quality control steps and assembly in the metagenom
 ## Assess quality of our assembly
 We are going to use QUAST to assess the quality of the metatranscriptomic dataset and SALMON to quantiy the expression of transcripts. 
 
+### Running QUAST for Assembly Quality 
 Quant is an easy-to-use software that estimates assembly statistics, such as: 
 
 * Number of Contigs
@@ -56,6 +57,8 @@ You can run this tool using the following command:
 quast final.contigs.fa -o output/dir --threads 16
 ```
 
+### Running SALMON for Quantification of Transcripts
+
 Salmon is used to quantify your transcripts. There are two main steps: 
 
 1. index your assembly
@@ -67,6 +70,8 @@ These can be run consequetively:
 salmon index -t final.contigs.fa -i sample-salmon-index -k 31 --threads 12
 salmon quant -i sample-salmon-index -l A -1 sample_R1_paired.fastq.gz -2 sample_R2_paired.fastq.gz --validateMappings -o output-sample-dir
 ```
+
+### Running QUAST and Salmon on Our Data
 
 Let's copy the two scripts over to our home directory
 
