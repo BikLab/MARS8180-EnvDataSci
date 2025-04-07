@@ -36,11 +36,121 @@ The steps of analyzing a metatranscriptomic dataset is nearly identical to metag
 
 We have already gone through quality control steps and assembly in the metagenomic section, so we will not spend too much time on that. Instead, we will focus largely on steps 3-6.
 
-### Assess quality of our assembly
-We are going to use QUAST and SALMON to asses the quality of the metatranscriptomic dataset 
+## Assess quality of our assembly
+We are going to use QUAST to assess the quality of the metatranscriptomic dataset and SALMON to quantiy the expression of transcripts. 
 
-### Identify protein coding sequences
+Quant is an easy-to-use software that estimates assembly statistics, such as: 
 
-### Assigning taxonomy to each contig
+* Number of Contigs
+* Length of the Assembly
+* N50
+* N90
+* L50
+* L90
+* GC%
 
-### Annoting the contigs
+
+You can run this tool using the following command: 
+
+```
+quast final.contigs.fa -o output/dir --threads 16
+```
+
+Salmon is used to quantify your transcripts. There are two main steps: 
+
+1. index your assembly
+2. quantify
+
+These can be run consequetively:
+
+```
+salmon index -t final.contigs.fa -i sample-salmon-index -k 31 --threads 12
+salmon quant -i sample-salmon-index -l A -1 sample_R1_paired.fastq.gz -2 sample_R2_paired.fastq.gz --validateMappings -o output-sample-dir
+```
+
+Let's copy the two scripts over to our home directory
+
+```
+cp /work/mars8180/instructor_data/metatranscriptome-datasets/scripts/07-quast.sh /home/userid/metatranscriptomics/scripts
+cp /work/mars8180/instructor_data/metatranscriptome-datasets/scripts/08-salmon.sh /home/userid/metatranscriptomics/scripts
+```
+
+Let's cd into the script directory to edit and then run these scripts.
+
+```
+cd /home/userid/metatranscriptomics/scripts
+```
+
+```
+nano 07-quast.sh
+```
+
+```
+#!/bin/sh
+#SBATCH --job-name="quast"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem-per-cpu=5G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e 07-quast.err-%N
+#SBATCH -o 07-quast.out-%N
+
+module load QUAST
+
+ASSEMBLY=/work/mars8180/instructor_data/metatranscriptome-datasets/results/06-assembly
+OUTPUT=/home/userid/metatranscriptomics/results/07-quast
+
+mkdir -p ${OUTPUT}
+
+for folder in ${ASSEMBLY}/*; do
+  base=$(basename ${folder})
+  quast ${ASSEMBLY}/${base}/final.contigs.fa -o ${OUTPUT}/${base} --threads 16
+done
+```
+
+The assemblies are located in the instructor_directory. So DO NOT change the file path to the assemblies. Do change the output path to the results folder in your home directory.
+
+Now, we can run Salmon
+
+```
+nano 08-salmon.sh
+```
+
+```
+#!/bin/sh
+#SBATCH --job-name="salmon"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=12
+#SBATCH --mem-per-cpu=5G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e 08-salmon.err-%N
+#SBATCH -o 08-salmon.out-%N
+
+module load Salmon
+
+ASSEMBLY=/work/mars8180/instructor_data/metatranscriptome-datasets/results/06-assembly
+READS=/work/mars8180/instructor_data/metatranscriptome-datasets/results/03-trimmomatic
+OUTPUT=/scratch/userid/metatranscriptomics/results/08-salmon
+
+mkdir -p ${OUTPUT}
+
+for folder in ${ASSEMBLY}/*; do
+  base=$(basename ${folder})
+  salmon index -t ${ASSEMBLY}/${base}/final.contigs.fa -i ${OUTPUT}/${base}/${base}-salmon-index -k 31 --threads 12
+  salmon quant -i ${OUTPUT}/${base}/${base}-salmon-index -l A -1 ${READS}/${base}_R1_paired.fastq.gz -2 ${READS}/${base}_R2_paired.fastq.gz --validateMappings -o ${OUTPUT}/${base} --threads 12
+done
+```
+
+## Identify protein coding sequences
+
+## Assigning taxonomy to each contig
+
+## Annoting the contigs
