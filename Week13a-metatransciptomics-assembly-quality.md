@@ -3,6 +3,7 @@
 This week, we will be spending time analyzing a small subset of samples (from 2 stations) that were collected as part of the Tara Oceans Project. There are a total of 12 samples (6 from station TARA_135 and 6 from station TARA_137): 
 
 ![TARAOCEANS-CARTE-1024x462](https://github.com/user-attachments/assets/4042a01f-a783-4b37-8c98-97de36bbc751)
+![tara-station-map](https://github.com/user-attachments/assets/ad947f27-35fb-47da-919b-23b7f241b157)
 
 
 
