@@ -50,7 +50,6 @@ Quant is an easy-to-use software that estimates assembly statistics, such as:
 * L90
 * GC%
 
-
 You can run this tool using the following command: 
 
 ```
@@ -156,6 +155,46 @@ done
 
 Now we can download the html files on our personal computers to assess transcript assembly quality. 
 
+## Merging Transcriptomes
+
+
+```
+cp /work/mars8180/instructor_data/metatranscriptome-datasets/scripts/09-merge-assemblies.sh /home/userid/metatranscriptomics/scripts/
+```
+
+```
+nano /home/userid/metatranscriptomics/scripts/09-merge-assemblies.sh
+```
+
+```
+#!/bin/sh
+#SBATCH --job-name="merge"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=50G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e 09-merge.err-%N
+#SBATCH -o 09-merge.out-%N
+
+module load MMseqs2
+
+INPUT=/work/mars8180/instructor_data/metatranscriptome-datasets/results/06-assembly
+OUTPUT=/work/mars8180/instructor_data/metatranscriptome-datasets/results/09-merged-assembly
+
+mkdir -p ${OUTPUT}
+cat ${INPUT}/*/*.fa > ${OUTPUT}/merged-assembly.fa
+
+mmseqs createdb ${OUTPUT}/merged-assembly.fa ${OUTPUT}/merged-assembly
+mmseqs linclust ${OUTPUT}/merged-assembly ${OUTPUT}/merged-assembly-2 tmp --min-seq-id 0.98 --cov-mode 1 --split-memory-limit 120G --remove-tmp-files
+mmseqs createsubdb ${OUTPUT}/merged-assembly-2 ${OUTPUT}/merged-assembly ${OUTPUT}/merged-assembly-3
+mmseqs convert2fasta ${OUTPUT}/merged-assembly-3 ${OUTPUT}/merged-assembley-98.fa
+```
+
+
 
 ## Identify protein coding sequences
 To identify protein coding regions within transcripts we will use the tool **TransDecoder**. TransDecoder identifies likely coding sequences based on the following criteria:
@@ -194,7 +233,7 @@ cp /work/mars8180/instructor_data/metatranscriptome-datasets/scripts/09-transdec
 ```
 
 ```
-nano /home/userid/metatranscriptomics/scripts/09-transdecoder.sh
+nano /home/userid/metatranscriptomics/scripts/11-transdecoder.sh
 ```
 
 ```
@@ -230,5 +269,68 @@ done
 
 ## Assigning taxonomy to each contig
 We will be using Eukulele and the PhyloDB database [https://github.com/allenlab/PhyloDB](https://github.com/allenlab/PhyloDB) to assign taxonomy to our contig. 
+
+First, lets install this using conda and pip
+
+```
+interact --mem=15G
+
+mkdir /home/userid/conda-env/eukulele
+conda create -p /home/userid/conda-env/eukulele
+source activate /home/userid/conda-env/eukulele
+pip install EUKulele
+```
+
+I have already installed the phyloDB database in the instructory directory `/work/mars8180/instructor_data/metatranscriptome-datasets/databases/phylodb` using the following command
+
+```
+EUKulele download --database phylodb
+```
+
+Now, we can classify taxonomy using EUKulele
+
+```
+EUKulele --mets_or_mags mets --sample_dir ${TRANSDECODER-DIRECTORY} --p_ext ".pep" --database ${DATABASE} -o sample/eukulele-output
+```
+
+### Running EUKulele on our data
+
+Let's run this on our metatranscriptomes
+
+```
+cp /work/mars8180/instructor_data/metatranscriptome-datasets/scripts/12-eukulele.sh /home/userid/metatranscriptomics/scripts
+
+nano /home/userid/metatranscriptomics/scripts/12-eukulele.sh
+```
+
+```
+#!/bin/sh
+#SBATCH --job-name="eukulele"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=50G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e 10-eukulele.err-%N
+#SBATCH -o 10-eukulele.out-%N
+
+module load Miniconda3
+source activate /home/ad14556/conda-env/eukulele
+
+INPUT=/work/mars8180/instructor_data/metatranscriptome-datasets/results/09-transdecoder
+OUTPUT=/work/mars8180/instructor_data/metatranscriptome-datasets/results/10-eukulele
+DATABASE=/work/mars8180/instructor_data/metatranscriptome-datasets/databases/phylodb
+
+mkdir -p ${OUTPUT}
+
+for folder in ${INPUT}/*; do
+  base=$(basename ${folder})
+  EUKulele --mets_or_mags mets --sample_dir ${INPUT}/${base} --p_ext ".pep" --database ${DATABASE} -o ${OUTPUT}/${base}
+done
+```
+
 
 ## Annoting the contigs
