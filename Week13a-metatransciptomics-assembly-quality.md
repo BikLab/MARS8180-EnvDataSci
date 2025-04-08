@@ -154,8 +154,81 @@ for folder in ${ASSEMBLY}/*; do
 done
 ```
 
+Now we can download the html files on our personal computers to assess transcript assembly quality. 
+
+
 ## Identify protein coding sequences
+To identify protein coding regions within transcripts we will use the tool **TransDecoder**. TransDecoder identifies likely coding sequences based on the following criteria:
+
+1. a minimum length open reading frame (ORF) is found in a transcript sequence
+2. a log-likelihood score similar to what is computed by the GeneID software is > 0.
+3. the above coding score is greatest when the ORF is scored in the 1st reading frame as compared to scores in the other 2 forward reading frames.
+4. if a candidate ORF is found fully encapsulated by the coordinates of another candidate ORF, the longer one is reported. However, a single transcript can report multiple ORFs (allowing for operons, chimeras, etc).
+
+TransDecoder is run in two steps. First, sequences with long open reading frames are extracted from the assembled sequences.  By default, only sequences that are 100 amino acids long are kept. Second, you predict the likely coding region. 
+
+In practice, it looks like the following:
+
+```
+TransDecoder.LongOrfs -t final.contigs.fa -m 100 --output_dir output/dir/sample-basename
+TransDecoder.Predict -t final.contigs.fa --output_dir output/dir/sample-basename
+```
+
+You will have four final outputs: 
+
+* **transcripts.fasta.transdecoder.pep**: peptide sequences for the final candidate ORFs; all shorter candidates within longer ORFs were removed. This is the most important file you'll need.
+
+* **transcripts.fasta.transdecoder.cds**: nucleotide sequences for coding regions of the final candidate ORFs
+ 
+* **transcripts.fasta.transdecoder.gff3**: positions within the target transcripts of the final selected ORFs
+
+* **transcripts.fasta.transdecoder.bed**: bed-formatted file describing ORF positions, best for viewing using GenomeView or IGV.
+
+
+### Running TransDecoder on our data
+
+First, lets copy the script to our home directory
+
+```
+cp /work/mars8180/instructor_data/metatranscriptome-datasets/scripts/09-transdecoder.sh /home/userid/metatranscriptomics/scripts
+```
+
+```
+nano /home/userid/metatranscriptomics/scripts/09-transdecoder.sh
+```
+
+```
+#!/bin/sh
+#SBATCH --job-name="transdecoder"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=25G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e 09-transdecoder.err-%N
+#SBATCH -o 09-transdecoder.out-%N
+
+module load TransDecoder
+
+ASSEMBLY=/work/mars8180/instructor_data/metatranscriptome-datasets/results/06-assembly
+OUTPUT=/work/mars8180/instructor_data/metatranscriptome-datasets/results/09-transdecoder
+
+mkdir -p ${OUTPUT}
+
+for folder in ${ASSEMBLY}/*; do
+  base=$(basename ${folder})
+  mkdir -p ${OUTPUT}/${base}
+  cd ${OUTPUT}/${base}
+  TransDecoder.LongOrfs -t ${ASSEMBLY}/${base}/final.contigs.fa -m 100 --output_dir ${OUTPUT}/${base}
+  TransDecoder.Predict -t ${ASSEMBLY}/${base}/final.contigs.fa --output_dir ${OUTPUT}/${base} --no_refine_starts
+done
+```
+
 
 ## Assigning taxonomy to each contig
+We will be using Eukulele and the PhyloDB database [https://github.com/allenlab/PhyloDB](https://github.com/allenlab/PhyloDB) to assign taxonomy to our contig. 
 
 ## Annoting the contigs
