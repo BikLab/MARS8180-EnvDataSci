@@ -151,7 +151,10 @@ EUKulele --mets_or_mags mets --sample_dir ${TRANSDECODER-DIRECTORY} --p_ext ".pe
 ```
 
 ### Running EUKulele on our data
-https://eukulele.readthedocs.io/en/latest/_images/eukulele_diagram_simplified.png![image](https://github.com/user-attachments/assets/c3359ebc-f654-484c-942c-aa41978ab82d)
+
+<img width="645" alt="Screenshot 2025-04-10 at 10 20 24 AM" src="https://github.com/user-attachments/assets/882eb0b8-6d69-4a36-92a9-4380ea105fe2" />
+
+
 
 
 First let's install this using a combination of conda and pip
