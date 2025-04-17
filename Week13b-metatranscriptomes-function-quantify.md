@@ -191,19 +191,16 @@ nano /home/userid/metatranscriptomics/scripts/12-eukulele.sh
 #SBATCH -e 10-eukulele.err-%N
 #SBATCH -o 10-eukulele.out-%N
 
-module load Miniconda3
-source activate /home/ad14556/conda-env/eukulele
+module load EUKulele
+module load DIAMOND
 
-INPUT=/work/mars8180/instructor_data/metatranscriptome-datasets/results/09-transdecoder
-OUTPUT=/work/mars8180/instructor_data/metatranscriptome-datasets/results/10-eukulele
-DATABASE=/work/mars8180/instructor_data/metatranscriptome-datasets/databases/phylodb
+INPUT=/work/mars8180/instructor_data/metatranscriptome-datasets/scripts
+OUTPUT=/work/mars8180/instructor_data/metatranscriptome-datasets/results/12-eukulele
+DATABASE=/work/mars8180/instructor_data/metatranscriptome-datasets/databases
 
 mkdir -p ${OUTPUT}
 
-for folder in ${INPUT}/*; do
-  base=$(basename ${folder})
-  EUKulele --mets_or_mags mets --sample_dir ${INPUT}/${base} --p_ext ".pep" --database ${DATABASE} -o ${OUTPUT}/${base}
-done
+EUKulele --mets_or_mags mets -s ${INPUT} --p_ext ".pep" -d phylodb --reference_dir ${DATABASE} -o ${OUTPUT} --CPUs 12
 ```
 
 
