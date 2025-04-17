@@ -205,3 +205,47 @@ EUKulele --mets_or_mags mets -s ${INPUT} --p_ext ".pep" -d phylodb --reference_d
 
 
 ## Annoting the contigs
+To annotate our peptide file we are going to use a program called eggnog-mapper.
+
+> EggNOG-mapper is a tool for fast functional annotation of novel sequences. It uses precomputed orthologous groups (OGs) and phylogenies from the eggNOG database (http://eggnogdb.embl.de/) to transfer functional information from fine-grained orthologs only.
+> 
+> Common uses of eggNOG-mapper include the annotation of novel genomes, transcriptomes or even metagenomic gene catalogs.
+> 
+> The use of orthology predictions for functional annotation permits a higher precision than traditional homology searches (i.e. BLAST searches), as it avoids transferring annotations from close paralogs (duplicate genes with a higher chance of being involved in functional divergence).
+
+First, we need to download the eggnog database. I have already done this for you. The database is located in 
+`/work/mars8180/instructor_data/metatranscriptome-datasets/databases/eggnog`. 
+
+First, lets copy the script to our home directory
+
+```
+cp /work/mars8180/instructor_data/metatranscriptome-datasets/scripts/13-eggnog-mapper.sh /home/userid/metatranscriptomics/scripts
+```
+
+```
+nano /home/userid/metatranscriptomics/scripts/13-eggnog-mapper.sh
+```
+```
+#!/bin/sh
+#SBATCH --job-name="eggnog"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=12
+#SBATCH --mem-per-cpu=4G
+#SBATCH --time=7-00:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH -e 13-eggnog.err-%N
+#SBATCH -o 13-eggnog.out-%N
+
+
+INPUT=/work/mars8180/instructor_data/metatranscriptome-datasets/scripts/merged-assembly-98-simplify-namese.fa.transdecoder.pep
+OUTPUT=/scratch/userid/metatranscriptome-datasets/results/13-eggnog
+DATABASE=/work/mars8180/instructor_data/metatranscriptome-datasets/databases/eggnog
+
+mkdir -p ${OUTPUT}
+mkdir -p ${DATABASE}
+
+emapper.py --override -i ${INPUT} --itype proteins -m diamond --data_dir ${DATABASE} -o tara --output_dir ${OUTPUT} --cpu 12
+```
