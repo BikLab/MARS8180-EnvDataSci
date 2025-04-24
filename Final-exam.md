@@ -4,9 +4,11 @@ Please take 5 minutes to fill in the course evaluation: http://eval.franklin.uga
 
 This information is used for faculty's annual reviews - we pull quotes verbatium, and look at the overall scores. Constructive feedback is also used to improve the course in future years. 
 
+---
+
 ## MARS 8180 Final Exam + Grading + Extra Credit
 
-## Grading Rubric for the final exam
+#### Grading Rubric for the final exam
 1. Dataset overview
 2. Overarching scientific questions
 3. Data analysis workflow
