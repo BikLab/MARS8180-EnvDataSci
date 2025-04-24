@@ -1,4 +1,4 @@
-Now we are going to create a heatmap based on the sample counts of the transcripts to identify 1) how well the samples cluster together and 2) how 
+Now we are going to create a heatmap based on the sample counts of the transcripts to identify 1) how well the samples cluster together and 2) the variance of the top 100 genes. 
 
 
 ``` r
