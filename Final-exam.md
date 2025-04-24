@@ -1,3 +1,9 @@
+## Course Evaluations
+
+Please take 5 minutes to fill in the course evaluation: http://eval.franklin.uga.edu
+
+This information is used for faculty's annual reviews - we pull quotes verbatium, and look at the overall scores. Constructive feedback is also used to improve the course in future years. 
+
 ## MARS 8180 Final Exam + Grading + Extra Credit
 
 ## Grading Rubric for the final exam
