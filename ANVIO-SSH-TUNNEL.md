@@ -8,7 +8,7 @@ On the first terminal, you will have to sign into the teaching cluster and reque
 
 ```
 ssh userid@teach.gacrc.uga.edu
-interact mem=12G
+interact mem=24G
 ```
 
 Then you will have to obtain the IP address of the host server.
