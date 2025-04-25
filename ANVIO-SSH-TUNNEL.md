@@ -25,13 +25,15 @@ Now, on the second terminal, you will have to set up an SSH Tunnel. You will do 
 ssh -N -L PORT:HOST:PORT user@xfer.gacrc.uga.edu
 ```
 
-Just replace PORT with a PORT number (a common one is 8080) and change the HOST to the IP Address you saved earlier. If you get a message the the line is busy. change the port number for example is the IP address is 88.88.88.888 then you would run the following code. 
+Just replace PORT with a PORT number (a common one is 8080) and change the HOST to the IP Address you saved earlier. If you get a message the the line is busy, change the port number. 
+
+for example, if the IP address is 88.88.88.888 then you would run the following code. 
 
 ```
 ssh -N -L 8080:88.88.88.888:8080 userid@teach.gacrc.uga.edu
 ```
 
-Note that when you create and ssh tunnel it will look as though the screen is frozen. DO NOT PANIC - that means that the connection is working. 
+Note that when you create the ssh tunnel it will look as though the screen is frozen. DO NOT PANIC - that means that the connection is working. 
 
 ### Setting up Anvi'o
 Now, let's go back to the first terminal and load our conda environment.
