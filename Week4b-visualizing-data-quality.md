@@ -1,93 +1,6 @@
-## Setting up a CONDA environment
-First, lets request an interactive node with 12 GB of memory as recommended by CONDA.
+# Before we get started
 
-```
-srun --pty  --cpus-per-task=1 --job-name=interact \
---ntasks=1 --nodes=1 --partition=batch --time=02:00:00 --mem=12GB /bin/bash -l
-```
-
-Now we can load the Miniconda module and create a conda repository in your home directory.
-
-```
-module load Miniconda3
-mkdir conda-env
-```
-
-Then, lets create a repository for our qiime2 conda environment. The name should contain the version of the environment we are trying to build. 
-
-```
-mkdir conda-env/qiime2-amplicon-2024.10
-conda create -p conda-env/qiime2-amplicon-2024.10
-```
-
-We should download the conda yaml file using the curl command. We are going to use a new parameter we have not seen before `-L`. This allows any redirects from the URL. 
-
-```
-curl -LO "https://data.qiime2.org/distro/amplicon/qiime2-amplicon-2024.10-py310-linux-conda.yml"
-```
-
-Now we can load the environment and install qiime2 
-
-```
-source activate /home/ad14556/conda-env/qiime2-amplicon-2024.10
-conda env update --file qiime2-amplicon-2024.10-py310-linux-conda.yml
-```
-
-While your environment is being set up, let's navigate to the anaconda website [https://anaconda.org](https://anaconda.org). We can search for packages that are distributed using the conda package management system. Search for the QIIME2 software. 
-
-How many variations of QIIME2 are there? Why would we want to create a conda environment for specifically for the QIIME2 amplicon package? 
-
-## Setting up a projects directory
-
-As discussed earlier in the course, we should first create a directory for our projects. We should have the following subdirectories:
-
-1. data
-2. results
-3. metadata
-4. scripts
-5. databases
-
-We can create project directories using the `mkdir` command: 
-
-```
-mkdir ddt-project
-cd ddt-project
-mkdir data databases metadata results scripts
-```
-Afterwards we are going to copy our data files from the `instructor_data` directory. Login to the transfer node and use the copy command to copy our data files and use the `tar` command to unzip and decompress our file. **DO NOT USE THE MOVE COMMAND**
-
-```
-cd data
-cp /work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/data/ddt-raw-fastq.tar.gz .
-tar -xvzf ddt-raw-fastq.tar.gz
-```
-
-## Submitting bash jobs 
-
-Throughout this module, I will show you what commands to use to analyze your dataset. However, you should never run them on a head node. This will slow down the computing node for everyone (and you might receive and email from the GACRC reminding you about good data practices). You should either request an interactive node or submit bash scripts. I recommend the latter for two reasons: 
-
-1. **COMPUTATIONAL RESOURCES**: With bash scripts you can specify the number of memories and CPUs that would help your job run faster
-2. **REPRODUCIBILITY**: The scripts in your folder can act as an electronic notebook. Similar to your lab notebook, these scripts are notes reminding you what bioinformatics steps you took. 
-3. **PUBLISHING**: It is now common practice to make your code accessible when publishing your manuscript. If you stay organized you can simply copy your scripts folder into a depository (GitHub) and link it in your manuscript's code/data availability subsection.
-
-When you write a bash script you require the following header: 
-
-```
-#!/bin/sh 
-#SBATCH --job-name="qiime-import"
-#SBATCH --partition=batch
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
-#SBATCH --mem-per-cpu=12G
-#SBATCH --time=1:00:00
-#SBATCH --mail-user=email@uga.edu
-#SBATCH --mail-type=BEGIN,END,FAIL
-#SBATCH -e file-name.err-%N
-#SBATCH -o file-name.out-%N
-```
-
-## Demultiplex Data using QIIME2 
+### Demultiplex Data 
 The sequencing facility will give you your data as 1) multiplexed or 2) demultiplexed sequences. If your sequencing data is a multiplexed file, all of your sample sequencing data will be located in a single file. Demultiplexing is a process of seperating your samples using your unique sequencing barcodes. 
 
 **If the sequencing facility demultiplexes your sequencing data, they will also send you the multiplexed raw sequencing data**
@@ -123,7 +36,7 @@ A typically metadata file with barcode(s) for paired-end sequence looks like thi
 |sampleE |GCTACTACTGAGGAT|TATGGTAATTGTGTGYCAGCMGCCGCGGTAA|GATGTGGAGTCTCAT|
 
 
-## What is a FASTQ file
+### What is a FASTQ file
 A fastq file is a text file that stores information about the sequence and its quality score of each base. 
 
 A typical fastq file looks like the following: 
@@ -160,104 +73,115 @@ GTGCATGTCTCAGTATAAGTGTTTCACTGCGAAACTGCGAATGGCTCATTAAAACAGTTATAGTTTCCATGTCAGTTGTT
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC5CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC*CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC*
 ```
 
+# 16S Metabarcoding Analsysis 
+Before we get started, let's copy our data over to a new directory `mars8180-class-data` directory.'
 
-## Assessing Data Quality using QIIME2 
-
-First, we need to convert our data into a QIIME2 artifact file (ends with a .qza extension). We can do this using several methods. For example, we can use a manifest file that a list of files and their respective paths. 
-
-A manifest will contain a sample identifier, along with the file paths of those samples. The manifest file can contain variables (e.g., $HOME or $PWD). The following example illustrates a simple fastq manifest file for paired-end read data for three samples.
-
-
-|sample-id|forward-absolute-filepath|reverse-absolute-filepath|
-|---------|-------------------------|-------------------------|
-|sampleA|$PWD/some/filepath/sampleA_R1.fastq.gz|$PWD/some/filepath/sampleA_R2.fastq.gz|
-|sampleB|$PWD/some/filepath/sampleB_R1.fastq.gz|$PWD/some/filepath/sampleB_R2.fastq.gz|
-|sampleC|$PWD/some/filepath/sampleB_R1.fastq.gz|$PWD/some/filepath/sampleC_R2.fastq.gz|
-
-
-However, today, we will use the Casava file import. 
-
-**FROM QIIME2**: In Casava 1.8 demultiplexed (paired-end) format, there are two fastq.gz files for each sample in the study, each containing the forward or reverse reads for that sample. The file name includes the sample identifier. The forward and reverse read file names for a single sample might look like `L2S357_15_L001_R1_001.fastq.gz` and `L2S357_15_L001_R2_001.fastq.gz`, respectively. The underscore-separated fields in this file name are:
-
-1. the sample identifier,
-2. the barcode sequence or a barcode identifier,
-3. the lane number,
-4. the direction of the read (i.e. R1 or R2), and
-5. the set number.
-
+Login to Sapelo2 using PuTTy and create your directory using the following command: 
 
 ```
-INPUT=/path/to/directory
-OUTPUT=/path/to/file/01-qiime-import.qza
+$ mkdir mars8180-class-data
+$ cd mars8180-class-data
+```
 
+now use `scp` to copy the data files, metadata, and scripts from the teaching cluster to Sapelo2. 
+
+`$ scp -r userid@txfer.gacrc.uga.edu:/work/mars8180/instructor_data/metabarcoding-16S/scripts`
+
+`$ scp -r userid@txfer.gacrc.uga.edu:/work/mars8180/instructor_data/metabarcoding-16S/metadata`
+
+`$ scp -r userid@txfer.gacrc.uga.edu:/work/mars8180/instructor_data/metabarcoding-16S/raw-data`
+
+### Import data 
+Let's cat the first script `01-import-raw-data.sh`
+
+```
+$ cat scripts/01-import-raw-data.sh
+
+#!/bin/sh
+
+#SBATCH --job-name="import-data"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=12G
+#SBATCH --time=01:00:00
+#SBATCH --mail-user=userid@uga.edu
+#SBATCH --mail-type=END,FAIL
+#SBATCH -e 01-import-data.err-%N
+#SBATCH -o 01-import-data.out-%N
+
+# load module
+module load QIIME2/2025.10-amplicon
+
+# set paths to project directory and data subdirectory
+INPUT="/work/mars8180/instructor_data/metabarcoding-16S/metadata/2026-01-15-BOBA-16S-fastq-manifest-file.txt"
+OUTPUT="/work/mars8180/instructor_data/metabarcoding-16S/analysis/01-16S-rRNA-metabarcoding-data.qza"
+export DATA="/work/mars8180/instructor_data/metabarcoding-16S/raw-data/"
+
+# use qiime tools to import data
 qiime tools import \
   --type 'SampleData[PairedEndSequencesWithQuality]' \
-  --input-path ${INPUT} \
-  --output-path ${OUTPUT} \
-  --input-format CasavaOneEightSingleLanePerSampleDirFmt
+  --input-path $INPUT \
+  --output-path $OUTPUT \
+  --input-format PairedEndFastqManifestPhred33V2
+  ```
+
+We are using a manifest file to import our data into a QIIME2 QZA format. The manifest file is a tab-delimited file located in the metadata directory with 3 columns, `sample-id`, `forward-absolute-filepath`, and `reverse-absolute-filepath`. We can use head to see the first 10 lines. 
+
+```
+$ head metadata/2026-01-15-BOBA-16S-fastq-manifest-file.txt
+
+sample-id	forward-absolute-filepath	reverse-absolute-filepath
+16S-BOBA-Blank.1	$DATA/16S-BOBA-Blank.1-1.fastq.gz	$DATA/16S-BOBA-Blank.1-2.fastq.gz
+16S-BOBA-Blank.10	$DATA/16S-BOBA-Blank.10-1.fastq.gz	$DATA/16S-BOBA-Blank.10-2.fastq.gz
+16S-BOBA-Blank.11	$DATA/16S-BOBA-Blank.11-1.fastq.gz	$DATA/16S-BOBA-Blank.11-2.fastq.gz
+16S-BOBA-Blank.12	$DATA/16S-BOBA-Blank.12-1.fastq.gz	$DATA/16S-BOBA-Blank.12-2.fastq.gz
+16S-BOBA-Blank.2	$DATA/16S-BOBA-Blank.2-1.fastq.gz	$DATA/16S-BOBA-Blank.2-2.fastq.gz
+16S-BOBA-Blank.3	$DATA/16S-BOBA-Blank.3-1.fastq.gz	$DATA/16S-BOBA-Blank.3-2.fastq.gz
+16S-BOBA-Blank.4	$DATA/16S-BOBA-Blank.4-1.fastq.gz	$DATA/16S-BOBA-Blank.4-2.fastq.gz
+16S-BOBA-Blank.5	$DATA/16S-BOBA-Blank.5-1.fastq.gz	$DATA/16S-BOBA-Blank.5-2.fastq.gz
+16S-BOBA-Blank.6	$DATA/16S-BOBA-Blank.6-1.fastq.gz	$DATA/16S-BOBA-Blank.6-2.fastq.gz
 ```
 
-After we have imported our data as a QZA file type we can use the command `qiime demux summarize` to summarize our data quality. This is going to create a visualization file, indicated by the `.qzv` file extension. 
+Notice that the filepath contains `$DATA`. This is an environment path that we define in the beginning of our script `export DATA="/work/mars8180/instructor_data/metabarcoding-16S/raw-data/"`
+
+Let's update the paths in the beginning of the file to the correct aboslute paths that are located in your `mars8180-class-data` directory.
+
+### Visualizing data
+Now, we can run the second script `02-visualize-raw-data.sh` to visualize the data quality of the metabarcoding dataset. Once again, change the file paths so that they match the location in your directory. 
 
 ```
-INPUT=/path/to/file/01-qiime-import.qza
-OUTPUT=/path/to/file/02-qiime-summarize.qzv
+$ cat scripts/02-visualize-raw-data.sh
 
+#!/bin/sh
+
+#SBATCH --job-name="viz-data"
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=12G
+#SBATCH --time=01:00:00
+#SBATCH --mail-user=ad14556@uga.edu
+#SBATCH --mail-type=END,FAIL
+#SBATCH -e 02-visualize-data.err-%N
+#SBATCH -o 02-visualize-data.out-%N
+
+# load module
+module load QIIME2/2025.10-amplicon
+
+# set paths to project directory and data subdirectory
+INPUT="/work/mars8180/instructor_data/metabarcoding-16S/analysis/01-16S-rRNA-metabarcoding-data.qza"
+OUTPUT="/work/mars8180/instructor_data/metabarcoding-16S/analysis/02-16S-rRNA-visualize-data-quality.qzv"
+
+# use qiime tools to import data
 qiime demux summarize \
   --i-data ${INPUT} \
   --o-visualization ${OUTPUT}
 ```
-This command might take a few minutes to run, luckily the instructors thought about this and have the output files saved in the `instructor_data` folder. Copy the output file to your own computer. 
 
-```
-scp userid@txfer.gacrc.uga.edu:"/work/mars8180/instructor_data/metabarcoding-datasets/ddt-project/results/02-qiime-summarize.qzv" /file/path/02-qiime-summarize-ddt.qzv
-```
-Additionally, we have two more summary files from other sequencing projects that we can use to compare different sequencing quality patterns that you might run into.
+In this script, the input file is the imported QIIME2 QZA filetype. This is the output of our first script `01-import-raw-data.sh`. The output is a QIIME2 QZV filetype. It's similar to QZA, except that it is made to visualize data using the QIIME2 Website: [https://view.qiime2.org](https://view.qiime2.org)
 
-**Woodfall Project:**
+After you submit this job, you can download the output file to your personal computer using PuTTy or the CommandLine. We will go over the interactive quality plots in class. 
 
-```
-scp userid@txfer.gacrc.uga.edu:"/work/mars8180/instructor_data/metabarcoding-datasets/woodsfall-project/results/02-qiime-summarize.qzv" /file/path/02-qiime-summarize-woodfall.qzv
-```
-
-**Doliolid Project:**
-
-```
-scp userid@txfer.gacrc.uga.edu:"/work/mars8180/instructor_data/metabarcoding-datasets/doliolid-project/results/02-qiime-summarize.qzv" /file/path/02-qiime-summarize-doliolid.qzv
-
-```
-
-Now we can use the QIIME2 View Tool [https://view.qiime2.org](https://view.qiime2.org) to inspect and visualize our sequencing data quality. But first, we need to download our `.qzv` data files to our personal computer. 
-
-**Closely analyze your plots and decide where you would want to trim and truncate your reads and why.**
-
-
-## Other Tools  
-There are multitudes of tools that you can use to visualize and quality control your data. Two of them are fastQC and multiQC. Kevin let us borrow his data (Illumina sequencing of vibrio isolates) to analyze them in class. 
-
-To run fastqc you can use the following command.
-
-```
-module load FastQC
-
-INPUT=/path/to/data/directory
-OUTPUT=/path/to/results/directory/01-fastqc
-
-mkdir -p ${OUTPUT}
-fastqc ${INPUT}/* -o ${OUTPUT} -t 8
-```
-The flag `-t` specifies the number of threads. However, we need to make sure we allocate a minimum of 250Mb to each thread. 
-
-Then we can run multiqc which aggregates all of our fastqc files into one readable HTML file. 
-
-```
-module load MultiQC
-
-INPUT=/path/to/results/directory/01-fastqc
-OUTPUT=/path/to/results/directory/02-multiqc
-
-multiqc --outdir ${OUTPUT} ${INPUT}
-```
-
-Copy the file to your personal computer and open the `muiltiqc_report.html` file
- 
